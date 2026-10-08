@@ -89,5 +89,16 @@
       "points follow the same path mask as the curve"
     ],
     "build": "TypeScript and Vite passed"
+  },
+  "storySocialAnimation": {
+    "failures": [],
+    "checks": [
+      "four situations appear in order",
+      "confidence intervals grow from the estimate to their final bounds",
+      "final points and percentages remain at their actual values",
+      "appearance replays on return to scene",
+      "reduced motion completes immediately"
+    ],
+    "build": "TypeScript and Vite passed"
   }
 }

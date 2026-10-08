@@ -719,7 +719,7 @@ function useStoryDrawing(scene: StoryScene, entered: boolean) {
       animate(from, erased, 650, () => {
         const next = { scene, main: keepGirls ? erased.main : 0, mainStart: keepGirls ? erased.mainStart : 0, boys: 0, boysStart: 0, social: 0 };
         publish(next);
-        animate(next, complete, 750);
+        animate(next, complete, scene === 3 ? 1100 : 750);
       });
     }
     motion.addEventListener("change", finish);
@@ -759,9 +759,18 @@ function StoryFigure({ data, scene: requestedScene }: { data: ExperienceData; sc
     <div className="story-visual">
       <svg ref={svgRef} viewBox="0 0 580 320" role="img" aria-label={scene === 3 ? `Dépression déclarée selon la situation financière : ${social.map((point) => `${FINANCIAL_SHORT[point.financial]}, ${fmt(point.estimate)} %`).join(" ; ")}. Intervalles de confiance à 95 %.` : `${scene === 0 ? "Tous âges et sexes" : "Filles de 11–14 ans"} : ${fmt(values[0].rate)} en 2019, ${fmt(values.at(-1)!.rate)} en 2024, pour 100 000.${scene === 2 ? ` Garçons de 11–14 ans : ${fmt(boys[0].rate)} à ${fmt(boys.at(-1)!.rate)}.` : ""}`}>
         <defs>{[{ name: "main", points: values, start: drawing.mainStart, end: drawing.main }, { name: "boys", points: boys, start: drawing.boysStart, end: drawing.boys }].map(({ name, points, start, end }) => <mask key={name} id={`${maskId}-${name}`} maskUnits="userSpaceOnUse" x="0" y="0" width="580" height="320"><path d={linePath(points, (point) => x(point.year), (point) => y(point.rate))} fill="none" stroke="white" strokeWidth="16" strokeLinecap="round" pathLength="1" strokeDasharray={`${Math.max(0, end - start)} 1`} strokeDashoffset={-start} opacity={end <= start ? 0 : 1} /></mask>)}</defs>
-        {scene === 3 ? <g opacity={drawing.social}>
-          {[0, 10, 20, 30].map((tick) => <g className="story-gridline" key={tick}><line x1={136 + tick / 32 * 382} x2={136 + tick / 32 * 382} y1="44" y2="258" /><text x={136 + tick / 32 * 382} y="294" textAnchor="middle">{tick} %</text></g>)}
-          {social.map((point, index) => <g key={point.financial}><text x="0" y={68 + index * 60}>{FINANCIAL_SHORT[point.financial]}</text><line className="story-interval" x1={136 + point.low / 32 * 382} x2={136 + point.high / 32 * 382} y1={63 + index * 60} y2={63 + index * 60} /><circle className="story-dot" cx={136 + point.estimate / 32 * 382} cy={63 + index * 60} r="5" /><text className="story-value" x={148 + point.estimate / 32 * 382} y={68 + index * 60}>{fmt(point.estimate)} %</text></g>)}
+        {scene === 3 ? <g>
+          {[0, 10, 20, 30].map((tick) => <g className="story-gridline" key={tick} opacity={Math.min(1, drawing.social * 4)}><line x1={136 + tick / 32 * 382} x2={136 + tick / 32 * 382} y1="44" y2="258" /><text x={136 + tick / 32 * 382} y="294" textAnchor="middle">{tick} %</text></g>)}
+          {social.map((point, index) => {
+            const progress = Math.max(0, Math.min(1, (drawing.social - index * .17) / .49));
+            const center = 136 + point.estimate / 32 * 382;
+            return <g className="story-social-row" key={point.financial} data-progress={progress} opacity={progress} transform={`translate(0 ${(1 - progress) * 10})`}>
+              <text x="0" y={68 + index * 60}>{FINANCIAL_SHORT[point.financial]}</text>
+              <line className="story-interval" x1={center + (point.low - point.estimate) / 32 * 382 * progress} x2={center + (point.high - point.estimate) / 32 * 382 * progress} y1={63 + index * 60} y2={63 + index * 60} />
+              <circle className="story-dot" cx={center} cy={63 + index * 60} r={3 + 2 * progress} />
+              <text className="story-value" x={center + 12} y={68 + index * 60} opacity={Math.max(0, (progress - .3) / .7)}>{fmt(point.estimate)} %</text>
+            </g>;
+          })}
         </g> : <>
           {(scene === 0 ? [0, 50, 100, 150] : [0, 200, 400]).map((tick) => <g className="story-gridline" key={tick}><line x1="54" x2="534" y1={y(tick)} y2={y(tick)} /><text x="42" y={y(tick) + 5} textAnchor="end">{tick}</text></g>)}
           <g className="story-main-reveal" mask={`url(#${maskId}-main)`} data-progress={drawing.main - drawing.mainStart}><path className={scene === 0 ? "story-national" : "story-girls"} d={linePath(values, (point) => x(point.year), (point) => y(point.rate))} />{values.map((point) => <circle key={point.year} className={scene === 0 ? "story-dot-muted" : "story-dot"} cx={x(point.year)} cy={y(point.rate)} r="4"><title>{point.year} : {fmt(point.rate)} pour 100 000</title></circle>)}</g>
