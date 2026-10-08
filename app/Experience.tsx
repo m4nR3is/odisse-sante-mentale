@@ -1254,10 +1254,10 @@ function IntroOpening() {
           element.dataset.arrival = arrival.toFixed(3);
           const lines = element.querySelectorAll<HTMLElement>(".intro-lead-line");
           lines.forEach((line, lineIndex) => {
-            const delay = lines.length > 1 ? lineIndex / (lines.length - 1) * .22 : 0;
-            const phase = Math.max(0, Math.min(1, (local - delay) / .78));
+            const delay = lines.length > 1 ? lineIndex / (lines.length - 1) * .4 : 0;
+            const phase = Math.max(0, Math.min(1, (local - delay) / .6));
             const eased = phase * phase * (3 - 2 * phase);
-            const travel = Math.min(stageBounds.width * .45, 520);
+            const travel = target.left + line.offsetLeft + line.offsetWidth * 1.09 + 32;
             line.style.transform = eased === 1 ? "none" : `translateX(${-travel * (1 - eased)}px) scale(${1 + .18 * (1 - eased)})`;
             line.style.opacity = String(Math.min(1, phase * 4));
           });
