@@ -31,7 +31,7 @@ par âge et sexe, et le changement d’échelle verticale, sont explicités.
 Les chiffres sont calculés depuis les données livrées.
 
 L’explorateur propose ensuite quatre regards dans un module persistant.
-La carte d’Explorer représente en gris les évolutions comparables de la frise. Les bornes, la période et l’unité figurent sous la carte ; l’échelle est recalculée à chaque vue ou filtre. Les évolutions indisponibles ou non interprétables sont hachurées. La sélection orange et le contour noir au survol suivent le code graphique des autres visualisations.
+La carte d’Explorer représente en gris les évolutions comparables de la frise. Les bornes, la période et l’unité figurent sous la carte ; l’échelle est recalculée à chaque vue ou filtre. Les évolutions indisponibles ou non interprétables sont hachurées. La sélection orange et le contour noir au survol suivent le code graphique des autres visualisations. Le territoire survolé est dessiné au premier plan. Les encarts ultramarins passent en bas lorsque cela permet d’agrandir la France hexagonale ; leur disposition reste stable pendant le survol.
 
 Les vues territoriales démarrent sur la référence nationale, sans département présélectionné. Une carte permanente partage la colonne des filtres et du chiffre ; la frise prend la largeur du graphique. Le survol de la carte ou de la distribution révèle un territoire ; un clic ou le menu le sélectionne. Aux urgences, la vue nationale présente le niveau de 2024, sans calculer une évolution sur le périmètre variable. Le
 scroll traverse dix étapes : les trois indicateurs de 2024, les trois

@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-08",
+  "viewports": [
+    [
+      1440,
+      900
+    ],
+    [
+      1280,
+      500
+    ],
+    [
+      390,
+      844
+    ],
+    [
+      390,
+      600
+    ]
+  ],
+  "checks": {
+    "hover_overlay_last_svg_path": true,
+    "overlay_preserves_color_and_does_not_capture_pointer": true,
+    "pointer_and_keyboard_preview_selection": true,
+    "bottom_insets_when_mainland_scale_improves": true,
+    "layout_frozen_during_hover": true,
+    "zoom_and_reset_both_layouts": true,
+    "module_bounds_and_minimum_map_height": true,
+    "indicator_buttons_32px": true,
+    "no_browser_errors": true,
+    "typescript_vite_build": true
+  },
+  "data": "Health values and source contours unchanged; adaptive transforms only."
+}
