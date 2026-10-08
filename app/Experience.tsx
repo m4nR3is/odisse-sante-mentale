@@ -35,6 +35,11 @@ const FINANCIAL_SHORT: Record<string, string> = { "Vous êtes à l’aise": "À 
 const fmt = (value: number, digits = 1) => value.toLocaleString("fr-FR", { minimumFractionDigits: digits, maximumFractionDigits: digits });
 const signed = (value: number) => `${value >= 0 ? "+" : "−"}${fmt(Math.abs(value), 0)} %`;
 const CHART_TRANSITION_MS = 760;
+const scrollRangeProgress = (position: number, start: number, length = 1) => Math.max(0, Math.min(1, (position - start) / length));
+function ScrollIndicator({ progress }: { progress: number }) {
+  return <span className="control-scroll-progress" aria-hidden="true" style={{ transform: `scaleX(${progress})` }} />;
+}
+
 function ViewportTooltip({ x, y, className = "", children }: { x: number; y: number; className?: string; children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ left: x, top: y, vertical: "above", horizontal: "right" });
@@ -374,7 +379,7 @@ function usePanelReveal(key: string) {
   return { ref, progress };
 }
 
-function SocialDeclaredView({ data, indicator, onIndicator }: { data: ExperienceData; indicator: string; onIndicator: (indicator: string) => void }) {
+function SocialDeclaredView({ data, indicator, onIndicator, position }: { data: ExperienceData; indicator: string; onIndicator: (indicator: string) => void; position: number }) {
   const indicators = ["Dépression", "Anxiété", "Pensées suicidaires"];
   const reveal = usePanelReveal(indicator);
   const [outgoing, setOutgoing] = useState<{ indicator: string; progress: number } | null>(null);
@@ -416,7 +421,7 @@ function SocialDeclaredView({ data, indicator, onIndicator }: { data: Experience
       <h3>Ce que l’enquête<br />rend visible.</h3>
       <p>Prévalence déclarée en France selon la situation financière. Cette vue décrit un gradient social national ; elle ne permet ni de suivre une trajectoire individuelle ni de comparer les départements.</p>
       <div className="declared-indicators" role="group" aria-label="Indicateur déclaré">
-        {indicators.map((item) => <button type="button" key={item} aria-pressed={indicator === item} onClick={() => onIndicator(item)}>{item}</button>)}
+        {indicators.map((item) => <button type="button" key={item} aria-pressed={indicator === item} onClick={() => onIndicator(item)}>{item}<ScrollIndicator progress={scrollRangeProgress(position, indicators.indexOf(item))} /></button>)}
       </div>
       {first && last && <div className="declared-ratio"><strong>× {fmt(ratio * reveal.progress, 1)}</strong><span>entre les personnes « en difficulté » et celles « à l’aise »</span></div>}
     </div>
@@ -454,7 +459,7 @@ function SocialDeclaredView({ data, indicator, onIndicator }: { data: Experience
   </div>;
 }
 
-function HistoricalDeclaredView({ data, indicator, onIndicator }: { data: ExperienceData; indicator: string; onIndicator: (indicator: string) => void }) {
+function HistoricalDeclaredView({ data, indicator, onIndicator, position }: { data: ExperienceData; indicator: string; onIndicator: (indicator: string) => void; position: number }) {
   const indicators = ["Dépression", "Pensées suicidaires", "Tentatives de suicide"];
   const sexes = ["Hommes et Femmes", "Femmes", "Hommes"];
   const [sex, setSex] = useState(sexes[0]);
@@ -504,7 +509,7 @@ function HistoricalDeclaredView({ data, indicator, onIndicator }: { data: Experi
       <h3>Ce que l’enquête<br />rend visible.</h3>
       <p>Prévalence déclarée chez les 18–75 ans selon la région et le sexe. Cette vue suit les vagues historiques de 2005 à 2021 ; le protocole de 2024 ne permet pas de raccorder ses valeurs à ces courbes.</p>
       <div className="declared-indicators history-indicators" role="group" aria-label="Indicateur déclaré historique">
-        {indicators.map((item) => <button type="button" key={item} aria-pressed={indicator === item} onClick={() => onIndicator(item)}>{item}</button>)}
+        {indicators.map((item) => <button type="button" key={item} aria-pressed={indicator === item} onClick={() => onIndicator(item)}>{item}<ScrollIndicator progress={scrollRangeProgress(position, 3 + indicators.indexOf(item))} /></button>)}
       </div>
       <div className="history-filters">
       <label>Région<select value={selectedCode} onChange={(event) => setTerritoryCode(event.target.value)}>{territories.map(([code, name]) => <option value={code} key={code}>{name}</option>)}</select></label>
@@ -525,9 +530,9 @@ function HistoricalDeclaredView({ data, indicator, onIndicator }: { data: Experi
   </div>;
 }
 
-function DeclaredExplorer({ data, step, onNavigate }: { data: ExperienceData; step: typeof EXPLORER_STEPS[number]; onNavigate: (index: number) => void }) {
+function DeclaredExplorer({ data, step, onNavigate, position }: { data: ExperienceData; step: typeof EXPLORER_STEPS[number]; onNavigate: (index: number) => void; position: number }) {
   const view = step.view;
-  return <div className="declared-shell"><div className="measure-subnav declared-subnav" role="group" aria-label="Lecture des données déclarées"><button type="button" aria-pressed={view === "social"} onClick={() => onNavigate(0)}>Inégalités sociales · 2024</button><button type="button" aria-pressed={view === "history"} onClick={() => onNavigate(3)}>Évolution déclarée · 2005–2021</button></div>{view === "social" ? <SocialDeclaredView data={data} indicator={step.indicator} onIndicator={(indicator) => onNavigate(EXPLORER_STEPS.findIndex((candidate) => candidate.view === "social" && candidate.indicator === indicator))} /> : <HistoricalDeclaredView data={data} indicator={step.indicator} onIndicator={(indicator) => onNavigate(EXPLORER_STEPS.findIndex((candidate) => candidate.view === "history" && candidate.indicator === indicator))} />}</div>;
+  return <div className="declared-shell"><div className="measure-subnav declared-subnav" role="group" aria-label="Lecture des données déclarées"><button type="button" aria-pressed={view === "social"} onClick={() => onNavigate(0)}>Inégalités sociales · 2024<ScrollIndicator progress={scrollRangeProgress(position, 0, 3)} /></button><button type="button" aria-pressed={view === "history"} onClick={() => onNavigate(3)}>Évolution déclarée · 2005–2021<ScrollIndicator progress={scrollRangeProgress(position, 3, 3)} /></button></div>{view === "social" ? <SocialDeclaredView data={data} position={position} indicator={step.indicator} onIndicator={(indicator) => onNavigate(EXPLORER_STEPS.findIndex((candidate) => candidate.view === "social" && candidate.indicator === indicator))} /> : <HistoricalDeclaredView data={data} position={position} indicator={step.indicator} onIndicator={(indicator) => onNavigate(EXPLORER_STEPS.findIndex((candidate) => candidate.view === "history" && candidate.indicator === indicator))} />}</div>;
 }
 
 function useAnimatedDistribution(target: { department: Department; change: number | null }[], selectedCode: string, width: number, height: number, duration = 650) {
@@ -576,6 +581,7 @@ type GuidedView = { view: "declared" | "profiles"; revision: number };
 
 function TerritoryAppendix({ data, guidedView }: { data: ExperienceData; guidedView: GuidedView | null }) {
   const [stepIndex, setStepIndex] = useState(0);
+  const [scrollPosition, setScrollPosition] = useState(0);
   const step = EXPLORER_STEPS[stepIndex];
   const landmarks = useRef<Array<HTMLLIElement | null>>([]);
   const lab = useRef<HTMLDivElement>(null);
@@ -593,6 +599,10 @@ function TerritoryAppendix({ data, guidedView }: { data: ExperienceData; guidedV
       let index = 0;
       landmarks.current.forEach((marker, candidate) => { if (marker && marker.getBoundingClientRect().top <= line) index = candidate; });
       setStepIndex((current) => current === index ? current : index);
+      const bounds = landmarks.current[index]?.getBoundingClientRect();
+      const fraction = bounds ? Math.max(0, Math.min(1, (line - bounds.top) / Math.max(1, bounds.height))) : 0;
+      setScrollPosition(index + fraction);
+
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(synchronize); };
     window.addEventListener("scroll", schedule, { passive: true });
@@ -777,9 +787,9 @@ function TerritoryAppendix({ data, guidedView }: { data: ExperienceData; guidedV
     <div className="explorer-scroll-track">
     <ol className="explorer-scroll-landmarks" aria-label="Étapes du parcours Explorer">{EXPLORER_STEPS.map((item, index) => <li id={`explorer-step-${index + 1}`} key={item.label} ref={(element) => { landmarks.current[index] = element; }}><span className="sr-only">{index + 1}. {item.label}</span></li>)}</ol>
     <div className="territory-lab" id="territory-explorer" ref={lab} data-mode={mode} data-dataset={territoryDataset} data-step={stepIndex}>
-      <div className="explorer-navigation"><div className="explorer-mode data-types" role="group" aria-label="Choisir une mesure de santé mentale"><button type="button" aria-pressed={family === "declared"} onClick={() => chooseMeasureFamily("declared")}>Déclaré <span>Enquête · expérience rapportée</span></button><button type="button" aria-pressed={family === "emergency"} onClick={() => chooseMeasureFamily("emergency")}>Urgences <span>Recours aigu · OSCOUR®</span></button><button type="button" aria-pressed={family === "hospital"} onClick={() => chooseMeasureFamily("hospital")}>Hôpital <span>Patients et séjours · MCO</span></button><button type="button" aria-pressed={family === "deaths"} onClick={() => chooseMeasureFamily("deaths")}>Décès <span>Suicides enregistrés</span></button></div>
-      {family === "hospital" && <div className="measure-subnav" role="group" aria-label="Vue hospitalière"><button type="button" aria-pressed={mode === "territories"} onClick={() => switchTerritoryDataset("hospitalisations")}>Séjours · départements</button><button type="button" aria-pressed={mode === "profiles"} onClick={() => switchMode("profiles")}>Patients · âge × sexe</button></div>}</div>
-      {mode === "declared" ? <DeclaredExplorer data={data} step={step} onNavigate={navigateStep} /> : <><div className="territory-selector" style={{ "--filter-width": filterWidth } as CSSProperties}><div className="territory-filters">{mode === "territories" && <label htmlFor="department">Département<select id="department" value={selected.department.code} onChange={(event) => setCode(event.target.value)}>{departmentOptions.map((row) => <option key={row.department.code} value={row.department.code}>{row.department.code} · {row.department.name}</option>)}</select></label>}<label htmlFor="territory-age">Tranche d’âge<select id="territory-age" value={mode === "territories" ? age : profileAge} onChange={(event) => mode === "territories" ? setAge(event.target.value) : setProfileAge(event.target.value)}>{(mode === "territories" ? TERRITORY_AGES : ODISSE_AGES).map((item) => <option key={item} value={item}>{item === "Tous" ? "Tous les âges" : item}</option>)}</select></label><label htmlFor="territory-sex">Sexe<select id="territory-sex" value={mode === "territories" ? sex : profileSex} onChange={(event) => mode === "territories" ? setSex(event.target.value) : setProfileSex(event.target.value)}>{(mode === "territories" ? TERRITORY_SEXES : ["Femmes", "Hommes"]).map((item) => <option key={item} value={item}>{item === "Hommes et Femmes" ? "Tous les sexes" : item}</option>)}</select></label></div><div className="territory-summary"><div className="metric-definition"><b>{measureLabel}</b><span>{measureUnit}</span></div>{selected.comparable ? <><span className="metric-period">{changeLabel} · {startYear} → {endYear}</span><strong className="animated-number" aria-hidden="true">{formatEvolution(animatedChange)}{evolutionUnit}</strong><span className="metric-endpoints">{fmt(selectedFirst!.rate)} en {startYear} → {fmt(selectedLast!.rate)} en {endYear}</span></> : <div className="low-sample"><strong>{selected.change == null ? "Comparaison indisponible" : "Effectif faible"}</strong><span>{selected.change == null ? "Deux valeurs comparables sont nécessaires aux dates retenues." : "Moins de 10 décès à l’une des deux dates : évolution non interprétable."} La courbe disponible reste descriptive.</span></div>}{mode === "territories" && selected.comparable && (hasNationalReference ? <p className={`relative-level ${Math.abs(animatedLevelGap) < .05 ? "is-neutral" : animatedLevelGap > 0 ? "is-positive" : "is-negative"}`}>{Math.abs(animatedLevelGap) < .05 ? <>Au niveau de la France en {endYear}</> : <><b>{formatEvolution(animatedLevelGap)}</b> {usesAbsoluteChange ? "point de taux pour 100 000" : ""} par rapport à la France en {endYear}</>}</p> : <p className="relative-level is-neutral">Référence nationale indisponible pour ce regroupement</p>)}<span className="sr-only" aria-live="polite">{title}. {measureLabel}. {selected.comparable ? `${changeLabel} ${formatEvolution(selected.change!)}${evolutionUnit} entre ${startYear} et ${endYear}.` : "Évolution non interprétable."}</span></div></div>
+      <div className="explorer-navigation"><div className="explorer-mode data-types" role="group" aria-label="Choisir une mesure de santé mentale"><button type="button" aria-pressed={family === "declared"} onClick={() => chooseMeasureFamily("declared")}>Déclaré <span>Enquête · expérience rapportée</span><ScrollIndicator progress={scrollRangeProgress(scrollPosition, 0, 6)} /></button><button type="button" aria-pressed={family === "emergency"} onClick={() => chooseMeasureFamily("emergency")}>Urgences <span>Recours aigu · OSCOUR®</span><ScrollIndicator progress={scrollRangeProgress(scrollPosition, 6, 1)} /></button><button type="button" aria-pressed={family === "hospital"} onClick={() => chooseMeasureFamily("hospital")}>Hôpital <span>Patients et séjours · MCO</span><ScrollIndicator progress={scrollRangeProgress(scrollPosition, 7, 2)} /></button><button type="button" aria-pressed={family === "deaths"} onClick={() => chooseMeasureFamily("deaths")}>Décès <span>Suicides enregistrés</span><ScrollIndicator progress={scrollRangeProgress(scrollPosition, 9, 1)} /></button></div>
+      {family === "hospital" && <div className="measure-subnav" role="group" aria-label="Vue hospitalière"><button type="button" aria-pressed={mode === "territories"} onClick={() => switchTerritoryDataset("hospitalisations")}>Séjours · départements<ScrollIndicator progress={scrollRangeProgress(scrollPosition, 7)} /></button><button type="button" aria-pressed={mode === "profiles"} onClick={() => switchMode("profiles")}>Patients · âge × sexe<ScrollIndicator progress={scrollRangeProgress(scrollPosition, 8)} /></button></div>}</div>
+      {mode === "declared" ? <DeclaredExplorer data={data} step={step} position={scrollPosition} onNavigate={navigateStep} /> : <><div className="territory-selector" style={{ "--filter-width": filterWidth } as CSSProperties}><div className="territory-filters">{mode === "territories" && <label htmlFor="department">Département<select id="department" value={selected.department.code} onChange={(event) => setCode(event.target.value)}>{departmentOptions.map((row) => <option key={row.department.code} value={row.department.code}>{row.department.code} · {row.department.name}</option>)}</select></label>}<label htmlFor="territory-age">Tranche d’âge<select id="territory-age" value={mode === "territories" ? age : profileAge} onChange={(event) => mode === "territories" ? setAge(event.target.value) : setProfileAge(event.target.value)}>{(mode === "territories" ? TERRITORY_AGES : ODISSE_AGES).map((item) => <option key={item} value={item}>{item === "Tous" ? "Tous les âges" : item}</option>)}</select></label><label htmlFor="territory-sex">Sexe<select id="territory-sex" value={mode === "territories" ? sex : profileSex} onChange={(event) => mode === "territories" ? setSex(event.target.value) : setProfileSex(event.target.value)}>{(mode === "territories" ? TERRITORY_SEXES : ["Femmes", "Hommes"]).map((item) => <option key={item} value={item}>{item === "Hommes et Femmes" ? "Tous les sexes" : item}</option>)}</select></label></div><div className="territory-summary"><div className="metric-definition"><b>{measureLabel}</b><span>{measureUnit}</span></div>{selected.comparable ? <><span className="metric-period">{changeLabel} · {startYear} → {endYear}</span><strong className="animated-number" aria-hidden="true">{formatEvolution(animatedChange)}{evolutionUnit}</strong><span className="metric-endpoints">{fmt(selectedFirst!.rate)} en {startYear} → {fmt(selectedLast!.rate)} en {endYear}</span></> : <div className="low-sample"><strong>{selected.change == null ? "Comparaison indisponible" : "Effectif faible"}</strong><span>{selected.change == null ? "Deux valeurs comparables sont nécessaires aux dates retenues." : "Moins de 10 décès à l’une des deux dates : évolution non interprétable."} La courbe disponible reste descriptive.</span></div>}{mode === "territories" && selected.comparable && (hasNationalReference ? <p className={`relative-level ${Math.abs(animatedLevelGap) < .05 ? "is-neutral" : animatedLevelGap > 0 ? "is-positive" : "is-negative"}`}>{Math.abs(animatedLevelGap) < .05 ? <>Au niveau de la France en {endYear}</> : <><b>{formatEvolution(animatedLevelGap)}</b> {usesAbsoluteChange ? "point de taux pour 100 000" : ""} par rapport à la France en {endYear}</>}</p> : <p className="relative-level is-neutral">Référence nationale indisponible pour ce regroupement</p>)}<span className="sr-only" aria-live="polite">{title}. {measureLabel}. {selected.comparable ? `${changeLabel} ${formatEvolution(selected.change!)}${evolutionUnit} entre ${startYear} et ${endYear}.` : "Évolution non interprétable."}</span></div></div>
       <div className="territory-chart"><h3 className="data-change" key={`${mode}-${selected.department.code}`}>{title}</h3><p className="territory-context">{measureLabel} · {context}</p>{!usesAbsoluteChange && <div className="chart-view-toggle" role="group" aria-label="Mesure affichée"><button type="button" aria-pressed={chartView === "level"} onClick={() => setChartView("level")}>Niveau</button><button type="button" aria-pressed={chartView === "change"} onClick={() => setChartView("change")}>Évolution · base 100</button></div>}<svg ref={chartSvgRef} style={{ "--chart-label-size": `${chartLabelSize}px` } as CSSProperties} viewBox={`0 0 ${chartWidth} 260`} role="img" aria-label={`${title}, ${chartView === "level" ? "taux réel" : "évolution en base 100"}, comparé à ${referenceLabel}`}><g className="chart-grid chart-grid-old" opacity={1 - axisScale.progress}>{[axisScale.previousMax / 2, axisScale.previousMax].map((tick, index) => <g key={`old-${index}`}><line x1="4" x2={chartWidth - 4} y1={y({ rate: tick })} y2={y({ rate: tick })} /><text x="4" y={y({ rate: tick }) - 5}>{fmt(tick, 0)}</text></g>)}</g><g className="chart-grid chart-grid-new" opacity={axisScale.progress}>{[targetMaxRate / 2, targetMaxRate].map((tick, index) => <g key={`new-${index}`}><line x1="4" x2={chartWidth - 4} y1={y({ rate: tick })} y2={y({ rate: tick })} /><text x="4" y={y({ rate: tick }) - 5}>{fmt(tick, 0)}</text></g>)}</g><g className="chart-grid chart-grid-zero"><line x1="4" x2={chartWidth - 4} y1={y({ rate: 0 })} y2={y({ rate: 0 })} /><text x="4" y={y({ rate: 0 }) - 5}>0</text></g>{chartView === "change" && <line className="index-baseline" x1="4" x2={chartWidth - 4} y1={y({ rate: 100 })} y2={y({ rate: 100 })} />}<path className="national-line" d={linePath(animatedReference, x, y)} />{chartHoveredSeries && <path key={`${hoveredMetric?.department.code}-${chartView}`} className="hover-line" d={linePath(chartHoveredSeries, x, y)} aria-hidden="true" />}<path className="department-line" d={linePath(animatedSeries, x, y)} />{animatedSeries.map((point) => {
         const targetValue = chartSeries.find((candidate) => candidate.year === point.year)?.rate ?? point.rate;
         const targetPoint = selected.series.find((candidate) => candidate.year === point.year);
@@ -990,6 +1000,7 @@ function StoryNumber({ value, ratio = false }: { value: number; ratio?: boolean 
 
 function GuidedOpening({ data, onExplore }: { data: ExperienceData; onExplore: (view: "declared" | "profiles") => void }) {
   const [scene, setScene] = useState<StoryScene>(0);
+  const [storyPosition, setStoryPosition] = useState(0);
   const steps = useRef<Array<HTMLElement | null>>([]);
   useEffect(() => {
     let frame = 0;
@@ -1004,6 +1015,10 @@ function GuidedOpening({ data, onExplore }: { data: ExperienceData; onExplore: (
         }
       });
       setScene((current) => current === activeScene ? current : activeScene);
+      const bounds = steps.current[activeScene]?.getBoundingClientRect();
+      const fraction = bounds ? Math.max(0, Math.min(1, (readingLine - bounds.top) / Math.max(1, bounds.height))) : 0;
+      setStoryPosition(activeScene + fraction);
+
     };
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(synchronize);
@@ -1043,7 +1058,7 @@ function GuidedOpening({ data, onExplore }: { data: ExperienceData; onExplore: (
         {index === 2 && <button type="button" className="evidence-action" onClick={() => onExplore("profiles")}>Explorer les seize profils <span>↗</span></button>}
         {index === 3 && <button type="button" className="evidence-action" onClick={() => onExplore("declared")}>Explorer les indicateurs déclarés <span>↗</span></button>}
       </article>)}</div>
-      <aside className="story-sticky" aria-label="Visualisation du récit"><nav className="story-progress" aria-label="Scènes du récit">{scenes.map((step, index) => <a href={`#scene-${index + 1}`} key={step.chapter} aria-current={scene === index ? "step" : undefined}><span>0{index + 1}</span><span className="sr-only"> {step.title}</span></a>)}</nav><StoryFigure data={data} scene={scene} /></aside>
+      <aside className="story-sticky" aria-label="Visualisation du récit"><nav className="story-progress" aria-label="Scènes du récit">{scenes.map((step, index) => <a href={`#scene-${index + 1}`} key={step.chapter} aria-current={scene === index ? "step" : undefined}><span>0{index + 1}</span><span className="sr-only"> {step.title}</span><ScrollIndicator progress={scrollRangeProgress(storyPosition, index)} /></a>)}</nav><StoryFigure data={data} scene={scene} /></aside>
     </div>
     <div className="reading-bridge"><p className="chapter">À VOUS DE CHANGER DE REGARD</p><p>Enquête, urgences, hospitalisations et décès éclairent des dimensions différentes. <b>Ces sources ne sont pas les étapes d’un même parcours individuel.</b> Explorez-les en conservant leurs propres populations, unités et périodes.</p><a href="#territoires">Explorer les quatre regards ↓</a></div>
   </section>;
