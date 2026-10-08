@@ -678,10 +678,11 @@ type StoryScene = 0 | 1 | 2 | 3;
 
 type StoryDrawing = { scene: StoryScene; main: number; boys: number; social: number };
 
-function useStoryDrawing(scene: StoryScene) {
-  const [drawing, setDrawing] = useState<StoryDrawing>({ scene, main: 1, boys: scene === 2 ? 1 : 0, social: scene === 3 ? 1 : 0 });
+function useStoryDrawing(scene: StoryScene, entered: boolean) {
+  const [drawing, setDrawing] = useState<StoryDrawing>({ scene, main: 0, boys: 0, social: 0 });
   const current = useRef(drawing);
   useEffect(() => {
+    if (!entered) return;
     let frame = 0;
     const publish = (next: StoryDrawing) => {
       current.current = next;
@@ -722,13 +723,27 @@ function useStoryDrawing(scene: StoryScene) {
     }
     motion.addEventListener("change", finish);
     return () => { cancelAnimationFrame(frame); motion.removeEventListener("change", finish); };
-  }, [scene]);
+  }, [entered, scene]);
   return drawing;
 }
 
 function StoryFigure({ data, scene: requestedScene }: { data: ExperienceData; scene: StoryScene }) {
   const clipId = useId();
-  const drawing = useStoryDrawing(requestedScene);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const [entered, setEntered] = useState(false);
+  useEffect(() => {
+    const element = svgRef.current;
+    if (!element) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && entry.intersectionRatio >= .25) {
+        setEntered(true);
+        observer.disconnect();
+      }
+    }, { threshold: .25 });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+  const drawing = useStoryDrawing(requestedScene, entered);
   const scene = drawing.scene;
   const national = data.odissePatients.filter((point) => point.age === "Tous" && point.sex === "Hommes et Femmes").sort((a, b) => a.year - b.year);
   const girls = data.odissePatients.filter((point) => point.age === "11–14 ans" && point.sex === "Femmes").sort((a, b) => a.year - b.year);
@@ -741,7 +756,7 @@ function StoryFigure({ data, scene: requestedScene }: { data: ExperienceData; sc
   return <div className="story-figure" data-scene={scene}>
     <div className="story-figure-heading"><p className="chapter">{scene === 3 ? "ENQUÊTE · BAROMÈTRE 2024" : "HÔPITAL · PATIENTS · 2019–2024"}</p><h3>{["La vue d’ensemble", "Les filles de 11–14 ans", "Deux trajectoires, un même âge", "La situation financière perçue"][scene]}</h3><p>{scene === 3 ? "Épisode dépressif caractérisé dans les 12 derniers mois · prévalence déclarée" : scene === 0 ? "France · tous âges, tous sexes · taux standardisé pour 100 000 habitants" : "France · taux brut pour 100 000 personnes du même âge et sexe"}</p></div>
     <div className="story-visual">
-      <svg viewBox="0 0 580 320" role="img" aria-label={scene === 3 ? `Dépression déclarée selon la situation financière : ${social.map((point) => `${FINANCIAL_SHORT[point.financial]}, ${fmt(point.estimate)} %`).join(" ; ")}. Intervalles de confiance à 95 %.` : `${scene === 0 ? "Tous âges et sexes" : "Filles de 11–14 ans"} : ${fmt(values[0].rate)} en 2019, ${fmt(values.at(-1)!.rate)} en 2024, pour 100 000.${scene === 2 ? ` Garçons de 11–14 ans : ${fmt(boys[0].rate)} à ${fmt(boys.at(-1)!.rate)}.` : ""}`}>
+      <svg ref={svgRef} viewBox="0 0 580 320" role="img" aria-label={scene === 3 ? `Dépression déclarée selon la situation financière : ${social.map((point) => `${FINANCIAL_SHORT[point.financial]}, ${fmt(point.estimate)} %`).join(" ; ")}. Intervalles de confiance à 95 %.` : `${scene === 0 ? "Tous âges et sexes" : "Filles de 11–14 ans"} : ${fmt(values[0].rate)} en 2019, ${fmt(values.at(-1)!.rate)} en 2024, pour 100 000.${scene === 2 ? ` Garçons de 11–14 ans : ${fmt(boys[0].rate)} à ${fmt(boys.at(-1)!.rate)}.` : ""}`}>
         <defs><clipPath id={`${clipId}-main`}><rect x="49" y="0" width={490 * drawing.main} height="320" /></clipPath><clipPath id={`${clipId}-boys`}><rect x="49" y="0" width={490 * drawing.boys} height="320" /></clipPath></defs>
         {scene === 3 ? <g opacity={drawing.social}>
           {[0, 10, 20, 30].map((tick) => <g className="story-gridline" key={tick}><line x1={136 + tick / 32 * 382} x2={136 + tick / 32 * 382} y1="44" y2="258" /><text x={136 + tick / 32 * 382} y="294" textAnchor="middle">{tick} %</text></g>)}

@@ -72,7 +72,7 @@
     "build": "TypeScript and Vite passed"
   },
   "storyAnimation": {
-    "samples": 9,
+    "samples": 11,
     "failures": [],
     "browserErrors": [],
     "checks": [
@@ -82,7 +82,9 @@
       "girls line retained while boys comparison draws",
       "rapid direction changes settle on latest scene",
       "reverse source change",
-      "reduced motion skips animation"
+      "reduced motion skips animation",
+      "initial curve stays undrawn offscreen",
+      "initial curve progressively draws on viewport entry"
     ],
     "build": "TypeScript and Vite passed"
   }
