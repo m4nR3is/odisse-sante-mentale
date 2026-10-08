@@ -98,7 +98,7 @@ export default function ChartHelp({ explanation }: { explanation: ChartExplanati
       document.body.style.overflow = overflow;
     };
   }, [open]);
-  return <><button className="chart-help-button" type="button" aria-label={`Comprendre les chiffres : ${explanation.title}`} aria-haspopup="dialog" aria-controls={id} onClick={() => setOpen(true)}>?</button>{createPortal(<dialog className="chart-help-dialog" ref={dialog} id={id} aria-labelledby={`${id}-title`} onClose={() => setOpen(false)} onClick={(event) => {
+  return <><span className="chart-help-placement"><button className="chart-help-button" type="button" aria-label={`Comprendre les chiffres : ${explanation.title}`} aria-haspopup="dialog" aria-controls={id} onClick={() => setOpen(true)}>?</button></span>{createPortal(<dialog className="chart-help-dialog" ref={dialog} id={id} aria-labelledby={`${id}-title`} onClose={() => setOpen(false)} onClick={(event) => {
     if (event.target !== event.currentTarget) return;
     const bounds = event.currentTarget.getBoundingClientRect();
     if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) event.currentTarget.close();

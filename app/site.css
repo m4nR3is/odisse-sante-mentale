@@ -525,3 +525,11 @@ a:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid var(
 footer .footer-credits{display:flex;flex-direction:column;gap:8px;margin-top:18px;font:10px/1.5 var(--mono);max-width:540px}
 footer .footer-credits>span{display:block;font:inherit;color:inherit}
 footer .footer-credits a{font:inherit;line-height:inherit}
+
+/* Précisions discrètes, après les modules, sans couvrir les titres. */
+.chart-help-placement{display:flex;justify-content:flex-end;margin-top:10px;color:var(--ink)}
+.chart-help-button{position:relative;top:auto;right:auto;width:20px;height:20px;font:10px/1 var(--mono)}
+.chart-help-button::before{content:"";position:absolute;inset:-4px;border-radius:50%}
+.territory-lab .chart-help-placement{position:absolute;right:0;bottom:-27px;margin:0;z-index:4}
+.explorer-scroll-status{padding-right:32px}
+.social-has-map .declared-chart>p{padding-right:0}
