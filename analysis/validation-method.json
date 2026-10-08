@@ -1,0 +1,62 @@
+[
+  {
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "fourScenesFit": true,
+    "bidirectional": true,
+    "sourceLinks": 12,
+    "keyboardSources": true,
+    "reducedMotion": true,
+    "errors": []
+  },
+  {
+    "viewport": {
+      "width": 1280,
+      "height": 600
+    },
+    "fourScenesFit": true,
+    "bidirectional": true,
+    "sourceLinks": 12,
+    "keyboardSources": true,
+    "reducedMotion": true,
+    "errors": []
+  },
+  {
+    "viewport": {
+      "width": 1024,
+      "height": 360
+    },
+    "fourScenesFit": true,
+    "bidirectional": true,
+    "sourceLinks": 12,
+    "keyboardSources": true,
+    "reducedMotion": true,
+    "errors": []
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "fourScenesFit": true,
+    "bidirectional": true,
+    "sourceLinks": 12,
+    "keyboardSources": true,
+    "reducedMotion": true,
+    "errors": []
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 568
+    },
+    "fourScenesFit": true,
+    "bidirectional": true,
+    "sourceLinks": 12,
+    "keyboardSources": true,
+    "reducedMotion": true,
+    "errors": []
+  }
+]

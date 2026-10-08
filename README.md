@@ -48,6 +48,11 @@ Les quatre regards :
 - **Décès** : taux de décès par suicide 2019–2023 ; variations exprimées en
   points de taux pour 100 000 habitants.
 
+La rubrique Méthode devient un parcours au scroll en quatre gestes :
+Distinguer, Rapporter, Comparer et Interpréter. Un panneau persistant révèle
+les règles, avec des liens d’étapes utilisables au clavier ; les sources
+restent directement consultables à la suite.
+
 Ces sources ne décrivent pas les étapes d’un parcours individuel. Une association
 sociale ne démontre pas une cause des hospitalisations. Les données de recours
 aux soins reflètent aussi l’accès, l’offre et le codage.
