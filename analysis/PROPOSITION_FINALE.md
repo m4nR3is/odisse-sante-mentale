@@ -10,7 +10,7 @@ Que montrent les données de santé mentale selon qu’on regarde les enquêtes,
 les urgences, les hospitalisations ou les décès ?
 
 Chaque source éclaire une dimension différente. Aucune ne suffit à dresser un
-portrait exhaustif. L’expérience associe deux observations guidées à un
+portrait exhaustif. L’expérience associe un récit de quatre scènes au scroll à un
 explorateur permettant de changer de mesure tout en conservant les définitions,
 unités, périodes et limites propres à chaque source.
 
@@ -18,7 +18,25 @@ Le public visé est celui des citoyens, médiateurs et acteurs de santé publiqu
 qui souhaitent lire ces indicateurs sans confondre prévalence, activité des
 urgences, prises en charge hospitalières et mortalité.
 
-## Les deux preuves d’ouverture
+## Le récit au scroll
+
+Sur ordinateur, une visualisation persiste tandis que quatre scènes défilent :
+
+1. Le taux standardisé national de patients hospitalisés passe de 112,6 à 117,2
+   pour 100 000 entre 2019 et 2024, soit +4,1 % (affiché +4 %).
+2. La trajectoire des filles de 11–14 ans apparaît : +92,9 % (affiché +93 %).
+   Le passage au taux brut par âge et sexe, ainsi que le changement d’échelle
+   verticale, sont explicitement indiqués.
+3. La courbe des garçons du même âge apparaît sur la même échelle : +7,3 %
+   (affiché +7 %). La progression n’est pas uniforme.
+4. Un changement de source révèle le gradient financier de dépression déclarée
+   dans le Baromètre 2024, sans l’utiliser pour expliquer l’hospitalisation.
+
+Sur mobile et tablette, chaque scène conserve sa propre preuve dans le flux.
+Le lecteur peut avancer ou revenir en arrière ; les étapes sont accessibles
+par des liens sur ordinateur. L’explorateur suit le récit.
+
+## Les deux observations principales
 
 1. **Un gradient financier dans l’enquête.** En 2024, la prévalence déclarée
    d’un épisode dépressif caractérisé au cours des douze derniers mois est de
@@ -82,8 +100,7 @@ actuellement présenté.
 ## Design, accessibilité et frugalité
 
 Palette crème, noir et orange, avec tracés pointillés et légendes pour ne pas
-faire reposer les comparaisons sur la couleur seule. Les preuves sont lisibles
-sans interaction ; les filtres et points interactifs sont accessibles au clavier.
+faire reposer les comparaisons sur la couleur seule. Les preuves restent lisibles sur mobile sans pilotage par le scroll ; les filtres et points interactifs sont accessibles au clavier.
 Les animations respectent la réduction des mouvements. Le site utilise React
 et SVG, sans backend, compte, service cartographique, police distante ou suivi.
 Les ressources 3114 et Santé mentale Info Service restent visibles.
@@ -95,13 +112,15 @@ les personnes déclarent, des urgences, des hospitalisations ou des décès ? No
 avons construit une expérience qui montre ce que ces regards révèlent, et
 pourquoi on ne peut pas les confondre.
 
-**0:30–1:10 — Première preuve.** L’enquête 2024 montre un gradient financier :
-9 % à 28,3 % de dépression déclarée. Montrer les quatre situations et les
-intervalles. Une association observée, pas une explication causale.
+**0:30–1:10 — De la moyenne aux profils.** Faire défiler les trois premières
+scènes : +4 % pour le taux national standardisé, puis +93 % chez les filles de
+11–14 ans et +7 % chez les garçons. Expliquer le passage au taux brut par âge et
+sexe ; insister sur la comparaison filles/garçons à même échelle.
 
-**1:10–1:50 — Deuxième preuve.** À l’hôpital, une autre observation : chez les
-11–14 ans, le taux des filles augmente de 93 %, celui des garçons de 7 % entre
-2019 et 2024. Montrer les deux trajectoires sur une même échelle.
+**1:10–1:50 — Changer de source.** L’enquête 2024 montre un gradient financier :
+9 % à 28,3 % de dépression déclarée. Montrer les quatre situations et les
+intervalles. Cette association ne permet pas d’expliquer la trajectoire
+hospitalière : populations, périodes et mesures diffèrent.
 
 **1:50–2:35 — Exploration.** Ouvrir le profil depuis sa preuve, puis un autre
 regard. Montrer que l’unité et le dénominateur changent. Expliquer les limites de
@@ -113,6 +132,10 @@ fusionner les mesures. Terminer sur les personnes derrière les données et les
 ressources d’aide.
 
 ## À compléter pour la remise
+
+Échéance : **jeudi 8 octobre 2026 à 23 h 58, heure de Paris**. Référence :
+clarification Slack d’Elise Ho-Pun-Cheung (Datactivist), datée du 6 octobre,
+fournie par l’utilisateur sous forme de capture le 8 octobre.
 
 - URL diffusée et vérifiée de la visualisation.
 - URL du dépôt public complet, incluant scripts et exports nécessaires.

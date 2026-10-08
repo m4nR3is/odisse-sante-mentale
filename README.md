@@ -8,11 +8,14 @@ Une proposition pour le défi santé mentale de l’Odissé Dataviz Challenge 20
 
 ## Parcours
 
-Deux observations ouvrent la lecture : le gradient de dépression déclarée selon
-la situation financière en 2024, puis la divergence des taux de patients
-hospitalisés chez les filles et garçons de 11–14 ans entre 2019 et 2024.
-Les chiffres sont calculés depuis les données livrées, sans valeurs éditoriales
-indépendantes du jeu de données.
+Un récit de quatre scènes au scroll ouvre la lecture : taux national de patients
+hospitalisés (+4 %), trajectoire des filles de 11–14 ans (+93 %), comparaison aux
+garçons du même âge (+7 %), puis gradient financier de dépression déclarée
+(×3,1). Une visualisation persiste sur ordinateur ; sur mobile et tablette,
+chaque preuve reste dans le flux. Les liens d’étapes permettent aussi de
+naviguer au clavier. Le changement de taux standardisé national à taux brut
+par âge et sexe, et le changement d’échelle verticale, sont explicités.
+Les chiffres sont calculés depuis les données livrées.
 
 L’explorateur propose ensuite quatre regards :
 
@@ -50,7 +53,7 @@ respectent la préférence de réduction des mouvements.
 ## Données et méthode
 
 Les liens vers les jeux Odissé figurent dans chaque preuve et dans la section
-Méthode. Les taux tous âges des séjours et décès sont standardisés ; les taux
+Méthode. Les taux tous âges des patients, séjours et décès sont standardisés ; les taux
 par âge sont bruts. Les urgences sont rapportées aux passages, pas à la population.
 Les références nationales par classes d’âge regroupées sont recalculées à partir
 des effectifs et populations reconstituées depuis les taux diffusés : elles sont

@@ -11,10 +11,12 @@
     "mobile layout",
     "missing data retry",
     "animated filter transitions",
-    "DOM and small departments"
+    "DOM and small departments",
+    "four scroll scenes and reverse scrolling"
   ],
   "screenshots": [
     "checks.json",
+    "compact-desktop-scene-3.png",
     "data-audit.json",
     "desktop-deaths.png",
     "desktop-declared.png",
@@ -24,6 +26,10 @@
     "desktop-low-sample.png",
     "desktop-observations.png",
     "desktop-profiles.png",
+    "desktop-scene-1.png",
+    "desktop-scene-2.png",
+    "desktop-scene-3.png",
+    "desktop-scene-4.png",
     "mobile-declared.png",
     "mobile-hero.png",
     "mobile-history.png",
@@ -36,6 +42,7 @@
   "browser": "Google Chrome, headless",
   "viewports": [
     "1440 × 1000",
+    "1024 × 680",
     "390 × 844"
   ]
 }
