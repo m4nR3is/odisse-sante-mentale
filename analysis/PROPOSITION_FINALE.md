@@ -10,7 +10,7 @@ Que montrent les données de santé mentale selon qu’on regarde les enquêtes,
 les urgences, les hospitalisations ou les décès ?
 
 Chaque source éclaire une dimension différente. Aucune ne suffit à dresser un
-portrait exhaustif. L’expérience associe un récit de quatre scènes au scroll à un
+portrait exhaustif. L’expérience associe un récit de cinq scènes au scroll à un
 explorateur permettant de changer de mesure tout en conservant les définitions,
 unités, périodes et limites propres à chaque source.
 
@@ -20,16 +20,19 @@ urgences, prises en charge hospitalières et mortalité.
 
 ## Le récit au scroll
 
-Sur ordinateur, une visualisation persiste tandis que quatre scènes défilent :
+Sur ordinateur, une visualisation persiste tandis que cinq scènes défilent :
 
 1. Le taux standardisé national de patients hospitalisés passe de 112,6 à 117,2
    pour 100 000 entre 2019 et 2024, soit +4,1 % (affiché +4 %).
-2. La trajectoire des filles de 11–14 ans apparaît : +92,9 % (affiché +93 %).
+2. Les taux standardisés tous âges des femmes et des hommes sont comparés
+   sur la même échelle de 0 à 150 pour 100 000 : 132,1 → 146,2 chez les femmes
+   (+10,7 %) et 91,9 → 86,2 chez les hommes (−6,2 %).
+3. La trajectoire des filles de 11–14 ans apparaît : +92,9 % (affiché +93 %).
    Le passage au taux brut par âge et sexe, ainsi que le changement d’échelle
    verticale, sont explicitement indiqués.
-3. La courbe des garçons du même âge apparaît sur la même échelle : +7,3 %
+4. La courbe des garçons du même âge apparaît sur la même échelle : +7,3 %
    (affiché +7 %). La progression n’est pas uniforme.
-4. Un changement de source révèle le gradient financier de dépression déclarée
+5. Un changement de source révèle le gradient financier de dépression déclarée
    dans le Baromètre 2024, sans l’utiliser pour expliquer l’hospitalisation.
 
 Sur mobile et tablette, chaque scène conserve sa propre preuve dans le flux.
