@@ -1,4 +1,5 @@
 import ViewportTooltip from "./ViewportTooltip";
+import IntroPortrait from "./IntroPortrait";
 import TerritoryMap from "./TerritoryMap";
 import ChartHelp, { declaredMeasure, socialExplanation, historyExplanation, hospitalExplanation, storyHospitalExplanation, emergencyExplanation, deathExplanation } from "./ChartHelp";
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type FocusEvent as ReactFocusEvent } from "react";
@@ -1251,6 +1252,10 @@ function IntroOpening() {
       const distance = Math.max(1, root.offsetHeight - viewport.offsetHeight - inset);
       const progress = motion.matches ? 1 : Math.max(0, Math.min(1, -bounds.top / distance));
       viewport.dataset.introProgress = progress.toFixed(3);
+      viewport.dataset.portraitReady = String(progress >= .82);
+      const portrait = viewport.querySelector<HTMLElement>(".intro-portrait");
+      if (portrait) portrait.inert = progress < .82;
+      viewport.style.setProperty("--portrait-progress", String(Math.max(0, Math.min(1, (progress - .24) / .72))));
       flights.current.forEach((element, index) => {
         if (!element) return;
         // Measure the untransformed wrapper: animation cannot alter its destination.
@@ -1384,6 +1389,7 @@ function IntroOpening() {
         <div className="intro-lead-target"><IntroLeadLines register={(element) => { flights.current[5] = element; }} /></div>
         <a href="#constats" className="read-data" ref={action}>Comprendre ce que les données révèlent <span>↓</span></a>
       </div>
+      <IntroPortrait />
       <div className="intro-footer"><p ref={caption}>Ce que l’on ressent.</p><a href="#constats">Passer l’introduction ↓</a></div>
       <span className="intro-progress" aria-hidden="true" ref={progressLine} />
     </div>

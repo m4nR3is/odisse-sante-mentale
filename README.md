@@ -21,6 +21,19 @@ Le titre et la question apparaissent à leur tour. La séquence est réversible,
 peut être passée et affiche immédiatement sa composition finale avec la
 préférence de réduction des mouvements.
 
+À droite du titre, un portrait original dessiné en SVG se construit au scroll
+à travers quatre cadres indépendants : Déclaré, Urgences, Hôpital et Décès.
+Cinquante portraits aux coiffures, contours et traits variés composent une
+combinaison aléatoire à chaque chargement. Leurs yeux et leurs bouches ont des
+formes différentes mais des repères fixes. Au survol, seul le quart concerné
+change toutes les 140 ms, avec un fondu de 60 ms et une légère attraction vers
+le pointeur ; il conserve sa dernière version à la sortie. Le clic ou la touche
+Entrée rejoint directement la vue correspondante d’Explorer. La réduction des
+mouvements désactive le défilement et l’attraction. Cette illustration est
+symbolique : elle n’encode pas de données et ne représente pas un parcours
+individuel de soins. Elle utilise uniquement les tons d’encre, de papier et
+les touches rouges du site, sans image, police ou service externe.
+
 Un récit de cinq scènes au scroll ouvre la lecture : taux national de patients
 hospitalisés (+4 %), femmes et hommes tous âges (+10,7 % / −6,2 %), trajectoire des filles de 11–14 ans (+93 %), comparaison aux
 garçons du même âge (+7 %), puis gradient financier de dépression déclarée
@@ -116,6 +129,8 @@ conservées comme archives, distinctes de la proposition actuelle.
 
 - `app/Experience.tsx` : récit, interactions, graphiques et règles de comparaison.
 - `app/site.css` : identité graphique, responsive et navigation clavier.
+- `app/IntroPortrait.tsx`, `app/PortraitVariants.tsx`, `app/PortraitStyles.ts`,
+  `app/FacialFeatures.tsx` : illustration SVG, 50 portraits et interactions.
 - `public/data/experience-data.json` : données préparées et livrées localement.
 - `src/main.tsx` : entrée React.
 - `analysis/PROPOSITION_FINALE.md` : proposition et trame du pitch.
@@ -166,7 +181,7 @@ Licence Ouverte 2.0. Voir `LICENSES.md` et les notices distribuées avec le site
 Le code source est publié sur GitHub et la visualisation sur Vercel :
 https://odisse-sante-mentale.vercel.app. L’accès sans connexion et le chargement
 des données ont été vérifiés sur ordinateur et mobile. La remise sur le dépôt
-GitLab officiel reste à effectuer.
+GitLab officiel est publiée dans `Défi 1 - Santé mentale/defi-1_Manuel_Reismann/`.
 
 
 La vue « Inégalités sociales · 2024 » conserve la France par défaut. Une carte permanente permet de comparer les quatre situations financières dans une région avec la référence nationale : survol pour l’aperçu, clic pour conserver la région, clic sur le fond ou touche Échap pour revenir à France. Les gris représentent la prévalence régionale tous profils confondus, issue des trois jeux Odissé 2024. Les gradients régionaux proviennent des tableaux Ensemble des 17 rapports officiels de Santé publique France, avec leurs IC à 95 %, numéros de page et liens PDF. Le registre `production/data/sources.json` (ou `public/data/sources.json` dans le code source) documente ces rapports et les empreintes des PDF.
@@ -176,3 +191,8 @@ Une cellule d’anxiété « à l’aise » en Guadeloupe n’est pas diffusée 
 Reproduction des tableaux régionaux : `python3 scripts/fetch_regional_reports.py`, puis (avec PyMuPDF installé) `python scripts/extract_regional_social.py`, puis `python3 scripts/build_web_data.py`. Les PDF restent dans `../tmp/pdfs/barometre-regional/` ; le fichier brut extrait conserve les lignes sources, les pages et les empreintes.
 
 La grammaire visuelle est commune à tout le parcours : titres et chiffres en sans serif, légendes et métadonnées en monospace, palette limitée au papier, à l’encre, aux gris et à l’orange. France est un repère gris, la sélection territoriale est orange et l’aperçu noir. Les courbes de comparaison utilisent des pointillés ; les intervalles de confiance restent des segments. Les petits boutons de précisions se trouvent sous les modules. La carte n’a plus de barre d’outils : clic sur le fond ou touche Échap pour retrouver France.
+
+Les contrôles de l’illustration couvrent six tailles de fenêtre, le cycle des
+50 variantes, le survol isolé, les quatre destinations, le clavier et la
+réduction des mouvements. Les contours bleus natifs ont été remplacés par
+les repères de la palette du site. Voir `analysis/validation-intro-portraits.json`.

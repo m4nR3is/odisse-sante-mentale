@@ -14,6 +14,14 @@ Que voit-on de la santé mentale selon qu’on regarde les enquêtes, les urgenc
 
 **Code source public :** https://github.com/m4nR3is/odisse-sante-mentale
 
+L’introduction dessine un portrait en SVG à travers quatre fenêtres : Déclaré,
+Urgences, Hôpital et Décès. Cinquante dessins originaux composent des visages
+aléatoires ; au survol, un quart change rapidement, et son clic ouvre directement
+la vue correspondante dans Explorer. Les traits sont variés, avec des repères
+fixes pour les yeux et la bouche. Cette illustration symbolique n’encode aucune
+donnée et ne présente pas un parcours de soins. La préférence de réduction des
+mouvements désactive le défilement des portraits.
+
 Un récit au scroll révèle successivement le taux national de patients hospitalisés en MCO pour gestes auto-infligés, les évolutions opposées des femmes et des hommes tous âges confondus, les trajectoires des filles et des garçons de 11–14 ans, puis les écarts d’épisodes dépressifs caractérisés déclarés selon la situation financière perçue. Entre 2019 et 2024, le taux national standardisé augmente d’environ 4 % ; celui des femmes augmente de 10,7 % et celui des hommes diminue de 6,2 %. Le taux brut des filles de 11–14 ans augmente d’environ 93 % et celui des garçons du même âge de 7 %. Dans le Baromètre 2024, la prévalence déclarée va de 9,0 % chez les personnes se disant à l’aise financièrement à 28,3 % chez celles en difficulté.
 
 L’explorateur prolonge cette lecture avec quatre regards : déclaré, urgences, hôpital et décès. Il permet de comparer les trajectoires à une référence France et de situer les territoires dans leur distribution. Les vues territoriales démarrent sur la référence nationale, sans département présélectionné. Une carte permanente partage la colonne des filtres et du chiffre ; la frise prend la largeur du graphique. Le survol de la carte ou de la distribution révèle un territoire ; un clic ou le menu le sélectionne. Aux urgences, la vue nationale présente le niveau de 2024, sans calculer une évolution sur le périmètre variable. Les séries historiques déclarées démarrent sur la France hexagonale ; le survol d’une région révèle sa courbe. Les infobulles donnent les valeurs, unités et intervalles de confiance disponibles. Un petit bouton « ? » sous chaque module précise la mesure, la population, le calcul, les limites et les sources de la vue active. Les accès directs aux rubriques et étapes arrivent immédiatement à destination, puis le contenu s’anime.

@@ -589,3 +589,50 @@ footer .footer-credits,footer p,footer>div>span{color:var(--on-dark-muted)}
 .distribution-point.selected .distribution-dot,.distribution-point.is-hovered .distribution-dot,.declared-history-distribution svg g.is-selected .history-region-dot,.declared-history-distribution svg g:hover .history-region-dot{fill:var(--accent)}
 .source-ledger li a{font-size:12px;font-weight:450;line-height:1.5}
 @media(max-width:980px){.source-ledger li a{font-size:11px}}
+
+/* Portrait éditorial : traits de plume, aplats découpés et fenêtres indépendantes. */
+.intro-stage{--portrait-progress:0}
+.intro-portrait{position:absolute;right:5vw;top:50%;transform:translateY(-50%);width:34vw;max-width:610px;height:min(74svh,760px);margin:0;pointer-events:none;color:var(--white);z-index:-1}
+.intro-portrait svg{width:100%;height:100%;overflow:visible}
+.portrait-pen{stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:calc(1 - clamp(0,(var(--portrait-progress) - .04)/.72,1));fill:none}
+.portrait-heavy{stroke-width:3.1}.portrait-light{stroke-width:.8;opacity:.5}.portrait-hatch{stroke-width:1;opacity:.65}
+.portrait-brush{stroke-width:7;opacity:.9}.portrait-accent{color:var(--accent)}
+.portrait-wash{fill:currentColor;opacity:calc(clamp(0,(var(--portrait-progress) - .3)/.5,1)*.17)}
+.portrait-wash-soft{opacity:calc(clamp(0,(var(--portrait-progress) - .4)/.5,1)*.06)}
+.portrait-construction{opacity:calc(clamp(0,var(--portrait-progress)/.4,1)*.28)}
+.portrait-window{opacity:clamp(0,(var(--portrait-progress) - var(--window-start))/.2,1);transform:translateY(calc((1 - clamp(0,(var(--portrait-progress) - var(--window-start))/.5,1))*14px))}
+.portrait-frame{stroke-width:.85;opacity:.5}
+.portrait-label,.portrait-caption{fill:currentColor;font:10px var(--mono);letter-spacing:.12em;opacity:clamp(0,(var(--portrait-progress) - .5)/.3,1)}
+.portrait-caption-muted{opacity:calc(clamp(0,(var(--portrait-progress) - .6)/.4,1)*.55)}
+.portrait-signature{stroke-width:1.5}
+@media(min-width:981px){.intro-stage .hero-copy{width:58%;max-width:1000px}.hero.meta-hero.intro-stage h1{font-size:clamp(44px,min(7.2vw,14svh),150px)}.intro-stage .intro-lead-target{font-size:clamp(14px,min(1.5vw,2.6svh),24px)}}
+@media(min-width:651px) and (max-width:980px){.intro-stage .hero-copy{width:61%}.hero.meta-hero.intro-stage h1{font-size:clamp(44px,min(7.2vw,13svh),96px)}.intro-portrait{width:35vw;right:2vw;height:65svh}.intro-lead-target{font-size:clamp(14px,1.7vw,18px)}}
+@media(max-width:650px){.hero.meta-hero.intro-stage{flex-direction:column;justify-content:center;gap:12px}.intro-portrait{position:relative;top:auto;right:auto;transform:none;width:150px;height:150px;align-self:flex-end;margin-right:12px;flex-shrink:0}.intro-stage .hero-copy{width:100%;flex-shrink:0}.portrait-construction{display:none}.hero.meta-hero.intro-stage h1{margin:2svh 0}.intro-stage .read-data{margin-top:1svh}.portrait-caption,.portrait-label{font-size:12px}}
+@media(max-width:650px) and (max-height:740px){.intro-portrait{display:none}}
+@media(prefers-reduced-motion:reduce){.intro-stage{--portrait-progress:1}.portrait-window{transform:none}}
+
+/* Cadres aimantés : zone de survol fixe, dessin mobile à l’intérieur. */
+.intro-portrait{z-index:1}
+.portrait-link{pointer-events:none;cursor:pointer;outline:none}
+.intro-stage[data-portrait-ready="true"] .portrait-link{pointer-events:auto}
+.portrait-hit{fill:transparent;stroke:none}
+.portrait-magnet{pointer-events:none;transform:translate(var(--magnet-x,0px),var(--magnet-y,0px));transition:transform 240ms cubic-bezier(.2,.8,.2,1)}
+.portrait-link:hover .portrait-frame,.portrait-link:focus-visible .portrait-frame{color:var(--accent);opacity:1;stroke-width:1.5}
+.portrait-link:hover .portrait-label,.portrait-link:focus-visible .portrait-label{fill:var(--accent)}
+@media(prefers-reduced-motion:reduce){.portrait-magnet{transform:none;transition:none}}
+
+/* Les portraits se fondent sur des repères fixes : aucun glissement des yeux ou de la bouche. */
+.portrait-face{opacity:0;transition:opacity 60ms ease-in-out}
+.portrait-face[data-visible="true"]{opacity:1}
+@media(prefers-reduced-motion:reduce){.portrait-face{transition:none}}
+.portrait-accessory{stroke-width:2.4}
+
+/* Aucun anneau bleu natif : le clavier conserve un repère dans la palette du site. */
+:focus:not(:focus-visible){outline:none}
+:focus-visible{outline:1px solid var(--accent);outline-offset:3px}
+a,button,input,select,textarea,[tabindex]{-webkit-tap-highlight-color:transparent}
+.portrait-link:focus-visible{outline:none}
+.portrait-iris{fill:currentColor;stroke:none}
+/* Traits du visage : contraste de plume et masses d’encre, plutôt que contours uniformes. */
+.portrait-feature-ink{fill:currentColor;stroke:none;opacity:clamp(0,(var(--portrait-progress) - .12)/.48,1)}
+.portrait-lower-lid{stroke-width:1.25;opacity:.75}

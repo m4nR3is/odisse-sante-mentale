@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-08",
+  "build": "TypeScript/Vite passed",
+  "portraits": 50,
+  "interaction": {
+    "random_initial_quarters": true,
+    "cycle_ms": 140,
+    "crossfade_ms": 60,
+    "isolated_hover": true,
+    "magnetic_hover": true,
+    "four_explorer_destinations": "passed",
+    "keyboard": "passed",
+    "reduced_motion": "passed"
+  },
+  "illustration": {
+    "eyes_and_mouth": "varied organic drawings with fixed registration points",
+    "data_encoding": false,
+    "palette": "ink, paper, red accents"
+  },
+  "viewports": [
+    [
+      1920,
+      1080
+    ],
+    [
+      1440,
+      900
+    ],
+    [
+      1280,
+      500
+    ],
+    [
+      768,
+      1024
+    ],
+    [
+      390,
+      844
+    ],
+    [
+      390,
+      600
+    ]
+  ],
+  "layout": "no horizontal overflow or copy/footer overlap in checked viewports; illustration hidden on short mobile windows",
+  "source_data": {
+    "public/data/experience-data.json": {
+      "unchanged": true,
+      "sha256": "4e826e5c97f69118fc64d74b08862f8f88b0d4403437f7b6a586897b2857419b"
+    },
+    "public/data/sources.json": {
+      "unchanged": true,
+      "sha256": "c87eded5662f1c1a25f2f0c8b451703c51a99b35d19dc0b55b26cf84c825a86a"
+    }
+  },
+  "browser": "headless Chrome / Playwright; compiled static site"
+}

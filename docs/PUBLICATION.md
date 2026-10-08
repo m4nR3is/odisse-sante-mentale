@@ -6,7 +6,9 @@
 - Site public : https://odisse-sante-mentale.vercel.app
 - Auteur : Manuel Reismann ; contact : ecrire@m4nu.net.
 - GitHub est connecté au projet Vercel pour les prochains déploiements.
-- Sous-domaine personnalisé non configuré ; remise GitLab encore à effectuer.
+- Sous-domaine personnalisé non configuré.
+- Remise officielle publiée dans `Défi 1 - Santé mentale/defi-1_Manuel_Reismann/` du dépôt GitLab du challenge.
+- Les nouvelles versions sont publiées sur demande explicite de Manuel ; les ajustements intermédiaires restent locaux.
 
 ## Procédure
 
