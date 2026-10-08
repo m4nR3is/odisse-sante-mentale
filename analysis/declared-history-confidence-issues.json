@@ -1,0 +1,126 @@
+{
+  "rule": "0 <= low <= estimate <= high <= 100",
+  "handling": "Keep estimates and original data unchanged; do not draw inconsistent confidence intervals; flag unavailability in tooltip and chart context.",
+  "issues": [
+    {
+      "indicator": "Pensées suicidaires",
+      "territoryCode": "FR",
+      "territory": "France",
+      "year": 2021,
+      "sex": "Hommes et Femmes",
+      "estimate": 4.206,
+      "low": 38.815,
+      "high": 4.556
+    },
+    {
+      "indicator": "Tentatives de suicide",
+      "territoryCode": "84",
+      "territory": "Auvergne et Rhône-Alpes",
+      "year": 2021,
+      "sex": "Hommes",
+      "estimate": 0.342,
+      "low": 1.132,
+      "high": 0.944
+    },
+    {
+      "indicator": "Tentatives de suicide",
+      "territoryCode": "53",
+      "territory": "Bretagne",
+      "year": 2021,
+      "sex": "Hommes",
+      "estimate": 0.937,
+      "low": 2.92,
+      "high": 1.641
+    },
+    {
+      "indicator": "Tentatives de suicide",
+      "territoryCode": "24",
+      "territory": "Centre-Val de Loire",
+      "year": 2021,
+      "sex": "Hommes",
+      "estimate": 0.446,
+      "low": 1.387,
+      "high": 3.371
+    },
+    {
+      "indicator": "Tentatives de suicide",
+      "territoryCode": "44",
+      "territory": "Grand Est",
+      "year": 2021,
+      "sex": "Hommes",
+      "estimate": 0.759,
+      "low": 2.09,
+      "high": 1.283
+    },
+    {
+      "indicator": "Tentatives de suicide",
+      "territoryCode": "32",
+      "territory": "Hauts-de-France",
+      "year": 2021,
+      "sex": "Hommes",
+      "estimate": 0.507,
+      "low": 1.532,
+      "high": 1.207
+    },
+    {
+      "indicator": "Tentatives de suicide",
+      "territoryCode": "28",
+      "territory": "Normandie",
+      "year": 2021,
+      "sex": "Hommes",
+      "estimate": 0.404,
+      "low": 1.799,
+      "high": 1.118
+    },
+    {
+      "indicator": "Tentatives de suicide",
+      "territoryCode": "75",
+      "territory": "Nouvelle Aquitaine",
+      "year": 2021,
+      "sex": "Hommes",
+      "estimate": 0.117,
+      "low": 0.823,
+      "high": 1.047
+    },
+    {
+      "indicator": "Tentatives de suicide",
+      "territoryCode": "76",
+      "territory": "Occitanie",
+      "year": 2021,
+      "sex": "Hommes",
+      "estimate": 0.487,
+      "low": 2.47,
+      "high": 1.494
+    },
+    {
+      "indicator": "Tentatives de suicide",
+      "territoryCode": "52",
+      "territory": "Pays de la Loire",
+      "year": 2021,
+      "sex": "Hommes",
+      "estimate": 0.681,
+      "low": 2.013,
+      "high": 1.345
+    },
+    {
+      "indicator": "Tentatives de suicide",
+      "territoryCode": "93",
+      "territory": "Provence-Alpes-Côte d'Azur",
+      "year": 2021,
+      "sex": "Hommes",
+      "estimate": 0.18,
+      "low": 1.269,
+      "high": 0.85
+    },
+    {
+      "indicator": "Tentatives de suicide",
+      "territoryCode": "11",
+      "territory": "Île-de-France",
+      "year": 2021,
+      "sex": "Hommes",
+      "estimate": 0.213,
+      "low": 0.615,
+      "high": 0.713
+    }
+  ]
+}
