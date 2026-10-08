@@ -1,0 +1,22 @@
+[
+  {
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "finishesWithoutScrolling": true,
+    "reverseFinishes": true,
+    "interruptedFlightCompletesBeforeReturn": true,
+    "reducedMotion": true
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 568
+    },
+    "finishesWithoutScrolling": true,
+    "reverseFinishes": true,
+    "interruptedFlightCompletesBeforeReturn": true,
+    "reducedMotion": true
+  }
+]
