@@ -1257,9 +1257,8 @@ function IntroOpening() {
             const delay = lines.length > 1 ? lineIndex / (lines.length - 1) * .22 : 0;
             const phase = Math.max(0, Math.min(1, (local - delay) / .78));
             const eased = phase * phase * (3 - 2 * phase);
-            const side = lineIndex % 2 === 0 ? -1 : 1;
             const travel = Math.min(stageBounds.width * .45, 520);
-            line.style.transform = eased === 1 ? "none" : `translateX(${side * travel * (1 - eased)}px) scale(${1 + .18 * (1 - eased)})`;
+            line.style.transform = eased === 1 ? "none" : `translateX(${-travel * (1 - eased)}px) scale(${1 + .18 * (1 - eased)})`;
             line.style.opacity = String(Math.min(1, phase * 4));
           });
           return;
