@@ -73,7 +73,9 @@ Les quatre regards :
 - **Décès** : taux de décès par suicide 2019–2023 ; variations exprimées en
   points de taux pour 100 000 habitants.
 
-Une conclusion après « Interpréter » referme le récit : « Un chiffre national / Des réalités différentes ». Deux phrases rappellent les différences entre populations, territoires et sources, puis les liens permettent de revenir aux données ou de consulter les sources. Les ancres `#conclusion` et `#sources` suivent le scroll sans ajouter d’entrée au menu.
+Une conclusion après « Interpréter » referme le récit : « Un chiffre national / Des réalités différentes ». Elle reprend la séquence de l’accueil : « Ce que l’on retient » démarre en grand au centre puis dézoome vers sa destination ; le titre arrive depuis le centre, avec des trajectoires droites et des phases qui se chevauchent. Les lignes du paragraphe glissent depuis la gauche avec une apparition progressive. Le scroll pilote la séquence dans les deux sens ; la réduction des mouvements affiche directement la composition complète. Les liens permettent de revenir aux données ou de consulter les sources, avec un accès aux sources toujours visible pendant la séquence. Les ancres `#conclusion` et `#sources` suivent le scroll sans ajouter d’entrée au menu.
+
+Les deux lignes « Rendre visible, c’est aussi montrer / ce qu’un chiffre laisse hors champ » démarrent sous l’écran et remontent en ligne droite. Une grille adaptable de portraits entiers reprend les 50 dessins de l’accueil, sans découpe en quarts ni codage quantitatif. Chaque visage est entouré d’un cadre au trait irrégulier qui sert aussi de masque SVG. La composition est tirée au hasard au chargement, sans doublon visible, puis reste fixe : aucun défilement permanent ni interaction au survol. L’apparition et le dessin accompagnent la séquence au scroll, puis s’arrêtent avant l’achèvement : visages et cadres gardent des traits manquants, avec un degré de dessin propre à chaque case. Le nombre de cases dépend des dimensions disponibles, avec jusqu’à quatre colonnes et trois rangées sur les grands écrans. Les mêmes visages sont conservés lors d’un redimensionnement. La grille précède le texte sur mobile ; les écrans très courts la masquent pour conserver la lecture.
 
 La rubrique Méthode devient un parcours au scroll en quatre gestes :
 Distinguer, Rapporter, Comparer et Interpréter. Un panneau persistant révèle
@@ -83,6 +85,10 @@ restent directement consultables à la suite.
 Ces sources ne décrivent pas les étapes d’un parcours individuel. Une association
 sociale ne démontre pas une cause des hospitalisations. Les données de recours
 aux soins reflètent aussi l’accès, l’offre et le codage.
+
+Les quatre écrans de Méthode partagent une transition au scroll : le titre apparaît en grand au centre, dézoome vers sa destination, puis les contenus arrivent en quinconce. Après un temps de lecture, les éléments des trois premiers écrans remontent et disparaissent entièrement avant l’écran suivant. « Distinguer » est visible dès l’arrivée du cadre dans l’écran ; « Interpréter » reste affiché jusqu’à la sortie du cadre, sans passage à vide avant la conclusion. Les clics sur les étapes restent instantanés et jouent l’arrivée de la destination ; la réduction des mouvements conserve un affichage statique.
+
+Les graphiques de Comprendre et d’Explorer utilisent la largeur disponible sans agrandir les éléments. Les graduations des courbes s’alignent avec les titres ; les lignes commencent juste après les chiffres. Les marges et masques gardent les points des extrémités entièrement visibles, y compris au survol. Les axes des distributions suivent la largeur de leur module.
 
 ## Lancer et construire
 

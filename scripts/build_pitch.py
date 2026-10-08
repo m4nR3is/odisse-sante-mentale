@@ -57,7 +57,11 @@ change=lambda s:(s[-1]["rate"]/s[0]["rate"]-1)*100
 fmt=lambda v: f"{v:.1f}".replace(".",",")
 text(64,415,f"+{round(change(series['Hommes et Femmes']))} %",104,"Helvetica-Bold",RED)
 lines(68,360,["Tous âges, tous sexes", "112,6 → 117,2 pour 100 000"],21,31)
-lines(68,210,["L’agrégat rassemble", "des trajectoires opposées"],27,34,"Helvetica-Bold")
+lines(68,245,["Et chez les 11-14 ans ?"],23,30,"Helvetica-Bold")
+teen = {sex: sorted([r for r in DATA["odissePatients"] if r["age"]=="11–14 ans" and r["sex"]==sex], key=lambda r:r["year"]) for sex in ["Femmes", "Hommes"]}
+text(68,207,f"Filles  +{round(change(teen['Femmes']))} %",24,"Helvetica-Bold",RED)
+text(68,173,f"Garçons  +{round(change(teen['Hommes']))} %",24,"Helvetica-Bold")
+text(68,147,"Taux bruts : une autre population",14,"Courier",GREY)
 left,right,bottom,top=560,1206,185,490
 px=lambda year:left+(year-2019)*(right-left)/5
 py=lambda rate:bottom+rate*(top-bottom)/150
@@ -108,14 +112,24 @@ text(64,110,"Carte permanente · Aperçu au survol · Sélection au clic · Vale
 c.linkURL(SITE+"/#territoires",(420,132,1216,574),relative=0)
 c.showPage()
 
-page(5,"04 · RENDRE VISIBLE, SANS CONFONDRE",True)
-lines(64,570,["Un chiffre national", "Des réalités différentes"],64,74,"Helvetica-Bold",PAPER)
-lines(68,345,["Distinguer les sources et leurs populations", "Conserver les unités, les périodes et l’incertitude", "Documenter les ruptures et rendre les calculs reproductibles"],25,43,color=PAPER)
-text(68,174,"Ces sources ne sont pas les étapes d’un même parcours individuel.",21,color=GREY)
-text(68,121,"odisse-sante-mentale.vercel.app",25,"Helvetica-Bold",RED)
-c.linkURL(SITE,(68,113,640,151),relative=0)
-text(760,124,"CODE MIT · TEXTES ET VISUELS CC-BY 4.0",11,"Courier",GREY)
-text(760,102,"DONNÉES ODISSÉ : LICENCE OUVERTE 2.0",11,"Courier",GREY)
-c.linkURL("https://github.com/m4nR3is/odisse-sante-mentale",(760,90,1216,150),relative=0)
+page(5,"04 · APPRENDRE À LIRE, GARDER LES LIMITES",True)
+lines(64,576,["Un chiffre national", "Des réalités différentes"],54,65,"Helvetica-Bold",PAPER)
+for i,(word,meaning) in enumerate([
+    ("Distinguer", "les sources et les populations"),
+    ("Rapporter", "chaque chiffre à son dénominateur"),
+    ("Comparer", "des mesures et des périodes compatibles"),
+    ("Interpréter", "sans confondre association et cause")]):
+    y=382-i*45
+    text(68,y,word,23,"Helvetica-Bold",PAPER)
+    text(236,y,meaning,21,color=GREY)
+im=ImageReader(str(ROOT/"docs/pitch/portraits.png"))
+c.drawImage(im,912,235,width=304,height=320,preserveAspectRatio=True,mask="auto")
+lines(912,208,["Illustration symbolique", "Aucune donnée encodée"],12,18,"Courier",GREY)
+lines(68,155,["Rendre visible, c’est aussi montrer", "ce qu’un chiffre laisse hors champ"],25,32,"Helvetica-Bold",PAPER)
+text(68,80,"odisse-sante-mentale.vercel.app",20,"Helvetica-Bold",RED)
+c.linkURL(SITE,(68,72,650,105),relative=0)
+text(760,97,"CODE MIT · TEXTES ET VISUELS CC-BY 4.0",11,"Courier",GREY)
+text(760,78,"DONNÉES ODISSÉ : LICENCE OUVERTE 2.0",11,"Courier",GREY)
+c.linkURL("https://github.com/m4nR3is/odisse-sante-mentale",(760,70,1216,112),relative=0)
 c.showPage();c.save()
 print(OUT)

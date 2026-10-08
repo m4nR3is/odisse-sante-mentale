@@ -9,7 +9,8 @@
 - Sous-domaine personnalisé non configuré.
 - Remise officielle publiée dans `Défi 1 - Santé mentale/defi-1_Manuel_Reismann/` du dépôt GitLab du challenge.
 - Les nouvelles versions sont publiées sur demande explicite de Manuel ; les ajustements intermédiaires restent locaux.
-- Version finale du 8 octobre 2026 : conclusion, harmonisation des tailles et interactions, suppression des contours et annotations dans les frises, stabilité verticale des gradients sociaux. Publication sur GitHub, Vercel et dans le dossier officiel GitLab ; l’adresse Vercel actuelle est conservée pour la remise.
+- Livraison finale du 8 octobre 2026 : récit, explorateur, transitions de Méthode, conclusion animée avec grille de portraits partiellement dessinés, graphiques à largeur adaptable et éléments à taille constante. Pitch oral et support PDF actualisés pour cette version. La même production compilée est destinée à Vercel et au dossier officiel GitLab ; l’adresse Vercel est conservée.
+
 
 ## Procédure
 

@@ -3,6 +3,7 @@ import useChartInteractions from "./useChartInteractions";
 import useChartTypography from "./useChartTypography";
 import ViewportTooltip from "./ViewportTooltip";
 import IntroPortrait from "./IntroPortrait";
+import ConclusionPortrait from "./ConclusionPortrait";
 import TerritoryMap from "./TerritoryMap";
 import ChartHelp, { declaredMeasure, socialExplanation, historyExplanation, hospitalExplanation, storyHospitalExplanation, emergencyExplanation, deathExplanation } from "./ChartHelp";
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type FocusEvent as ReactFocusEvent } from "react";
@@ -458,7 +459,7 @@ function SocialDeclaredView({ data, indicator, onIndicator, position }: { data: 
           const annotationPoint = index === 0 || index === 3 ? comparing ? local ?? national[index] : national[index] : undefined;
           const annotationIsNational = !comparing || !local;
 
-          return <g key={financial} opacity={progress}><text className="social-financial-label" x="4" y={cy + 5}>{FINANCIAL_SHORT[financial]}</text>{[national[index], ...(comparing && local ? [local] : [])].map((point, series) => {
+          return <g key={financial} opacity={progress}><text className="social-financial-label" x="0" y={cy + 5}>{FINANCIAL_SHORT[financial]}</text>{[national[index], ...(comparing && local ? [local] : [])].map((point, series) => {
             const name = series ? territory : "France";
             const color = series ? preview ? "var(--ink)" : "var(--accent)" : "var(--reference)";
             const y = cy + (series ? 22 : 0);
@@ -515,8 +516,10 @@ function HistoricalDeclaredView({ data, indicator, onIndicator, position }: { da
     resize();
     return () => observer.disconnect();
   }, []);
-  const historyLeft = Math.min(50, historySize.width * .12);
-  const historyRight = historySize.width - Math.max(50, historySize.labelSize * 4.4);
+  const historyUnscale = historySize.labelSize / 10;
+  const historyTickWidth = Math.max(...[0, maxValue / 2, maxValue].map(tick => `${fmt(tick, 0)} %`.length)) * 7.2;
+  const historyLeft = (historyTickWidth + 12) * historyUnscale;
+  const historyRight = historySize.width - 44 * historyUnscale;
   const x = (year: number) => historyLeft + (year - 2005) / 16 * (historyRight - historyLeft);
   const y = (value: number) => 218 - value / maxValue * 176;
   const distributionMin = regionChanges.length ? Math.min(...regionChanges.map((point) => point.change)) : 0;
@@ -556,7 +559,7 @@ function HistoricalDeclaredView({ data, indicator, onIndicator, position }: { da
       <div className="declared-history-kpi"><strong>{change >= 0 ? "+" : "−"}{fmt(Math.abs(change) * reveal.progress, 1)} pt</strong><span>évolution déclarée · 2005 → 2021</span>{!isNational && <p className={gap > 0 ? "is-positive" : ""}>{gap >= 0 ? "+" : "−"}{fmt(Math.abs(gap), 1)} pt par rapport à la France en 2021</p>}</div>
     </div>
     <div className="declared-history-chart" ref={previewReveal.ref}><h3>{selectedName}</h3><p>{declaredMeasure(indicator)} · {sex === "Hommes et Femmes" ? "tous les sexes" : sex.toLowerCase()} · 12 derniers mois · prévalence déclarée{selected.some((point) => !hasValidInterval(point)) && " · IC incohérent non affiché"}</p><svg ref={historySvg} style={{ "--history-label-size": `${historySize.labelSize}px` } as CSSProperties} viewBox={`0 0 ${historySize.width} 270`} role="img" aria-label={`${indicator}, ${selectedName}${isNational ? "" : " comparée à la France"}, de 2005 à 2021`}>
-      {[0, maxValue / 2, maxValue].map((tick) => <g className="declared-history-grid" key={tick}><line x1={historyLeft} x2={historyRight} y1={y(tick)} y2={y(tick)} /><text x={historyLeft - 4} y={y(tick) - 5} textAnchor="end">{fmt(tick, 0)} %</text></g>)}
+      {[0, maxValue / 2, maxValue].map((tick) => <g className="declared-history-grid" key={tick}><line x1={historyLeft} x2={historyRight} y1={y(tick)} y2={y(tick)} /><text x="0" y={y(tick) + 4 * historyUnscale} textAnchor="start">{fmt(tick, 0)} %</text></g>)}
       <defs>
         <mask id={maskId} maskUnits="userSpaceOnUse" x="0" y="0" width={historySize.width} height="270"><path d={linePath(selected, (point) => x(point.year), (point) => y(point.estimate))} fill="none" stroke="white" strokeWidth="30" pathLength="1" strokeDasharray="1 1" strokeDashoffset={1 - reveal.progress} /></mask>
         <mask id={`${maskId}-france`} maskUnits="userSpaceOnUse" x="0" y="0" width={historySize.width} height="270"><path d={linePath(france, (point) => x(point.year), (point) => y(point.estimate))} fill="none" stroke="white" strokeWidth="30" pathLength="1" strokeDasharray="1 1" strokeDashoffset={1 - distributionReveal.progress} /></mask>
@@ -574,7 +577,7 @@ function HistoricalDeclaredView({ data, indicator, onIndicator, position }: { da
       })()}
       {[2005, 2010, 2017, 2021].map((year) => <text className="declared-history-year" key={year} x={x(year)} y="258" textAnchor="middle">{year}</text>)}
     </svg><dl className="history-mobile-values">{selected.map((point) => <div key={point.year}><dt>{point.year}</dt><dd>{fmt(point.estimate)} % <small>{intervalLabel(point)}</small></dd></div>)}</dl><div className="legend"><span className="france">France</span>{!isNational && <span className="department selected-legend">{selectedName}</span>}{preview.length > 0 && <span className="department declared-preview-legend">{previewName} · aperçu</span>}</div>{hovered && <ViewportTooltip x={hovered.x} y={hovered.y}><span>{hovered.label}</span><small>{hovered.year} · {intervalLabel(hovered)}</small><strong>{fmt(hovered.estimate)} %</strong></ViewportTooltip>}</div>
-    <div className="declared-history-distribution" ref={distributionReveal.ref} data-reveal={distributionReveal.progress}><small>DISTRIBUTION DES ÉVOLUTIONS RÉGIONALES · 2005 → 2021 · EN POINTS</small><svg ref={distributionRef} viewBox={`0 0 ${distributionSize.width} ${distributionSize.height}`} role="img" aria-label="Choisir une région dans la distribution de son évolution"><line className="distribution-axis" x1="20" x2={distributionSize.width - 20} y1={distributionSize.height * .54} y2={distributionSize.height * .54} />{distributionMin <= 0 && distributionMax >= 0 && <><line className="zero-marker" x1={distributionX(0)} x2={distributionX(0)} y1="16" y2={distributionSize.height - 4} /><text x={distributionX(0)} y="12" textAnchor="middle">0 pt</text></>}{regionChanges.map((point, index) => <g key={point.code} className={point.code === selectedCode ? "is-selected" : ""} aria-label={`${point.name}, évolution ${fmt(point.change)} points. Sélectionner.`} role="button" tabIndex={0} onPointerEnter={(event) => { setPreviewCode(point.code); setDistributionTooltip({ x: event.clientX, y: event.clientY, name: point.name, change: point.change }); }} onPointerMove={(event) => { setPreviewCode(point.code); setDistributionTooltip({ x: event.clientX, y: event.clientY, name: point.name, change: point.change }); }} onPointerLeave={() => { setPreviewCode(null); setDistributionTooltip(null); }} onFocus={(event) => { setPreviewCode(point.code); const bounds = event.currentTarget.getBoundingClientRect(); setDistributionTooltip({ x: bounds.left + bounds.width / 2, y: bounds.top, name: point.name, change: point.change }); }} onBlur={() => { setPreviewCode(null); setDistributionTooltip(null); }} onClick={() => setTerritoryCode(point.code)} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setTerritoryCode(point.code); } }}><circle className="history-region-hit" cx={distributionOrigin + (distributionX(point.change) - distributionOrigin) * distributionReveal.progress} cy={distributionSize.height * .54 + (index % 3 - 1) * Math.min(8, distributionSize.height / 6)} r="12" /><circle className="history-region-dot" cx={distributionOrigin + (distributionX(point.change) - distributionOrigin) * distributionReveal.progress} cy={distributionSize.height * .54 + (index % 3 - 1) * Math.min(8, distributionSize.height / 6)} r={2 + ((point.code === selectedCode ? 8 : 5) - 2) * distributionReveal.progress} opacity={distributionReveal.progress} /></g>)}</svg><span>{distributionMin >= 0 ? "+" : "−"}{fmt(Math.abs(distributionMin), 1)} pt</span><span>{distributionMax >= 0 ? "+" : "−"}{fmt(Math.abs(distributionMax), 1)} pt</span></div>
+    <div className="declared-history-distribution" ref={distributionReveal.ref} data-reveal={distributionReveal.progress}><small>DISTRIBUTION DES ÉVOLUTIONS RÉGIONALES · 2005 → 2021 · EN POINTS</small><svg ref={distributionRef} viewBox={`0 0 ${distributionSize.width} ${distributionSize.height}`} role="img" aria-label="Choisir une région dans la distribution de son évolution"><line className="distribution-axis" x1="0" x2={distributionSize.width} y1={distributionSize.height * .54} y2={distributionSize.height * .54} />{distributionMin <= 0 && distributionMax >= 0 && <><line className="zero-marker" x1={distributionX(0)} x2={distributionX(0)} y1="16" y2={distributionSize.height - 4} /><text x={distributionX(0)} y="12" textAnchor="middle">0 pt</text></>}{regionChanges.map((point, index) => <g key={point.code} className={point.code === selectedCode ? "is-selected" : ""} aria-label={`${point.name}, évolution ${fmt(point.change)} points. Sélectionner.`} role="button" tabIndex={0} onPointerEnter={(event) => { setPreviewCode(point.code); setDistributionTooltip({ x: event.clientX, y: event.clientY, name: point.name, change: point.change }); }} onPointerMove={(event) => { setPreviewCode(point.code); setDistributionTooltip({ x: event.clientX, y: event.clientY, name: point.name, change: point.change }); }} onPointerLeave={() => { setPreviewCode(null); setDistributionTooltip(null); }} onFocus={(event) => { setPreviewCode(point.code); const bounds = event.currentTarget.getBoundingClientRect(); setDistributionTooltip({ x: bounds.left + bounds.width / 2, y: bounds.top, name: point.name, change: point.change }); }} onBlur={() => { setPreviewCode(null); setDistributionTooltip(null); }} onClick={() => setTerritoryCode(point.code)} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setTerritoryCode(point.code); } }}><circle className="history-region-hit" cx={distributionOrigin + (distributionX(point.change) - distributionOrigin) * distributionReveal.progress} cy={distributionSize.height * .54 + (index % 3 - 1) * Math.min(8, distributionSize.height / 6)} r="12" /><circle className="history-region-dot" cx={distributionOrigin + (distributionX(point.change) - distributionOrigin) * distributionReveal.progress} cy={distributionSize.height * .54 + (index % 3 - 1) * Math.min(8, distributionSize.height / 6)} r={2 + ((point.code === selectedCode ? 8 : 5) - 2) * distributionReveal.progress} opacity={distributionReveal.progress} /></g>)}</svg><span>{distributionMin >= 0 ? "+" : "−"}{fmt(Math.abs(distributionMin), 1)} pt</span><span>{distributionMax >= 0 ? "+" : "−"}{fmt(Math.abs(distributionMax), 1)} pt</span></div>
     {distributionTooltip && <ViewportTooltip x={distributionTooltip.x} y={distributionTooltip.y} className="declared-tooltip"><span>{distributionTooltip.name}</span><small>{indicator} · {sex === "Hommes et Femmes" ? "tous les sexes" : sex.toLowerCase()} · 2005 → 2021</small><strong>{distributionTooltip.change >= 0 ? "+" : "−"}{fmt(Math.abs(distributionTooltip.change), 1)} pt</strong><small>Évolution de la prévalence déclarée · sélectionner cette région</small></ViewportTooltip>}
     <p className="monthly-method"><b>Comparabilité.</b> Les vagues historiques concernent les 18–75 ans. Les écarts entre estimations restent à lire avec leurs intervalles de confiance. Le Baromètre 2024 repose sur un protocole différent : ses valeurs ne sont pas raccordées à ces courbes. Sources : Baromètres de Santé publique France 2005, 2010, 2017 et 2021, Odissé.</p>
     <ChartHelp key={`${indicator}-${selectedCode}-${sex}`} explanation={historyExplanation(indicator, selectedName, sex)} />
@@ -792,8 +795,11 @@ function TerritoryAppendix({ data, guidedView }: { data: ExperienceData; guidedV
   const targetMaxRate = useMemo(() => Math.max(1, ...chartSeries.map((point) => point.rate), ...chartReference.map((point) => point.rate), ...(chartHoveredSeries ?? []).map((point) => point.rate)) * 1.12, [chartReference, chartSeries, chartHoveredSeries]);
   const axisScale = useAnimatedAxisScale(targetMaxRate);
   const maxRate = axisScale.domainMax;
-  const plotRight = chartWidth - chartLabelSize * 4.4;
-  const x = (point: { year: number }) => 4 + ((point.year - startYear) / Math.max(1, endYear - startYear)) * (plotRight - 4);
+  const chartUnscale = chartLabelSize / 10;
+  const tickWidth = Math.max(...[0, targetMaxRate / 2, targetMaxRate, axisScale.previousMax].map(tick => fmt(tick, 0).length)) * 7.2;
+  const plotLeft = (tickWidth + 12) * chartUnscale;
+  const plotRight = chartWidth - 44 * chartUnscale;
+  const x = (point: { year: number }) => plotLeft + ((point.year - startYear) / Math.max(1, endYear - startYear)) * (plotRight - plotLeft);
   const y = (point: { rate: number }) => 218 - point.rate / maxRate * 180;
   const { min, max, increaseShare } = animatedDistribution;
   const distributionMin = mode === "territories" && hasComparableNationalChange ? Math.min(min, animatedNationalChange) : min;
@@ -856,7 +862,7 @@ function TerritoryAppendix({ data, guidedView }: { data: ExperienceData; guidedV
       {family === "hospital" && <div className="measure-subnav" role="group" aria-label="Vue hospitalière"><button type="button" aria-pressed={mode === "territories"} onClick={() => switchTerritoryDataset("hospitalisations")}>Séjours · départements<ScrollIndicator progress={scrollRangeProgress(scrollPosition, 7)} /></button><button type="button" aria-pressed={mode === "profiles"} onClick={() => switchMode("profiles")}>Patients · âge × sexe<ScrollIndicator progress={scrollRangeProgress(scrollPosition, 8)} /></button></div>}</div>
       {mode === "declared" ? <DeclaredExplorer data={data} step={step} position={scrollPosition} onNavigate={navigateStep} /> : <><div className="territory-selector" style={{ "--filter-width": filterWidth } as CSSProperties}><div className="territory-filters">{mode === "territories" && <label htmlFor="department">Territoire<select id="department" value={code} onChange={(event) => { setCode(event.target.value); if (event.target.value === "FR") setChartView("level"); }}><option value="FR">{territoryDataset === "emergency" ? "France · référence couverte" : "France entière"}</option>{departmentOptions.map((row) => <option key={row.department.code} value={row.department.code}>{row.department.code} · {row.department.name}</option>)}</select></label>}<label htmlFor="territory-age">Tranche d’âge<select id="territory-age" value={mode === "territories" ? age : profileAge} onChange={(event) => mode === "territories" ? setAge(event.target.value) : setProfileAge(event.target.value)}>{(mode === "territories" ? TERRITORY_AGES : ODISSE_AGES).map((item) => <option key={item} value={item}>{item === "Tous" ? "Tous les âges" : item}</option>)}</select></label><label htmlFor="territory-sex">Sexe<select id="territory-sex" value={mode === "territories" ? sex : profileSex} onChange={(event) => mode === "territories" ? setSex(event.target.value) : setProfileSex(event.target.value)}>{(mode === "territories" ? TERRITORY_SEXES : ["Femmes", "Hommes"]).map((item) => <option key={item} value={item}>{item === "Hommes et Femmes" ? "Tous les sexes" : item}</option>)}</select></label></div>{mode === "territories" && <TerritoryMap legend={`Évolution · ${territoryConfig.startYear} → ${territoryConfig.endYear} · ${territoryDataset === "suicides" ? "pt de taux" : "%"}`} context={`${territoryConfig.label} · ${age === "Tous" ? "Tous les âges" : age} · ${sex === "Hommes et Femmes" ? "Tous les sexes" : sex}`} level="departments" selected={code} preview={hoveredCode} items={metrics.map((row) => ({ code: row.department.code, name: row.department.name, value: row.comparable ? row.change ?? undefined : undefined, available: row.series.length > 0, detail: row.comparable && row.change != null ? `${territoryDataset === "suicides" ? `${row.change >= 0 ? "+" : "−"}${fmt(Math.abs(row.change))} pt` : signed(row.change)} · ${territoryConfig.startYear} → ${territoryConfig.endYear}` : "Évolution non interprétable" }))} onPreview={setHoveredCode} onSelect={(nextCode) => { setCode(nextCode); if (nextCode === "FR") setChartView("level"); }} />}
 <div className="territory-summary"><div className="metric-definition"><b>{measureLabel}</b><span>{measureUnit}</span></div>{isNationalView && territoryDataset === "emergency" && referenceLast ? <><span className="metric-period">Niveau de la référence couverte · {endYear}</span><strong className="animated-number" aria-hidden="true">{fmt(animatedNationalLevel)}</strong><span className="metric-endpoints">Pour 100 000 passages codés · périmètre variable.</span></> : selected.comparable ? <><span className="metric-period">{changeLabel} · {startYear} → {endYear}</span><strong className="animated-number" aria-hidden="true">{formatEvolution(animatedChange)}{evolutionUnit}</strong><span className="metric-endpoints">{fmt(selectedFirst!.rate)} en {startYear} → {fmt(selectedLast!.rate)} en {endYear}</span></> : <div className="low-sample"><strong>{isNationalView ? "Référence indisponible" : selected.change == null ? "Comparaison indisponible" : "Effectif faible"}</strong><span>{isNationalView ? "Pour ce regroupement d’âge et de sexe." : <>{selected.change == null ? "Deux valeurs comparables sont nécessaires aux dates retenues." : "Moins de 10 décès à l’une des deux dates : évolution non interprétable."} La courbe disponible reste descriptive.</>}</span></div>}{mode === "territories" && !isNationalView && selected.comparable && (hasNationalReference ? <p className={`relative-level ${Math.abs(animatedLevelGap) < .05 ? "is-neutral" : animatedLevelGap > 0 ? "is-positive" : "is-negative"}`}>{Math.abs(animatedLevelGap) < .05 ? <>Au niveau de {territoryDataset === "emergency" ? "la référence nationale couverte" : "la France"} en {endYear}</> : <><b>{formatEvolution(animatedLevelGap)}</b> {usesAbsoluteChange ? "point de taux pour 100 000" : ""} par rapport à {territoryDataset === "emergency" ? "la référence nationale couverte" : "la France"} en {endYear}</>}</p> : <p className="relative-level is-neutral">Référence nationale indisponible pour ce regroupement</p>)}<span className="sr-only" aria-live="polite">{title}. {measureLabel}. {selected.comparable ? `${changeLabel} ${formatEvolution(selected.change!)}${evolutionUnit} entre ${startYear} et ${endYear}.` : "Évolution non interprétable."}</span></div></div>
-      <div className="territory-chart" data-national={isNationalView}><h3 className="data-change" key={`${mode}-${selected.department.code}`}>{title}</h3><p className="territory-context">{measureLabel} · {context}</p>{!usesAbsoluteChange && !(isNationalView && territoryDataset === "emergency") && <div className="chart-view-toggle" role="group" aria-label="Mesure affichée"><button type="button" aria-pressed={chartView === "level"} onClick={() => setChartView("level")}>Niveau</button><button type="button" aria-pressed={chartView === "change"} onClick={() => setChartView("change")}>Évolution · base 100</button></div>}<svg ref={chartSvgRef} style={{ "--chart-label-size": `${chartLabelSize}px` } as CSSProperties} viewBox={`0 0 ${chartWidth} 260`} role="img" aria-label={`${title}, ${chartView === "level" ? "taux réel" : "évolution en base 100"}, ${isNationalView ? "référence nationale" : `comparé à ${referenceLabel}`}`}><g className="chart-grid chart-grid-old" opacity={1 - axisScale.progress}>{[axisScale.previousMax / 2, axisScale.previousMax].map((tick, index) => <g key={`old-${index}`}><line x1="4" x2={plotRight} y1={y({ rate: tick })} y2={y({ rate: tick })} /><text x="4" y={y({ rate: tick }) - 5}>{fmt(tick, 0)}</text></g>)}</g><g className="chart-grid chart-grid-new" opacity={axisScale.progress}>{[targetMaxRate / 2, targetMaxRate].map((tick, index) => <g key={`new-${index}`}><line x1="4" x2={plotRight} y1={y({ rate: tick })} y2={y({ rate: tick })} /><text x="4" y={y({ rate: tick }) - 5}>{fmt(tick, 0)}</text></g>)}</g><g className="chart-grid chart-grid-zero"><line x1="4" x2={plotRight} y1={y({ rate: 0 })} y2={y({ rate: 0 })} /><text x="4" y={y({ rate: 0 }) - 5}>0</text></g>{chartView === "change" && <line className="index-baseline" x1="4" x2={plotRight} y1={y({ rate: 100 })} y2={y({ rate: 100 })} />}<path className="national-line" d={yearLinePath(animatedReference, x, y, mode === "territories" && territoryDataset === "emergency" ? [2022, 2023] : [])} />{mode === "territories" && territoryDataset === "emergency" && !isNationalView && animatedReference.map((point) => {
+      <div className="territory-chart" data-national={isNationalView}><h3 className="data-change" key={`${mode}-${selected.department.code}`}>{title}</h3><p className="territory-context">{measureLabel} · {context}</p>{!usesAbsoluteChange && !(isNationalView && territoryDataset === "emergency") && <div className="chart-view-toggle" role="group" aria-label="Mesure affichée"><button type="button" aria-pressed={chartView === "level"} onClick={() => setChartView("level")}>Niveau</button><button type="button" aria-pressed={chartView === "change"} onClick={() => setChartView("change")}>Évolution · base 100</button></div>}<svg ref={chartSvgRef} style={{ "--chart-label-size": `${chartLabelSize}px` } as CSSProperties} viewBox={`0 0 ${chartWidth} 260`} role="img" aria-label={`${title}, ${chartView === "level" ? "taux réel" : "évolution en base 100"}, ${isNationalView ? "référence nationale" : `comparé à ${referenceLabel}`}`}><g className="chart-grid chart-grid-old" opacity={1 - axisScale.progress}>{[axisScale.previousMax / 2, axisScale.previousMax].map((tick, index) => <g key={`old-${index}`}><line x1={plotLeft} x2={plotRight} y1={y({ rate: tick })} y2={y({ rate: tick })} /><text x="0" y={y({ rate: tick }) + 4 * chartUnscale}>{fmt(tick, 0)}</text></g>)}</g><g className="chart-grid chart-grid-new" opacity={axisScale.progress}>{[targetMaxRate / 2, targetMaxRate].map((tick, index) => <g key={`new-${index}`}><line x1={plotLeft} x2={plotRight} y1={y({ rate: tick })} y2={y({ rate: tick })} /><text x="0" y={y({ rate: tick }) + 4 * chartUnscale}>{fmt(tick, 0)}</text></g>)}</g><g className="chart-grid chart-grid-zero"><line x1={plotLeft} x2={plotRight} y1={y({ rate: 0 })} y2={y({ rate: 0 })} /><text x="0" y={y({ rate: 0 }) + 4 * chartUnscale}>0</text></g>{chartView === "change" && <line className="index-baseline" x1={plotLeft} x2={plotRight} y1={y({ rate: 100 })} y2={y({ rate: 100 })} />}<path className="national-line" d={yearLinePath(animatedReference, x, y, mode === "territories" && territoryDataset === "emergency" ? [2022, 2023] : [])} />{mode === "territories" && territoryDataset === "emergency" && !isNationalView && animatedReference.map((point) => {
         const info = { label: "France · référence couverte", year: point.year, rate: reference.find(candidate => candidate.year === point.year)?.rate ?? point.rate };
         return <g className="chart-point" key={point.year} role="img" tabIndex={0} aria-label={`${info.label}, ${info.year}, ${fmt(info.rate)} pour 100 000 passages codés, périmètre variable`} onPointerMove={event => setChartTooltip({ x: event.clientX, y: event.clientY, ...info })} onPointerLeave={event => { if (document.activeElement !== event.currentTarget) setChartTooltip(null); }} onFocus={event => { const bounds = event.currentTarget.getBoundingClientRect(); setChartTooltip({ x: bounds.left + bounds.width / 2, y: bounds.top, ...info }); }} onBlur={() => setChartTooltip(null)}><circle className="chart-hit" cx={x(point)} cy={y(point)} r="11" /><circle className="reference-dot" cx={x(point)} cy={y(point)} r="2" /></g>;
       })}{mode === "territories" && territoryDataset === "emergency" && [2022, 2023].map((year, index) => {
@@ -879,7 +885,7 @@ function TerritoryAppendix({ data, guidedView }: { data: ExperienceData; guidedV
         const other = selected.comparable && !isNationalView ? animatedReference.find(p => p.year === point.year) : undefined;
         return <ExplorerAnnotation x={x(point)} y={y(point)} comparisonY={other && point.year === endYear ? y(other) : undefined} rightX={plotRight + chartLabelSize * 1.4} bracketSize={chartLabelSize * 1.5} />;
       })()}{chartYears.map((year) => <text key={year} x={x({ year })} y="250" textAnchor={year === startYear ? "start" : year === endYear ? "end" : "middle"}>{year}</text>)}</svg><div className="legend">{!isNationalView && <span className="department selected-legend" title={selected.department.name}>{selected.department.name}</span>}{chartReference.length > 0 && <span className="france">{referenceLabel}</span>}<span className={`hovered hovered-slot${hoveredMetric ? "" : " is-empty"}`} title={hoveredMetric?.department.name}>{hoveredMetric?.department.name ?? "Aperçu au survol"}</span></div>{mode === "territories" && territoryDataset === "emergency" && <p className="chart-scope-note">① 2022 : PACA et Corse exclues. ② 2023 : Martinique incluse. Périmètre variable : les segments ne se raccordent pas ; aucune évolution nationale calculée.</p>}{mode === "territories" && territoryDataset === "suicides" && age === "00–17 ans" && <p className="chart-scope-note">Référence France non calculable : le taux arrondi à zéro des 0–10 ans empêche de reconstituer le dénominateur des 0–17 ans.</p>}{chartTooltip && <ViewportTooltip x={chartTooltip.x} y={chartTooltip.y} className="chart-tooltip"><span>{chartTooltip.label}</span><small>{chartTooltip.year} · {chartView === "level" ? (mode === "territories" ? territoryConfig.unit : "taux pour 100 000") : "indice base 100"}{chartTooltip.count != null ? ` · effectif diffusé ≈ ${fmt(chartTooltip.count, 1)}` : ""}</small><strong>{fmt(chartTooltip.rate)}</strong></ViewportTooltip>}</div>
-      <div className="distribution"><small className="distribution-kicker">Distribution des {usesAbsoluteChange ? "écarts de taux" : "évolutions"} · {startYear} → {endYear}</small><p className="distribution-explanation">{mode === "territories" ? `Un point = un département avec une évolution calculable aux deux dates${usesAbsoluteChange ? " et au moins 10 décès à chacune" : ""}. ${isNationalView ? "Survolez un point pour révéler sa courbe, cliquez pour sélectionner ce département." : "Le point orange est votre sélection."} Le repère France apparaît lorsque son évolution est comparable.` : "Un point = un groupe d’âge et de sexe. Le point orange est votre sélection ; la courbe en pointillés montre l’autre sexe au même âge."}</p>{activeMetrics.length ? <p><b>{fmt(increaseShare)} %</b> {mode === "territories" ? `des ${activeMetrics.length} départements retenus augmentent pour cette sélection.` : `des ${activeMetrics.length} trajectoires âge × sexe augmentent entre ${startYear} et ${endYear}.`}</p> : <p className="no-comparison">Aucun département ne remplit les conditions de comparaison pour cette sélection.</p>}<svg ref={distributionSvgRef} viewBox={`0 0 ${distributionWidth} 160`} aria-label={mode === "territories" ? "Choisir un département dans la distribution de leurs évolutions. La France est indiquée comme second repère lorsqu’elle est comparable." : "Choisir un profil âge et sexe dans la distribution de leurs évolutions."} onPointerMove={moveAcrossDistribution} onPointerLeave={() => { setHoveredCode(null); setTooltip(null); }} onPointerUp={chooseClosestDistributionItem}><rect className="distribution-interaction" x="0" y="0" width={distributionWidth} height="160" /><line className="distribution-axis" x1="20" x2={distributionWidth - 20} y1="80" y2="80" /><line className="zero-marker" x1={distributionX(0)} x2={distributionX(0)} y1="24" y2="140" /><text className="zero-label" x={distributionX(0)} y="17" textAnchor="middle">0{evolutionUnit || " %"}</text>{mode === "territories" && hasComparableNationalChange && <><line className="national-marker" x1={nationalMarkerX} x2={nationalMarkerX} y1="35" y2="140" /><text className="national-marker-label" x={nationalMarkerX} y="29" textAnchor="middle">France {formatEvolution(animatedNationalChange)}{evolutionUnit}</text></>}{[...animatedDistribution.rows].sort((a, b) => a.department.code === selected.department.code ? 1 : b.department.code === selected.department.code ? -1 : 0).map((row) => {
+      <div className="distribution"><small className="distribution-kicker">Distribution des {usesAbsoluteChange ? "écarts de taux" : "évolutions"} · {startYear} → {endYear}</small><p className="distribution-explanation">{mode === "territories" ? `Un point = un département avec une évolution calculable aux deux dates${usesAbsoluteChange ? " et au moins 10 décès à chacune" : ""}. ${isNationalView ? "Survolez un point pour révéler sa courbe, cliquez pour sélectionner ce département." : "Le point orange est votre sélection."} Le repère France apparaît lorsque son évolution est comparable.` : "Un point = un groupe d’âge et de sexe. Le point orange est votre sélection ; la courbe en pointillés montre l’autre sexe au même âge."}</p>{activeMetrics.length ? <p><b>{fmt(increaseShare)} %</b> {mode === "territories" ? `des ${activeMetrics.length} départements retenus augmentent pour cette sélection.` : `des ${activeMetrics.length} trajectoires âge × sexe augmentent entre ${startYear} et ${endYear}.`}</p> : <p className="no-comparison">Aucun département ne remplit les conditions de comparaison pour cette sélection.</p>}<svg ref={distributionSvgRef} viewBox={`0 0 ${distributionWidth} 160`} aria-label={mode === "territories" ? "Choisir un département dans la distribution de leurs évolutions. La France est indiquée comme second repère lorsqu’elle est comparable." : "Choisir un profil âge et sexe dans la distribution de leurs évolutions."} onPointerMove={moveAcrossDistribution} onPointerLeave={() => { setHoveredCode(null); setTooltip(null); }} onPointerUp={chooseClosestDistributionItem}><rect className="distribution-interaction" x="0" y="0" width={distributionWidth} height="160" /><line className="distribution-axis" x1="0" x2={distributionWidth} y1="80" y2="80" /><line className="zero-marker" x1={distributionX(0)} x2={distributionX(0)} y1="24" y2="140" /><text className="zero-label" x={distributionX(0)} y="17" textAnchor="middle">0{evolutionUnit || " %"}</text>{mode === "territories" && hasComparableNationalChange && <><line className="national-marker" x1={nationalMarkerX} x2={nationalMarkerX} y1="35" y2="140" /><text className="national-marker-label" x={nationalMarkerX} y="29" textAnchor="middle">France {formatEvolution(animatedNationalChange)}{evolutionUnit}</text></>}{[...animatedDistribution.rows].sort((a, b) => a.department.code === selected.department.code ? 1 : b.department.code === selected.department.code ? -1 : 0).map((row) => {
         const isSelected = row.department.code === selected.department.code;
         const selectItem = () => selectDistributionItem(row.department.code);
         const tooltipData = { department: row.department.name, region: row.department.region, change: row.targetChange };
@@ -949,19 +955,75 @@ function MethodSection({ data }: { data: ExperienceData }) {
     return () => { window.removeEventListener("scroll", schedule); window.removeEventListener("resize", schedule); motion.removeEventListener("change", schedule); observer.disconnect(); cancelAnimationFrame(frame); };
   }, []);
   const [clickRevision, setClickRevision] = useState(0);
+  const [clickProgress, setClickProgress] = useState<number | null>(null);
+  const stage = useRef<HTMLDivElement>(null);
+  const title = useRef<HTMLSpanElement>(null);
   useEffect(() => {
-    if (!clickRevision) return;
-    const timer = window.setTimeout(() => setClickRevision(0), 700);
-    return () => window.clearTimeout(timer);
-  }, [clickRevision]);
+    if (!clickRevision || reading.reduced) return;
+    let frame = 0;
+    const start = performance.now();
+    const advance = (now: number) => {
+      const elapsed = Math.min(1, (now - start) / 1050);
+      setClickProgress(elapsed < 1 ? elapsed * .55 : null);
+      if (elapsed < 1) frame = requestAnimationFrame(advance);
+    };
+    const cancel = () => { cancelAnimationFrame(frame); setClickProgress(null); };
+    frame = requestAnimationFrame(advance);
+    window.addEventListener("wheel", cancel, { passive: true });
+    window.addEventListener("touchstart", cancel, { passive: true });
+    window.addEventListener("keydown", cancel);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener("wheel", cancel); window.removeEventListener("touchstart", cancel); window.removeEventListener("keydown", cancel); };
+  }, [clickRevision, reading.reduced]);
   const step = METHOD_SCENES[reading.scene];
-  const reveal = reading.reduced ? 1 : Math.max(0, Math.min(1, reading.fraction / .52));
-  const eased = reveal * reveal * (3 - 2 * reveal);
+  const fraction = clickProgress ?? reading.fraction;
+  const phase = (start: number, duration: number) => {
+    const value = Math.max(0, Math.min(1, (fraction - start) / duration));
+    return value * value * (3 - 2 * value);
+  };
+  const arrival = reading.reduced ? 1 : phase(.02, .26);
+  const keepLastScene = reading.scene === METHOD_SCENES.length - 1;
+  const departure = reading.reduced || keepLastScene ? 0 : phase(.78, .16);
+  const reveal = reading.reduced ? 1 : phase(.18, .23);
+  const contentStyle = (start: number, exitStart = .77): CSSProperties => {
+    const enter = reading.reduced ? 1 : phase(start, .20);
+    const leave = reading.reduced || keepLastScene ? 0 : phase(exitStart, .16);
+    return { opacity: enter * (1 - leave), transform: enter === 1 && leave === 0 ? "none" : `translateY(${(1 - enter) * 24 - leave * 38}px)` };
+  };
+  useLayoutEffect(() => {
+    const element = title.current;
+    const viewport = stage.current?.querySelector<HTMLElement>(".method-stage-body");
+    if (!element || !viewport) return;
+    const draw = () => {
+      const target = element.parentElement!;
+      const bounds = viewport.getBoundingClientRect();
+      const baseSize = parseFloat(getComputedStyle(target.parentElement!).fontSize);
+      // Draw glyphs at their actual size instead of scaling a composited bitmap.
+      element.style.fontSize = `${baseSize}px`;
+      const baseWidth = element.offsetWidth;
+      const baseHeight = element.offsetHeight;
+      target.style.width = `${baseWidth}px`;
+      target.style.height = `${baseHeight}px`;
+      const destination = target.getBoundingClientRect();
+      const large = Math.max(1, Math.min(5, bounds.width * .88 / baseWidth, bounds.height * .55 / baseHeight));
+      element.style.fontSize = `${baseSize * (1 + (large - 1) * (1 - arrival))}px`;
+      const centerX = (bounds.left + bounds.width / 2) * (1 - arrival) + (destination.left + baseWidth / 2) * arrival;
+      const centerY = (bounds.top + bounds.height / 2) * (1 - arrival) + (destination.top + baseHeight / 2) * arrival;
+      const dx = centerX - destination.left - element.offsetWidth / 2;
+      const dy = centerY - destination.top - element.offsetHeight / 2 - departure * 60;
+      element.style.transform = arrival === 1 && departure === 0 ? "none" : `translate(${dx}px, ${dy}px)`;
+      const titleVisibility = reading.scene === 0 ? 1 : phase(0, .025);
+      element.style.opacity = String(reading.reduced ? 1 : titleVisibility * (1 - departure));
+    };
+    draw();
+    const observer = new ResizeObserver(draw);
+    observer.observe(viewport);
+    return () => observer.disconnect();
+  }, [arrival, departure, reading.scene, reading.reduced, fraction]);
   return <div className="method-chapter-group" ref={root}><section className="method method-narrative" id="methode" aria-labelledby="method-heading">
     <header className="method-heading method-reveal"><p className="chapter">MÉTHODE · UNE AUTRE FAÇON DE LIRE</p><h2 id="method-heading">Lire les données<br />Garder leurs limites</h2><p>Quatre gestes pour comprendre ce que les chiffres permettent de dire.</p></header>
     <div className="method-scroll-track">
       <ol className="method-landmarks" aria-label="Étapes de la méthode">{METHOD_SCENES.map((scene, index) => <li key={scene.word} id={`method-step-${index + 1}`} ref={element => { landmarks.current[index] = element; }}><span className="sr-only">{scene.word} {scene.title}</span></li>)}</ol>
-      <div className="method-stage" data-method-scene={reading.scene} data-method-reveal={reveal.toFixed(3)} style={{ "--method-scene-reveal": reveal } as CSSProperties}>
+      <div className="method-stage" ref={stage} data-method-progress={fraction.toFixed(3)} data-method-scene={reading.scene} data-method-reveal={reveal.toFixed(3)} style={{ "--method-scene-reveal": reveal } as CSSProperties}>
         <nav className="method-steps" aria-label="Parcourir la méthode">{METHOD_SCENES.map((scene, index) => <a key={scene.word} href={`#method-step-${index + 1}`} aria-current={reading.scene === index ? "step" : undefined} onClick={(event) => {
           event.preventDefault();
           const element = landmarks.current[index];
@@ -969,26 +1031,21 @@ function MethodSection({ data }: { data: ExperienceData }) {
           const bounds = element.getBoundingClientRect();
           const line = (document.querySelector(".topbar")?.getBoundingClientRect().bottom ?? 60) + 18;
           window.scrollTo({ top: window.scrollY + bounds.top - line + bounds.height * .55, behavior: "instant" });
+          setClickProgress(reading.reduced ? null : 0);
           setClickRevision((revision) => revision + 1);
         }}><span>0{index + 1}</span>{scene.word}<ScrollIndicator progress={reading.scene === index ? reading.fraction : 0} /></a>)}</nav>
-        <div className={`method-stage-body${clickRevision ? " method-click-arrival" : ""}`} key={`method-${reading.scene}-${clickRevision}`}>
-          <div className="method-reading"><p className="chapter">{step.label}</p><h3 style={{ transform: eased === 1 ? "none" : `translateY(${(1 - eased) * 25}px) scale(${1 + (1 - eased) * .35})` }}>{step.word}</h3><h4>{step.title}</h4><p>{step.copy}</p></div>
-          <div className="method-rules" key={reading.scene}>{step.rows.map(([label, title, copy], index) => {
-            const arrival = reading.reduced ? 1 : Math.max(0, Math.min(1, (reading.fraction - index * .055) / .27));
-            return <article key={label} style={{ "--rule-reveal": arrival } as CSSProperties}><small>{label}</small><strong>{title}</strong><p>{copy}</p><span className="method-rule-line" aria-hidden="true" /></article>;
+        <div className="method-stage-body" key={`method-${reading.scene}`}>
+          <div className="method-reading"><p className="chapter" style={contentStyle(.17)}>{step.label}</p><h3><span className="method-title-target"><span className="method-title-flight" ref={title}>{step.word}</span></span></h3><h4 style={contentStyle(.20)}>{step.title}</h4><p style={contentStyle(.23)}>{step.copy}</p></div>
+          <div className="method-rules">{step.rows.map(([label, title, copy], index) => {
+            const ruleReveal = reading.reduced ? 1 : phase(.24 + index * .035, .18);
+            return <article key={label} style={{ ...contentStyle(.24 + index * .035, .75 + index * .012), "--rule-reveal": ruleReveal } as CSSProperties}><small>{label}</small><strong>{title}</strong><p>{copy}</p><span className="method-rule-line" aria-hidden="true" /></article>;
           })}</div>
         </div>
-        <p className="method-takeaway" style={{ opacity: Math.max(.15, eased) }}>{step.takeaway}</p>
+        <p className="method-takeaway" style={contentStyle(.34, .76)}>{step.takeaway}</p>
       </div>
     </div>
     </section>
-    <section className="reading-conclusion" id="conclusion" aria-labelledby="conclusion-heading">
-      <p className="chapter method-reveal">CE QUE L’ON RETIENT</p>
-      <h2 id="conclusion-heading" className="method-reveal">Un chiffre national<br />Des réalités différentes</h2>
-      <p className="conclusion-copy method-reveal">Les évolutions diffèrent selon les populations et les territoires. Ces données montrent une souffrance déclarée, un recours aux soins ou une mortalité enregistrée : elles ne mesurent pas la même réalité.</p>
-      <p className="conclusion-takeaway method-reveal">Rendre visible, c’est aussi montrer<br />ce qu’un chiffre laisse hors champ</p>
-      <nav className="conclusion-links method-reveal" aria-label="Poursuivre après la conclusion"><a href="#territoires">Revenir aux données <span aria-hidden="true">↑</span></a><a href="#sources">Consulter les sources <span aria-hidden="true">↓</span></a></nav>
-    </section>
+    <ReadingConclusion />
     <div className="method-source-section" id="sources"><p className="chapter method-reveal">VÉRIFIER · RETROUVER · RÉUTILISER</p><div className="source-ledger"><h3 className="method-reveal">Revenir<br />aux sources</h3><ol><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/episodes-depressif-indicateurs-du-barometre-2024/" target="_blank" rel="noreferrer">Épisodes dépressifs · Baromètre 2024 ↗</a><span>Déclaré</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/trouble-anxieux-generalise-indicateurs-du-barometre-2024/" target="_blank" rel="noreferrer">Trouble anxieux généralisé · Baromètre 2024 ↗</a><span>Déclaré</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/conduites-sucidaires-indicateurs-du-barometre-2024/" target="_blank" rel="noreferrer">Pensées suicidaires · Baromètre 2024 ↗</a><span>Déclaré</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/sante-mentale-episodes-depressifs-caracterises-dans-les-12-derniers-mois_reg/" target="_blank" rel="noreferrer">Épisodes dépressifs · régions · 2005–2021 ↗</a><span>Historique</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/sante-mentale-pensees-suicidaires-et-tentatives-de-suicide_reg/" target="_blank" rel="noreferrer">Pensées et tentatives · régions · 2005–2021 ↗</a><span>Historique</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/sante-mentale-episodes-depressifs-caracterises-dans-les-12-derniers-mois_fra/" target="_blank" rel="noreferrer">Épisodes dépressifs · France hexagonale · 2005–2021 ↗</a><span>Historique · référence</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/sante-mentale-pensees-suicidaires-et-tentatives-de-suicide_fra/" target="_blank" rel="noreferrer">Pensées et tentatives · France hexagonale · 2005–2021 ↗</a><span>Historique · référence</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-hospitalisations-departement/" target="_blank" rel="noreferrer">Séjours hospitaliers · départements ↗</a><span>Territoires</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-hospitalisations-france/" target="_blank" rel="noreferrer">Séjours hospitaliers · France ↗</a><span>Référence</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-patients-hospitalises-france/" target="_blank" rel="noreferrer">Patients hospitalisés · France ↗</a><span>Âge × sexe</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-passages-aux-urgences-departement/" target="_blank" rel="noreferrer">Passages aux urgences · départements ↗</a><span>Territoires</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-passages-aux-urgences-france/" target="_blank" rel="noreferrer">Passages aux urgences · France ↗</a><span>Référence</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/suicides-deces-departement/" target="_blank" rel="noreferrer">Décès par suicide · départements ↗</a><span>Territoires</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/suicides-deces-france/" target="_blank" rel="noreferrer">Décès par suicide · France ↗</a><span>Référence</span></li></ol></div><p className="method-source-note method-reveal">Les séries nationales des Baromètres historiques complètent les séries régionales. Les 14 jeux Odissé et les 17 rapports régionaux du Baromètre 2024 sont reliés à leurs exports et à leurs transformations dans le registre de provenance, avec les contrôles des intervalles de confiance. Les contours de sélection proviennent de l’IGN / Admin Express COG et des codes INSEE 2018, via France GeoJSON, sous Licence Ouverte ; les gris représentent les évolutions comparables de la frise ou, dans Inégalités sociales 2024, les prévalences régionales tous profils confondus.</p><a className="method-source-manifest method-reveal" href="./data/sources.json" target="_blank" rel="noreferrer">Consulter le registre des sources et des exports ↗</a><div className="method-reuse method-reveal"><h3>Des sources aux graphiques</h3><p>Une application statique, des données servies localement et des calculs reproductibles. React, TypeScript et SVG pour la lecture ; Python pour préparer les données.</p><a href="https://github.com/m4nR3is/odisse-sante-mentale" target="_blank" rel="noreferrer">Ouvrir le code, les données et les analyses ↗</a><p className="generation">Données web régénérées le {data.meta.generated} · Code MIT · Textes et visuels originaux CC-BY 4.0 · Données Odissé Licence Ouverte 2.0.</p></div></div>
   </div>;
 }
@@ -1051,6 +1108,24 @@ function useStoryDrawing(scene: StoryScene, entered: boolean) {
 function StoryFigure({ data, scene: requestedScene }: { data: ExperienceData; scene: StoryScene }) {
   const maskId = useId();
   const svgRef = useRef<SVGSVGElement>(null);
+  const [chartSize, setChartSize] = useState({ width: 580, height: 320 });
+  useLayoutEffect(() => {
+    const container = svgRef.current?.parentElement;
+    if (!container) return;
+    const resize = () => {
+      const width = container.getBoundingClientRect().width;
+      if (!width) return;
+      const height = matchMedia("(max-width: 980px)").matches ? Math.min(width, 720) * 320 / 580 : Math.min(width * 320 / 580, innerHeight * .46);
+      const viewWidth = width / height * 320;
+      setChartSize(current => Math.abs(current.width - viewWidth) < .1 && Math.abs(current.height - height) < .1 ? current : { width: viewWidth, height });
+    };
+    const observer = new ResizeObserver(resize);
+    observer.observe(container);
+    window.addEventListener("resize", resize);
+    resize();
+    return () => { observer.disconnect(); window.removeEventListener("resize", resize); };
+  }, []);
+
   const [entered, setEntered] = useState(false);
   useEffect(() => {
     const element = svgRef.current;
@@ -1097,16 +1172,20 @@ function StoryFigure({ data, scene: requestedScene }: { data: ExperienceData; sc
   const social = FINANCIAL_ORDER.map((financial) => data.social.find((point) => point.indicator === "Dépression" && point.financial === financial)!);
   const women = data.odissePatients.filter((point) => point.age === "Tous" && point.sex === "Femmes").sort((a, b) => a.year - b.year);
   const values = scene === 0 ? national : scene === 1 ? women : girls;
-  const x = (year: number) => 54 + (year - 2019) / 5 * 480;
+  const chartUnscale = 320 / chartSize.height;
+  const plotLeft = 36 * chartUnscale;
+  const plotRight = chartSize.width - 46;
+  const socialWidth = chartSize.width - 136 - 62;
+  const x = (year: number) => plotLeft + (year - 2019) / 5 * (plotRight - plotLeft);
   const ceiling = scene <= 1 ? 150 : 500;
   const y = (rate: number) => 260 - rate / ceiling * 206;
   return <div className="story-figure" data-scene={scene}>
     <div className="story-figure-heading"><p className="chapter">{scene === 4 ? "ENQUÊTE · BAROMÈTRE 2024" : "MCO · PATIENTS · GESTES AUTO-INFLIGÉS"}</p><h3>{["La vue d’ensemble", "Femmes et hommes · tous âges", "Les filles de 11–14 ans", "Deux trajectoires, un même âge", "La situation financière perçue"][scene]}</h3>{scene === 2 && <p className="story-scale-notice">Nouvelle population · taux brut<br /><b>Nouvelle échelle : 0–500 pour 100 000</b></p>}<p>{scene === 4 ? "Épisode dépressif caractérisé · 12 derniers mois · 18–79 ans" : scene === 0 ? "France · tous âges, tous sexes · taux standardisé pour 100 000 habitants" : scene === 1 ? "France · tous âges · taux standardisés pour 100 000 personnes de chaque sexe" : "France · taux brut pour 100 000 personnes du même âge et sexe"}</p></div>
     <div className="story-visual">
-      <svg ref={svgRef} viewBox="0 0 580 320" role="group" aria-label={scene === 4 ? `Dépression déclarée selon la situation financière : ${social.map((point) => `${FINANCIAL_SHORT[point.financial]}, ${fmt(point.estimate)} %`).join(" ; ")}. Intervalles de confiance à 95 %.` : `${scene === 0 ? "Tous âges et sexes" : scene === 1 ? "Femmes · tous âges" : "Filles de 11–14 ans"} : ${fmt(values[0].rate)} en 2019, ${fmt(values.at(-1)!.rate)} en 2024, pour 100 000.${(scene === 1 || scene === 3) ? ` ${scene === 1 ? "Hommes · tous âges" : "Garçons de 11–14 ans"} : ${fmt(boys[0].rate)} à ${fmt(boys.at(-1)!.rate)}.` : ""}`}>
-        <defs>{[{ name: "main", points: values, start: drawing.mainStart, end: drawing.main }, { name: "boys", points: boys, start: drawing.boysStart, end: drawing.boys }].map(({ name, points, start, end }) => <mask key={name} id={`${maskId}-${name}`} maskUnits="userSpaceOnUse" x="0" y="0" width="580" height="320"><path d={linePath(points, (point) => x(point.year), (point) => y(point.rate))} fill="none" stroke="white" strokeWidth="16" strokeLinecap="round" pathLength="1" strokeDasharray={`${Math.max(0, end - start)} 1`} strokeDashoffset={-start} opacity={end <= start ? 0 : 1} /></mask>)}</defs>
+      <svg ref={svgRef} viewBox={`0 0 ${chartSize.width} 320`} style={{ height: chartSize.height, maxWidth: "none" }} role="group" aria-label={scene === 4 ? `Dépression déclarée selon la situation financière : ${social.map((point) => `${FINANCIAL_SHORT[point.financial]}, ${fmt(point.estimate)} %`).join(" ; ")}. Intervalles de confiance à 95 %.` : `${scene === 0 ? "Tous âges et sexes" : scene === 1 ? "Femmes · tous âges" : "Filles de 11–14 ans"} : ${fmt(values[0].rate)} en 2019, ${fmt(values.at(-1)!.rate)} en 2024, pour 100 000.${(scene === 1 || scene === 3) ? ` ${scene === 1 ? "Hommes · tous âges" : "Garçons de 11–14 ans"} : ${fmt(boys[0].rate)} à ${fmt(boys.at(-1)!.rate)}.` : ""}`}>
+        <defs>{[{ name: "main", points: values, start: drawing.mainStart, end: drawing.main }, { name: "boys", points: boys, start: drawing.boysStart, end: drawing.boys }].map(({ name, points, start, end }) => <mask key={name} id={`${maskId}-${name}`} maskUnits="userSpaceOnUse" x="-20" y="0" width={chartSize.width + 20} height="320"><path d={linePath(points, (point) => x(point.year), (point) => y(point.rate))} fill="none" stroke="white" strokeWidth={32 * chartUnscale} strokeLinecap="round" pathLength="1" strokeDasharray={`${Math.max(0, end - start)} 1`} strokeDashoffset={-start} opacity={end <= start ? 0 : 1} /></mask>)}</defs>
         {scene === 4 ? <g>
-          {[0, 10, 20, 30].map((tick) => <g className="story-gridline" key={tick} opacity={Math.min(1, drawing.social * 4)}><line x1={136 + tick / 32 * 382} x2={136 + tick / 32 * 382} y1="44" y2="258" /><text x={136 + tick / 32 * 382} y="294" textAnchor="middle">{tick} %</text></g>)}
+          {[0, 10, 20, 30].map((tick) => <g className="story-gridline" key={tick} opacity={Math.min(1, drawing.social * 4)}><line x1={136 + tick / 32 * socialWidth} x2={136 + tick / 32 * socialWidth} y1="44" y2="258" /><text x={136 + tick / 32 * socialWidth} y="294" textAnchor="middle">{tick} %</text></g>)}
           {social.map((point, index) => {
             const progress = Math.max(0, Math.min(1, (drawing.social - index * .17) / .49));
             const phase = (start: number, duration: number) => Math.max(0, Math.min(1, (progress - start) / duration));
@@ -1115,26 +1194,26 @@ function StoryFigure({ data, scene: requestedScene }: { data: ExperienceData; sc
             const arrival = phase(.75, .25);
             const growth = arrival * arrival * (3 - 2 * arrival);
             const animatedEstimate = point.estimate * countProgress;
-            const center = 136 + animatedEstimate / 32 * 382;
+            const center = 136 + animatedEstimate / 32 * socialWidth;
             const intervalProgress = growth;
             const intervalScale = intervalProgress;
             return <g className="story-social-row" key={point.financial} data-progress={progress} data-estimate={animatedEstimate} opacity={progress > 0 ? 1 : 0}>
               <text className="story-social-label" x="0" y={68 + index * 60} opacity={labelProgress} transform={`translate(0 ${(1 - labelProgress) * 10})`}>{FINANCIAL_SHORT[point.financial]}</text>
-              <line className="story-interval" x1={center + (point.low - point.estimate) / 32 * 382 * intervalScale} x2={center + (point.high - point.estimate) / 32 * 382 * intervalScale} y1={63 + index * 60} y2={63 + index * 60} opacity={intervalProgress} />
+              <line className="story-interval" x1={center + (point.low - point.estimate) / 32 * socialWidth * intervalScale} x2={center + (point.high - point.estimate) / 32 * socialWidth * intervalScale} y1={63 + index * 60} y2={63 + index * 60} opacity={intervalProgress} />
               <g {...pointEvents({ label: FINANCIAL_SHORT[point.financial], context: "Dépression déclarée · 2024", value: `${fmt(point.estimate)} %`, detail: `IC à 95 % : ${fmt(point.low)}–${fmt(point.high)} %` }, progress === 1)}>
                 <circle className="story-point-hit" cx={center} cy={63 + index * 60} r="12" />
               <circle className="story-dot story-social-dot" cx={center} cy={63 + index * 60} r={2 + 3 * growth} style={{ fill: growth === 0 ? "var(--ink)" : `color-mix(in srgb, var(--ink) ${(1 - growth) * 100}%, var(--reference))` }} />
               </g>
-              <text className="story-value" x={center + (point.high - point.estimate) / 32 * 382 * intervalScale + 10} y={68 + index * 60} opacity={phase(0, .12)}>{fmt(animatedEstimate)} %</text>
+              <text className="story-value" x={center + (point.high - point.estimate) / 32 * socialWidth * intervalScale + 10} y={68 + index * 60} opacity={phase(0, .12)}>{fmt(animatedEstimate)} %</text>
             </g>;
           })}
         </g> : <>
-          {(scene <= 1 ? [0, 50, 100, 150] : [0, 200, 400]).map((tick) => <g className="story-gridline" key={tick}><line x1="54" x2="534" y1={y(tick)} y2={y(tick)} /><text x="42" y={y(tick) + 5} textAnchor="end">{tick}</text></g>)}
+          {(scene <= 1 ? [0, 50, 100, 150] : [0, 200, 400]).map((tick) => <g className="story-gridline" key={tick}><line x1={plotLeft} x2={plotRight} y1={y(tick)} y2={y(tick)} /><text x="0" y={y(tick) + 4 * chartUnscale} textAnchor="start">{tick}</text></g>)}
           <g className="story-main-reveal" mask={`url(#${maskId}-main)`} data-progress={drawing.main - drawing.mainStart}><path className={scene === 0 ? "story-national" : "story-girls"} d={linePath(values, (point) => x(point.year), (point) => y(point.rate))} />{values.map((point) => <g key={point.year} {...pointEvents(hospitalInfo(point, scene === 0 ? "France · tous âges, tous sexes" : scene === 1 ? "Femmes · tous âges" : "Filles · 11–14 ans"), drawing.main === 1 && drawing.mainStart === 0)}><circle className="story-point-hit" cx={x(point.year)} cy={y(point.rate)} r="12" /><circle className={scene === 0 ? "story-dot-muted" : "story-dot"} cx={x(point.year)} cy={y(point.rate)} r="4" /></g>)}</g>
           {(scene === 1 || scene === 3) && <g className="story-boys-reveal" mask={`url(#${maskId}-boys)`} data-progress={drawing.boys - drawing.boysStart}><path className="story-boys" d={linePath(boys, (point) => x(point.year), (point) => y(point.rate))} />{boys.map((point) => <g key={point.year} {...pointEvents(hospitalInfo(point, scene === 1 ? "Hommes · tous âges" : "Garçons · 11–14 ans"), drawing.boys === 1 && drawing.boysStart === 0)}><circle className="story-point-hit" cx={x(point.year)} cy={y(point.rate)} r="12" /><circle className="story-dot-muted" cx={x(point.year)} cy={y(point.rate)} r="4" /></g>)}</g>}
-          {values.map((point) => <text x={x(point.year)} y="301" textAnchor="middle" key={point.year}>{point.year}</text>)}
+          {values.map((point) => <text x={x(point.year)} y="301" textAnchor={point.year === 2019 ? "start" : "middle"} key={point.year}>{point.year}</text>)}
         </>}
-        {(scene === 4 ? drawing.social === 1 : drawing.main === 1 && drawing.mainStart === 0 && (scene !== 1 && scene !== 3 || drawing.boys === 1)) && <StoryAnnotations scene={scene} mainY={y(values.at(-1)!.rate)} comparisonY={y(boys.at(-1)!.rate)} socialEnds={[136 + social[0].estimate / 32 * 382, 136 + social.at(-1)!.estimate / 32 * 382]} />}
+        {(scene === 4 ? drawing.social === 1 : drawing.main === 1 && drawing.mainStart === 0 && (scene !== 1 && scene !== 3 || drawing.boys === 1)) && <StoryAnnotations plotRight={plotRight} scene={scene} mainY={y(values.at(-1)!.rate)} comparisonY={y(boys.at(-1)!.rate)} socialEnds={[136 + social[0].estimate / 32 * socialWidth, 136 + social.at(-1)!.estimate / 32 * socialWidth]} />}
       </svg>
       {scene === 4 ? <><dl className="story-mobile-values">{social.map((point) => <div key={point.financial}><dt>{FINANCIAL_SHORT[point.financial]}</dt><dd>{fmt(point.estimate)} %<small>IC 95 % : {fmt(point.low)}–{fmt(point.high)} %</small></dd></div>)}</dl><p className="story-chart-note">Le point indique le pourcentage estimé ; le trait montre son intervalle de confiance à 95 %, c’est-à-dire l’incertitude de l’enquête.</p></> : <><div className="story-legend"><span className={scene === 0 ? "is-national" : ""}>{scene === 0 ? "Tous âges, tous sexes" : scene === 1 ? "Femmes · tous âges" : "Filles · 11–14 ans"} · {fmt(values.at(-1)!.rate)} en 2024</span>{(scene === 1 || scene === 3) && <span className="is-boys">{scene === 1 ? "Hommes · tous âges" : "Garçons"} · {fmt(boys.at(-1)!.rate)} en 2024</span>}</div><p className="story-chart-note">{scene === 0 ? "MCO : médecine, chirurgie et obstétrique, hors hospitalisations psychiatriques. Taux standardisé pour la comparaison nationale." : scene === 1 ? "Femmes et hommes : taux standardisés, sur la même échelle de 0 à 150 pour 100 000." : scene === 2 ? "Nouvelle population : taux brut par âge et sexe. Nouvelle échelle : de 0 à 500 pour 100 000." : "Les deux courbes partagent la même échelle et la même période."}</p></>}
 
@@ -1245,9 +1324,9 @@ function GuidedOpening({ data, onExplore }: { data: ExperienceData; onExplore: (
 
 const INTRO_LEAD = "Enquêtes sur les troubles déclarés, urgences et hospitalisations pour gestes auto-infligés, décès par suicide : quatre regards sur certaines manifestations de la souffrance psychique. Chaque source éclaire une dimension différente. Aucune ne suffit à décrire toute la santé mentale.";
 
-function IntroLeadLines({ register }: { register: (element: HTMLSpanElement | null) => void }) {
+function IntroLeadLines({ register, text = INTRO_LEAD }: { register: (element: HTMLSpanElement | null) => void; text?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [lines, setLines] = useState([INTRO_LEAD]);
+  const [lines, setLines] = useState([text]);
   useLayoutEffect(() => {
     const parent = ref.current?.parentElement;
     if (!parent) return;
@@ -1260,13 +1339,13 @@ function IntroLeadLines({ register }: { register: (element: HTMLSpanElement | nu
       const probe = document.createElement("span");
       probe.style.cssText = "position:absolute;display:block;visibility:hidden;pointer-events:none;white-space:normal;";
       probe.style.width = `${parent.clientWidth}px`;
-      probe.textContent = INTRO_LEAD;
+      probe.textContent = text;
       parent.appendChild(probe);
       const node = probe.firstChild!;
       const range = document.createRange();
       const wrapped: string[] = [];
       let previousTop = -Infinity;
-      for (const word of INTRO_LEAD.matchAll(/\S+/g)) {
+      for (const word of text.matchAll(/\S+/g)) {
         range.setStart(node, word.index!);
         range.setEnd(node, word.index! + word[0].length);
         const top = range.getBoundingClientRect().top;
@@ -1281,8 +1360,103 @@ function IntroLeadLines({ register }: { register: (element: HTMLSpanElement | nu
     const observer = new ResizeObserver(measure);
     observer.observe(parent);
     return () => observer.disconnect();
+  }, [text]);
+  return <span className="intro-flight intro-lead-flight" ref={(element) => { ref.current = element; register(element); }}><span className="sr-only">{text}</span>{lines.map((line, index) => <span className="intro-lead-line" key={`${index}-${line}`} aria-hidden="true">{line}{index < lines.length - 1 ? " " : ""}</span>)}</span>;
+}
+
+// Both opening and closing fly along a straight line from the viewport centre.
+function centeredFlight(element: HTMLElement, stageBounds: DOMRect, arrival: number, large: number, fromBottom = false) {
+  const target = element.parentElement!.getBoundingClientRect();
+  const dx = stageBounds.left + stageBounds.width / 2 - (target.left + element.offsetLeft + element.offsetWidth / 2);
+  const originY = fromBottom ? stageBounds.bottom + element.offsetHeight * large / 2 + 24 : stageBounds.top + stageBounds.height / 2;
+  const dy = originY - (target.top + element.offsetTop + element.offsetHeight / 2);
+  element.style.transform = arrival === 1 ? "none" : `translate(${dx * (1 - arrival)}px, ${dy * (1 - arrival)}px) scale(${1 + (large - 1) * (1 - arrival)})`;
+}
+
+function slidingLead(element: HTMLElement, local: number) {
+  const target = element.parentElement!.getBoundingClientRect();
+  element.style.transform = "none";
+  element.style.opacity = "1";
+  const lines = element.querySelectorAll<HTMLElement>(".intro-lead-line");
+  lines.forEach((line, index) => {
+    const delay = lines.length > 1 ? index / (lines.length - 1) * .4 : 0;
+    const phase = Math.max(0, Math.min(1, (local - delay) / .6));
+    const arrival = phase * phase * (3 - 2 * phase);
+    const travel = target.left + line.offsetLeft + line.offsetWidth * 1.09 + 32;
+    line.style.transform = arrival === 1 ? "none" : `translateX(${-travel * (1 - arrival)}px) scale(${1 + .18 * (1 - arrival)})`;
+    line.style.opacity = String(arrival);
+  });
+}
+
+function ReadingConclusion() {
+  const track = useRef<HTMLElement>(null);
+  const stage = useRef<HTMLDivElement>(null);
+  const flights = useRef<Array<HTMLSpanElement | null>>([]);
+  const links = useRef<HTMLElement>(null);
+  const progressLine = useRef<HTMLSpanElement>(null);
+  useLayoutEffect(() => {
+    const root = track.current, viewport = stage.current;
+    if (!root || !viewport) return;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+    const starts = [0, .16, .30, .46, .60, .72];
+    const synchronize = () => {
+      frame = 0;
+      const bounds = root.getBoundingClientRect();
+      const stageBounds = viewport.getBoundingClientRect();
+      const headerHeight = parseFloat(getComputedStyle(viewport).top) || 60;
+      const distance = Math.max(1, root.offsetHeight - viewport.offsetHeight);
+      const progress = motion.matches ? 1 : Math.max(0, Math.min(1, (headerHeight - bounds.top) / distance));
+      viewport.dataset.conclusionProgress = progress.toFixed(3);
+      viewport.style.setProperty("--portrait-progress", String(Math.max(0, Math.min(1, (progress - .40) / .56))));
+      viewport.style.setProperty("--conclusion-portrait-progress", String(Math.max(0, Math.min(1, (progress - .40) / .56))));
+      flights.current.forEach((element, index) => {
+        if (!element) return;
+        const local = Math.max(0, Math.min(1, (progress - starts[index]) / .26));
+        const arrival = local * local * (3 - 2 * local);
+        element.dataset.arrival = arrival.toFixed(3);
+        if (index === 3) { slidingLead(element, local); return; }
+        const large = Math.max(1, Math.min(28, stageBounds.width * .88 / Math.max(1, element.offsetWidth), stageBounds.height * .6 / Math.max(1, element.offsetHeight)));
+        centeredFlight(element, stageBounds, arrival, large, index >= 4);
+        element.style.opacity = progress >= starts[index] ? String(Math.min(1, local * 10 + (index === 0 ? 1 : 0))) : "0";
+      });
+      if (links.current) {
+        const arrival = Math.max(0, Math.min(1, (progress - .90) / .08));
+        links.current.style.opacity = String(arrival);
+        links.current.style.visibility = arrival > 0 ? "visible" : "hidden";
+        links.current.inert = arrival < 1;
+      }
+      if (progressLine.current) progressLine.current.style.transform = `scaleX(${progress})`;
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(synchronize); };
+    const observer = new ResizeObserver(schedule);
+    observer.observe(root); observer.observe(viewport);
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    motion.addEventListener("change", schedule);
+    synchronize();
+    return () => {
+      observer.disconnect(); cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      motion.removeEventListener("change", schedule);
+    };
   }, []);
-  return <span className="intro-flight intro-lead-flight" ref={(element) => { ref.current = element; register(element); }}><span className="sr-only">{INTRO_LEAD}</span>{lines.map((line, index) => <span className="intro-lead-line" key={`${index}-${line}`} aria-hidden="true">{line}{index < lines.length - 1 ? " " : ""}</span>)}</span>;
+  const flight = (text: string, index: number) => <span className="intro-flight-target"><span className="intro-flight" ref={element => { flights.current[index] = element; }}>{text}</span></span>;
+  return <section className="reading-conclusion" id="conclusion" ref={track} aria-labelledby="conclusion-heading">
+    <div className="conclusion-stage" ref={stage}>
+      <div className="conclusion-composition">
+        <p className="chapter">{flight("CE QUE L’ON RETIENT", 0)}</p>
+        <h2 id="conclusion-heading">{flight("Un chiffre national", 1)}{flight("Des réalités différentes", 2)}</h2>
+        <p className="conclusion-copy"><IntroLeadLines text="Les évolutions diffèrent selon les populations et les territoires. Ces données montrent une souffrance déclarée, un recours aux soins ou une mortalité enregistrée : elles ne mesurent pas la même réalité." register={element => { flights.current[3] = element; }} /></p>
+        <p className="conclusion-takeaway">{flight("Rendre visible, c’est aussi montrer", 4)}{flight("ce qu’un chiffre laisse hors champ", 5)}</p>
+        <nav className="conclusion-links" ref={links} aria-label="Poursuivre après la conclusion"><a href="#territoires">Revenir aux données <span aria-hidden="true">↑</span></a><a href="#sources">Consulter les sources <span aria-hidden="true">↓</span></a></nav>
+      </div>
+      <ConclusionPortrait />
+      <div className="intro-footer"><p>Une mesure éclaire. Elle laisse aussi une part hors champ.</p><a href="#sources">Passer aux sources ↓</a></div>
+      <span className="intro-progress" aria-hidden="true" ref={progressLine} />
+    </div>
+  </section>;
 }
 
 function IntroOpening() {
@@ -1342,28 +1516,14 @@ function IntroOpening() {
         const local = Math.max(0, Math.min(1, (progress - starts[index]) / flightDuration));
         const arrival = local * local * (3 - 2 * local);
         if (index === 5) {
-          element.style.transform = "none";
-          element.style.opacity = "1";
           element.dataset.arrival = arrival.toFixed(3);
-          const lines = element.querySelectorAll<HTMLElement>(".intro-lead-line");
-          lines.forEach((line, lineIndex) => {
-            const delay = lines.length > 1 ? lineIndex / (lines.length - 1) * .4 : 0;
-            const phase = Math.max(0, Math.min(1, (local - delay) / .6));
-            const eased = phase * phase * (3 - 2 * phase);
-            const travel = target.left + line.offsetLeft + line.offsetWidth * 1.09 + 32;
-            line.style.transform = eased === 1 ? "none" : `translateX(${-travel * (1 - eased)}px) scale(${1 + .18 * (1 - eased)})`;
-            line.style.opacity = String(eased);
-          });
+          slidingLead(element, local);
           return;
         }
-        const dx = stageBounds.left + stageBounds.width / 2 - (target.left + element.offsetLeft + element.offsetWidth / 2);
-        const originY = stageBounds.top + stageBounds.height / 2;
-        const dy = originY - (target.top + element.offsetTop + element.offsetHeight / 2);
         const large = index === 0 || index === 3 || index === 4
           ? Math.max(1, Math.min(stageBounds.width * .9 / Math.max(1, target.width), stageBounds.height * .7 / Math.max(1, target.height)))
           : Math.max(2.5, Math.min(28, stageBounds.width / Math.max(1, target.width) * 2.2));
-        const scale = 1 + (large - 1) * (1 - arrival);
-        element.style.transform = arrival === 1 ? "none" : `translate(${dx * (1 - arrival)}px, ${dy * (1 - arrival)}px) scale(${scale})`;
+        centeredFlight(element, stageBounds, arrival, large);
         element.style.opacity = progress >= starts[index] ? String(Math.min(1, local * 10 + (index === 0 ? 1 : 0))) : "0";
         element.dataset.arrival = arrival.toFixed(3);
       });

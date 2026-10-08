@@ -10,13 +10,13 @@ function RightBracket({ x, top, bottom, size = 14 }: { x: number; top: number; b
 }
 
 // Marks follow actual plotted values; they do not alter the data paths or their scales.
-export function StoryAnnotations({ scene, mainY, comparisonY, socialEnds }: {
-  scene: Scene; mainY: number; comparisonY: number; socialEnds: [number, number];
+export function StoryAnnotations({ scene, mainY, comparisonY, socialEnds, plotRight = 534 }: {
+  plotRight?: number; scene: Scene; mainY: number; comparisonY: number; socialEnds: [number, number];
 }) {
   return <g className="story-annotations" aria-hidden="true" key={scene}>
-    {scene === 0 || scene === 2 ? <Oval x={534} y={mainY} />
+    {scene === 0 || scene === 2 ? <Oval x={plotRight} y={mainY} />
       : scene === 4 ? <><Oval x={socialEnds[0]} y={63} /><Oval x={socialEnds[1]} y={243} /></>
-      : <RightBracket x={551} top={Math.min(mainY, comparisonY) - 4} bottom={Math.max(mainY, comparisonY) + 4} />}
+      : <RightBracket x={plotRight + 17} top={Math.min(mainY, comparisonY) - 4} bottom={Math.max(mainY, comparisonY) + 4} />}
   </g>;
 }
 
