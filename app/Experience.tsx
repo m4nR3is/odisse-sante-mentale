@@ -19,6 +19,8 @@ export type ExperienceData = {
   odissePatients: SeriesPoint[];
   national: NationalPoint[];
   social: SocialPoint[];
+  socialRegions: { territoryCode: string; territory: string; indicator: string; estimate: number; low: number; high: number; sample: number }[];
+  regionalSocial: (SocialPoint & { territoryCode: string; territory: string; source: string; sourcePage: number })[];
   declaredHistory: DeclaredHistoryPoint[];
   departments: Department[];
   emergencyDepartments: Department[];
@@ -377,80 +379,67 @@ function usePanelReveal(key: string) {
 function SocialDeclaredView({ data, indicator, onIndicator, position }: { data: ExperienceData; indicator: string; onIndicator: (indicator: string) => void; position: number }) {
   const indicators = ["Dépression", "Anxiété", "Pensées suicidaires"];
   const reveal = usePanelReveal(indicator);
-  const [outgoing, setOutgoing] = useState<{ indicator: string; progress: number } | null>(null);
-  const [exitProgress, setExitProgress] = useState(0);
-  const previousFrame = useRef({ indicator, progress: reveal.progress });
-  const clipId = useId();
-  useLayoutEffect(() => {
-    const previous = previousFrame.current;
-    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (previous.indicator === indicator || previous.progress === 0 || motion.matches) { setOutgoing(null); return; }
-    setOutgoing(previous);
-    setExitProgress(0);
-    let frame = 0;
-    const start = performance.now();
-    const finish = () => { cancelAnimationFrame(frame); setOutgoing(null); };
-    const tick = (now: number) => {
-      const t = Math.min(1, (now - start) / 1000);
-      setExitProgress(t * t * (3 - 2 * t));
-      if (t < 1) frame = requestAnimationFrame(tick);
-      else finish();
-    };
-    frame = requestAnimationFrame(tick);
-    motion.addEventListener("change", finish);
-    return () => { cancelAnimationFrame(frame); motion.removeEventListener("change", finish); };
-  }, [indicator]);
-  useLayoutEffect(() => { previousFrame.current = { indicator, progress: reveal.progress }; });
-  const [hovered, setHovered] = useState<{ x: number; y: number; point: SocialPoint } | null>(null);
-  useEffect(() => { setHovered(null); }, [indicator]);
-  const points = FINANCIAL_ORDER.map((financial) => data.social.find((point) => point.indicator === indicator && point.financial === financial)).filter((point): point is SocialPoint => Boolean(point));
-  const outgoingPoints = outgoing ? FINANCIAL_ORDER.map((financial) => data.social.find((point) => point.indicator === outgoing.indicator && point.financial === financial)).filter((point): point is SocialPoint => Boolean(point)) : [];
-  const outgoingMax = Math.max(32, ...outgoingPoints.map((point) => point.high));
-  const max = Math.max(32, ...points.map((point) => point.high));
-  const first = points[0], last = points.at(-1);
-  const ratio = first && last ? last.estimate / first.estimate : 0;
-  const x = (value: number) => 118 + value / max * 562;
-  return <div className="declared-explorer" ref={reveal.ref} data-reveal={reveal.progress}>
+  const [selected, setSelected] = useState("FR");
+  const [preview, setPreview] = useState<string | null>(null);
+  const [hovered, setHovered] = useState<{ x: number; y: number; point: SocialPoint; territory: string } | null>(null);
+  useEffect(() => { setHovered(null); setPreview(null); }, [indicator]);
+  const regions = data.socialRegions.filter((point) => point.indicator === indicator);
+  const activeCode = preview ?? selected;
+  const regional = data.regionalSocial.filter((point) => point.indicator === indicator && point.territoryCode === activeCode);
+  const territory = regions.find((point) => point.territoryCode === activeCode)?.territory ?? "France";
+  const national = FINANCIAL_ORDER.map((financial) => data.social.find((point) => point.indicator === indicator && point.financial === financial)!);
+  const comparing = activeCode !== "FR";
+  const active = comparing ? regional : national;
+  const first = active.find((p) => p.financial === FINANCIAL_ORDER[0]), last = active.find((p) => p.financial === FINANCIAL_ORDER[3]);
+  const ratio = first && last && first.estimate > 0 ? last.estimate / first.estimate : null;
+  // Fixed scale within an indicator, so hovering never moves the reference points.
+  const max = Math.ceil(Math.max(32, ...national.map((p) => p.high), ...data.regionalSocial.filter((p) => p.indicator === indicator).map((p) => p.high)) / 10) * 10;
+  const x = (value: number) => 118 + value / max * 510;
+  const source = regional[0]?.source;
+  const explanation = socialExplanation(indicator);
+  if (comparing) {
+    explanation.population += ` Comparaison affichée : ${territory}.`;
+    if (source) explanation.sources.push({ label: `${territory} · tableau régional · page ${regional[0].sourcePage}`, url: source });
+  }
+  explanation.reading += " La carte colore la prévalence régionale tous profils confondus, pas celle d’une catégorie financière. Le survol compare le gradient régional à la France ; un clic conserve la région. Les niveaux de gris et les écarts visibles ne constituent pas un test statistique.";
+  explanation.limits += " Les tableaux régionaux publient des estimations pondérées et leurs IC à 95 %. Une cellule non diffusée reste absente ; ce n’est pas zéro. Les petits échantillons peuvent donner des intervalles larges.";
+  const showTooltip = (point: SocialPoint, name: string, event: ReactPointerEvent<SVGGElement> | ReactFocusEvent<SVGGElement>) => {
+    const b = event.currentTarget.getBoundingClientRect();
+    setHovered({ x: 'clientX' in event ? event.clientX : b.left + b.width / 2, y: 'clientY' in event ? event.clientY : b.top, point, territory: name });
+  };
+  return <div className="declared-explorer social-has-map" ref={reveal.ref} data-reveal={reveal.progress} data-social-region={activeCode}>
     <div className="declared-head">
       <p className="chapter">DÉCLARÉ · BAROMÈTRE 2024</p>
-      <h3>Ce que l’enquête<br />rend visible.</h3>
-      <p>Prévalence déclarée chez les 18–79 ans, en France hors Mayotte, selon la situation financière perçue. Ce gradient social ne décrit ni une trajectoire individuelle ni une comparaison entre départements.</p>
-      <div className="declared-indicators" role="group" aria-label="Indicateur déclaré">
-        {indicators.map((item) => <button type="button" key={item} aria-pressed={indicator === item} onClick={() => onIndicator(item)}>{item}<ScrollIndicator progress={scrollRangeProgress(position, indicators.indexOf(item))} /></button>)}
-      </div>
-      {first && last && <div className="declared-ratio"><strong>× {fmt(ratio * reveal.progress, 1)}</strong><span>entre les personnes « en difficulté » et celles « à l’aise »</span></div>}
+      <h3>Ce que l’enquête<br />rend visible</h3>
+      <p>18–79 ans · situation financière perçue.<br />Survolez une région pour comparer son gradient à la France ; cliquez pour la conserver.</p>
+      <div className="declared-indicators" role="group" aria-label="Indicateur déclaré">{indicators.map((item) => <button type="button" key={item} aria-pressed={indicator === item} onClick={() => onIndicator(item)}>{item}<ScrollIndicator progress={scrollRangeProgress(position, indicators.indexOf(item))} /></button>)}</div>
+      <TerritoryMap level="regions" signedValues={false} items={regions.map((point) => ({ code: point.territoryCode, name: point.territory, value: point.estimate, available: true, detail: `${fmt(point.estimate)} % · ${intervalLabel(point)}` }))} selected={selected} preview={preview} legend="Prévalence régionale · 2024 · %" context={`${declaredMeasure(indicator)} · tous profils`} onPreview={setPreview} onSelect={(code) => { setSelected(code); setPreview(null); setHovered(null); }} />
+      <div className="declared-ratio"><strong>{ratio == null ? "—" : `× ${fmt(ratio * reveal.progress)}`}</strong><span>{territory} · {ratio == null ? "rapport non calculable : valeur non diffusée" : "en difficulté / à l’aise"}</span></div>
     </div>
-    <div className="declared-chart has-chart-help"><ChartHelp key={indicator} explanation={socialExplanation(indicator)} />
-      <p><b>{indicator === "Anxiété" ? "Trouble anxieux généralisé" : indicator === "Dépression" ? "Épisode dépressif caractérisé" : indicator}</b><span>12 derniers mois · estimation et IC à 95 %</span></p>
-      <svg viewBox="0 0 720 260" role="img" aria-label={`${indicator} selon la situation financière en 2024`}>
-        <defs><clipPath id={clipId}><rect x="118" y="20" width="602" height="205" /></clipPath></defs>
-        {outgoing && <g className="declared-outgoing" clipPath={`url(#${clipId})`} aria-hidden="true" pointerEvents="none" data-indicator={outgoing.indicator} data-exit={exitProgress}>{outgoingPoints.map((point, index) => {
-          const p = Math.max(0, Math.min(1, (outgoing.progress - index * .15) / .55));
-          const travel = Math.min(1, p / .75), arrival = Math.max(0, (p - .75) / .25);
-          const startX = 118 + point.estimate * travel / outgoingMax * 562;
-          const cx = startX + (760 - startX) * exitProgress, cy = 48 + index * 52;
-          return <g className="declared-row" key={point.financial} opacity={p > 0 ? Math.min(1, (1 - exitProgress) * 4) : 0}><line x1={cx + (point.low - point.estimate) / outgoingMax * 562 * arrival} x2={cx + (point.high - point.estimate) / outgoingMax * 562 * arrival} y1={cy} y2={cy} opacity={arrival} /><circle cx={cx} cy={cy} r={2 + 4 * arrival} /><text className="declared-value" x={cx + (point.high - point.estimate) / outgoingMax * 562 * arrival + 10} y={cy + 4}>{fmt(point.estimate * travel)} %</text></g>;
-        })}</g>}
-        {[0, 10, 20, 30].filter((tick) => tick <= max).map((tick) => <g className="declared-grid" key={tick}><line x1={x(tick)} x2={x(tick)} y1="24" y2="220" /><text x={x(tick)} y="244" textAnchor="middle">{tick} %</text></g>)}
-        {points.map((point, index) => {
-          const p = Math.max(0, Math.min(1, (reveal.progress - index * .15) / .55));
-          const travel = Math.min(1, p / .75), arrival = Math.max(0, (p - .75) / .25);
-          const estimate = point.estimate * travel, cx = x(estimate), cy = 48 + index * 52;
-          return <g className="declared-row" key={point.financial} opacity={p > 0 ? 1 : 0}><text x="4" y={cy + 4} opacity={Math.min(1, p * 4)}>{FINANCIAL_SHORT[point.financial]}</text><line x1={cx + (point.low - point.estimate) / max * 562 * arrival} x2={cx + (point.high - point.estimate) / max * 562 * arrival} y1={cy} y2={cy} opacity={arrival} /><g className="declared-social-point" role="img" tabIndex={p > 0 ? 0 : -1} aria-label={`${indicator}, ${FINANCIAL_SHORT[point.financial]}, ${fmt(point.estimate)} %, IC 95 % : ${fmt(point.low)}–${fmt(point.high)} %`} onPointerMove={(event) => setHovered({ x: event.clientX, y: event.clientY, point })} onPointerLeave={() => setHovered(null)} onFocus={(event) => { const bounds = event.currentTarget.getBoundingClientRect(); setHovered({ x: bounds.left + bounds.width / 2, y: bounds.top, point }); }} onBlur={() => setHovered(null)}><circle className="declared-point-hit" cx={cx} cy={cy} r="12" /><circle className="declared-point-dot" cx={cx} cy={cy} r={2 + 4 * arrival} style={{ fill: arrival === 0 ? "var(--ink)" : `color-mix(in srgb, var(--ink) ${(1 - arrival) * 100}%, var(--accent))` }} /></g><text className="declared-value" x={Math.min(692, cx + (point.high - point.estimate) / max * 562 * arrival + 10)} y={cy + 4}>{fmt(estimate)} %</text></g>;
+    <div className="declared-chart has-chart-help"><ChartHelp key={`${indicator}-${activeCode}`} explanation={explanation} />
+      <p><b>{declaredMeasure(indicator)}</b><span>12 derniers mois · estimation et IC à 95 %</span></p>
+      <div className="social-comparison-key"><span style={{ color: comparing ? "var(--muted)" : "var(--accent)" }}>● France</span>{comparing && <span style={{ color: preview ? "var(--ink)" : "var(--accent)" }}>● {territory}{preview ? " · aperçu" : ""}</span>}</div>
+      <svg viewBox="0 0 720 260" role="img" aria-label={`${declaredMeasure(indicator)} selon la situation financière en 2024 · ${territory} et France`}>
+        {Array.from({ length: max / 10 + 1 }, (_, i) => i * 10).map((tick) => <g className="declared-grid" key={tick}><line x1={x(tick)} x2={x(tick)} y1="20" y2="225" /><text x={x(tick)} y="248" textAnchor="middle">{tick} %</text></g>)}
+        {FINANCIAL_ORDER.map((financial, index) => {
+          const progress = Math.max(0, Math.min(1, (reveal.progress - index * .15) / .55));
+          const cy = 45 + index * 54;
+          const local = regional.find((point) => point.financial === financial);
+          return <g key={financial} opacity={progress}><text className="social-financial-label" x="4" y={cy + 4}>{FINANCIAL_SHORT[financial]}</text>{[national[index], ...(comparing && local ? [local] : [])].map((point, series) => {
+            const name = series ? territory : "France";
+            const color = series ? preview ? "var(--ink)" : "var(--accent)" : comparing ? "var(--muted)" : "var(--accent)";
+            const y = cy + (comparing ? series ? 7 : -7 : 0);
+            const travel = Math.min(1, progress / .75), arrival = Math.max(0, (progress - .75) / .25);
+            const cx = x(point.estimate * travel);
+            return <g key={name} className={`declared-row ${series ? "social-regional-point" : "social-national-point"}`} style={{ color }} role="img" tabIndex={progress > 0 ? 0 : -1} aria-label={`${name}, ${FINANCIAL_SHORT[financial]}, ${fmt(point.estimate)} %, ${intervalLabel(point)}`} onPointerMove={(e) => showTooltip(point, name, e)} onPointerLeave={() => setHovered(null)} onFocus={(e) => showTooltip(point, name, e)} onBlur={() => setHovered(null)}>{hasValidInterval(point) && <line style={{ stroke: color }} x1={cx + (point.low - point.estimate) / max * 510 * arrival} x2={cx + (point.high - point.estimate) / max * 510 * arrival} y1={y} y2={y} opacity={arrival} />}<circle className="declared-point-hit" cx={cx} cy={y} r="11" /><circle cx={cx} cy={y} r="4.5" style={{ fill: color }} /><text className="declared-value" x={x(point.high) + 9} y={y + 3} style={{ fill: color }}>{fmt(point.estimate * travel)} %</text></g>;
+          })}{comparing && !local && <text className="social-missing" x="635" y={cy + 10}>Non diffusé</text>}</g>;
         })}
       </svg>
-      <dl className="evidence-mobile-values">{points.map((point, index) => {
-        const p = Math.max(0, Math.min(1, (reveal.progress - index * .15) / .55));
-        return <div key={point.financial} tabIndex={p > 0 ? 0 : -1} onPointerMove={(event) => setHovered({ x: event.clientX, y: event.clientY, point })} onPointerLeave={() => setHovered(null)} onFocus={(event) => { const bounds = event.currentTarget.getBoundingClientRect(); setHovered({ x: bounds.left + bounds.width / 2, y: bounds.top, point }); }} onBlur={() => setHovered(null)} style={{ opacity: p, transform: `translateX(${(1 - p) * -35}px)` }}><dt>{FINANCIAL_SHORT[point.financial]}</dt><dd>{fmt(point.estimate * Math.min(1, p / .75))} % <small>IC 95 % : {fmt(point.low)}–{fmt(point.high)} %</small></dd></div>;
-      })}</dl>
-      {outgoing && <dl className="declared-mobile-outgoing" aria-hidden="true" style={{ opacity: Math.min(1, (1 - exitProgress) * 4), transform: `translateX(${exitProgress * 110}%)` }}>{outgoingPoints.map((point, index) => {
-        const p = Math.max(0, Math.min(1, (outgoing.progress - index * .15) / .55));
-        return <div key={point.financial} style={{ opacity: p }}><dt>{FINANCIAL_SHORT[point.financial]}</dt><dd>{fmt(point.estimate * Math.min(1, p / .75))} % <small>IC 95 % : {fmt(point.low)}–{fmt(point.high)} %</small></dd></div>;
-      })}</dl>}
-      {hovered && <ViewportTooltip x={hovered.x} y={hovered.y} className="declared-tooltip"><span>{FINANCIAL_SHORT[hovered.point.financial]}</span><small>{indicator} · France · 2024</small><strong>{fmt(hovered.point.estimate)} %</strong><small>Intervalle de confiance à 95 % : {fmt(hovered.point.low)}–{fmt(hovered.point.high)} %</small></ViewportTooltip>}
-      <div className="declared-caution"><b>Pont avec les inégalités sociales</b><span>Une association observée, pas une explication causale des hospitalisations, urgences ou décès.</span></div>
+      <dl className="evidence-mobile-values">{FINANCIAL_ORDER.map((financial, i) => { const local = regional.find((p) => p.financial === financial); return <div key={financial} tabIndex={0} style={{ opacity: Math.max(0, Math.min(1, (reveal.progress - i * .15) / .55)) }} onPointerMove={(e) => setHovered({ x: e.clientX, y: e.clientY, point: local ?? national[i], territory: local ? territory : "France" })} onPointerLeave={() => setHovered(null)} onFocus={(e) => { const r = e.currentTarget.getBoundingClientRect(); setHovered({ x: r.left + r.width / 2, y: r.top, point: local ?? national[i], territory: local ? territory : "France" }); }} onBlur={() => setHovered(null)}><dt>{FINANCIAL_SHORT[financial]}</dt><dd><span>France {fmt(national[i].estimate)} %</span>{comparing && <span className="social-mobile-region">{territory} {local ? `${fmt(local.estimate)} %` : "non diffusé"}</span>}<small>{local ? "" : "France · "}{intervalLabel(local ?? national[i])}</small></dd></div>; })}</dl>
+      {hovered && <ViewportTooltip x={hovered.x} y={hovered.y} className="declared-tooltip"><span>{FINANCIAL_SHORT[hovered.point.financial]}</span><small>{declaredMeasure(indicator)} · {hovered.territory} · 2024</small><strong>{fmt(hovered.point.estimate)} %</strong><small>{intervalLabel(hovered.point)}</small></ViewportTooltip>}
+      <div className="declared-caution"><b>Une association observée</b><span>Les écarts ne démontrent ni causalité ni différence statistiquement significative.</span>{source && <a href={source} target="_blank" rel="noreferrer">Tableau régional · p. {regional[0].sourcePage} ↗</a>}</div>
     </div>
-    <p className="monthly-method"><b>Lecture.</b> Il s’agit de données déclaratives issues d’une enquête nationale. Elles rendent visible une souffrance qui ne se confond pas avec le recours aux soins. Source : Baromètre de Santé publique France 2024, Odissé.</p>
+    <p className="monthly-method"><b>Lecture.</b> La carte montre les niveaux régionaux ; le graphique compare les situations financières. France : hors Mayotte. Sources et limites : bouton « ? ».</p>
   </div>;
 }
 
@@ -847,7 +836,7 @@ function TerritoryAppendix({ data, guidedView }: { data: ExperienceData; guidedV
     </div>
     <div className="explorer-scroll-status"><span><b>{String(stepIndex + 1).padStart(2, "0")} / {EXPLORER_STEPS.length}</b> · {step.label}</span><span>Défilez pour {stepIndex === EXPLORER_STEPS.length - 1 ? "continuer" : "changer de regard"} ↓</span></div>
     </div>
-    <p className="source-note"><b>Lecture.</b> Les vagues déclarées de 2005–2021 ne sont pas raccordées au Baromètre 2024, dont le protocole diffère. Aux urgences, PACA et Corse sont exclues des comparaisons 2020–2024 en raison d’une rupture de codage depuis 2022. Le total national exclut ces régions depuis 2022 et intègre la Martinique depuis 2023 : son évolution sur 2020–2024 n’est donc pas calculée. Le dénominateur est celui des passages avec au moins un diagnostic renseigné. Dans la distribution, chaque point représente un département (ou un profil âge × sexe) avec une évolution calculable aux deux dates. Le trait France est un repère national distinct des départements. Chaque bouton ouvre une mesure distincte. MCO désigne la médecine, la chirurgie et l’obstétrique. Les gestes auto-infligés incluent les tentatives de suicide et les automutilations non suicidaires. Les hospitalisations en psychiatrie sont hors du champ MCO. Les séjours MCO, les passages aux urgences, les décès par suicide et les patients hospitalisés ne forment pas un entonnoir individuel et n’ont pas tous le même dénominateur. Pour les taux de population, pour les séjours et les décès, « Tous les âges » utilise le taux standardisé et les classes d’âge le taux brut. Les urgences expriment une part pour 100 000 passages codés, pas un taux dans la population. Pour les décès, l’évolution est exprimée en points de taux pour 100 000, et non en pourcentage relatif. Pour les décès par suicide, un département dont l’effectif est inférieur à 10 à l’une des deux dates reste visible dans la courbe, mais est exclu de la comparaison et de la distribution. Ce seuil est une règle de prudence de cette interface, pas un test statistique. Les références nationales par âges regroupés sont approchées à partir des effectifs et taux diffusés, arrondis par la source. Source : Odissé, Santé publique France.</p>
+    <p className="source-note"><b>Lecture.</b> Chaque source mesure une réalité différente. Les unités, périmètres et limites sont précisés dans les boutons « ? ». Source : Odissé, Santé publique France.</p>
   </section>;
 }
 
@@ -940,7 +929,7 @@ function MethodSection({ data }: { data: ExperienceData }) {
         <p className="method-takeaway" style={{ opacity: Math.max(.15, eased) }}>{step.takeaway}</p>
       </div>
     </div>
-    <div className="method-source-section"><p className="chapter method-reveal">VÉRIFIER · RETROUVER · RÉUTILISER</p><div className="source-ledger"><h3 className="method-reveal">Revenir<br />aux sources</h3><ol><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/episodes-depressif-indicateurs-du-barometre-2024/" target="_blank" rel="noreferrer">Épisodes dépressifs · Baromètre 2024 ↗</a><span>Déclaré</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/trouble-anxieux-generalise-indicateurs-du-barometre-2024/" target="_blank" rel="noreferrer">Trouble anxieux généralisé · Baromètre 2024 ↗</a><span>Déclaré</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/conduites-sucidaires-indicateurs-du-barometre-2024/" target="_blank" rel="noreferrer">Pensées suicidaires · Baromètre 2024 ↗</a><span>Déclaré</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/sante-mentale-episodes-depressifs-caracterises-dans-les-12-derniers-mois_reg/" target="_blank" rel="noreferrer">Épisodes dépressifs · régions · 2005–2021 ↗</a><span>Historique</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/sante-mentale-pensees-suicidaires-et-tentatives-de-suicide_reg/" target="_blank" rel="noreferrer">Pensées et tentatives · régions · 2005–2021 ↗</a><span>Historique</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/sante-mentale-episodes-depressifs-caracterises-dans-les-12-derniers-mois_fra/" target="_blank" rel="noreferrer">Épisodes dépressifs · France hexagonale · 2005–2021 ↗</a><span>Historique · référence</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/sante-mentale-pensees-suicidaires-et-tentatives-de-suicide_fra/" target="_blank" rel="noreferrer">Pensées et tentatives · France hexagonale · 2005–2021 ↗</a><span>Historique · référence</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-hospitalisations-departement/" target="_blank" rel="noreferrer">Séjours hospitaliers · départements ↗</a><span>Territoires</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-hospitalisations-france/" target="_blank" rel="noreferrer">Séjours hospitaliers · France ↗</a><span>Référence</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-patients-hospitalises-france/" target="_blank" rel="noreferrer">Patients hospitalisés · France ↗</a><span>Âge × sexe</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-passages-aux-urgences-departement/" target="_blank" rel="noreferrer">Passages aux urgences · départements ↗</a><span>Territoires</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-passages-aux-urgences-france/" target="_blank" rel="noreferrer">Passages aux urgences · France ↗</a><span>Référence</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/suicides-deces-departement/" target="_blank" rel="noreferrer">Décès par suicide · départements ↗</a><span>Territoires</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/suicides-deces-france/" target="_blank" rel="noreferrer">Décès par suicide · France ↗</a><span>Référence</span></li></ol></div><p className="method-source-note method-reveal">Les séries nationales des Baromètres historiques complètent les séries régionales. Les 14 jeux utilisés sont reliés à leurs exports et à leurs transformations dans le registre de provenance, avec les contrôles des intervalles de confiance. Les contours de sélection proviennent de l’IGN / Admin Express COG et des codes INSEE 2018, via France GeoJSON, sous Licence Ouverte ; les gris représentent les évolutions comparables de la frise, selon une échelle propre à la vue active.</p><a className="method-source-manifest method-reveal" href="./data/sources.json" target="_blank" rel="noreferrer">Consulter le registre des 14 sources et des exports ↗</a><div className="method-reuse method-reveal"><h3>Des sources aux graphiques</h3><p>Une application statique, des données servies localement et des calculs reproductibles. React, TypeScript et SVG pour la lecture ; Python pour préparer les données.</p><a href="https://github.com/m4nR3is/odisse-sante-mentale" target="_blank" rel="noreferrer">Ouvrir le code, les données et les analyses ↗</a><p className="generation">Données web régénérées le {data.meta.generated} · Code MIT · Textes et visuels originaux CC-BY 4.0 · Données Odissé Licence Ouverte 2.0.</p></div></div>
+    <div className="method-source-section"><p className="chapter method-reveal">VÉRIFIER · RETROUVER · RÉUTILISER</p><div className="source-ledger"><h3 className="method-reveal">Revenir<br />aux sources</h3><ol><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/episodes-depressif-indicateurs-du-barometre-2024/" target="_blank" rel="noreferrer">Épisodes dépressifs · Baromètre 2024 ↗</a><span>Déclaré</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/trouble-anxieux-generalise-indicateurs-du-barometre-2024/" target="_blank" rel="noreferrer">Trouble anxieux généralisé · Baromètre 2024 ↗</a><span>Déclaré</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/conduites-sucidaires-indicateurs-du-barometre-2024/" target="_blank" rel="noreferrer">Pensées suicidaires · Baromètre 2024 ↗</a><span>Déclaré</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/sante-mentale-episodes-depressifs-caracterises-dans-les-12-derniers-mois_reg/" target="_blank" rel="noreferrer">Épisodes dépressifs · régions · 2005–2021 ↗</a><span>Historique</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/sante-mentale-pensees-suicidaires-et-tentatives-de-suicide_reg/" target="_blank" rel="noreferrer">Pensées et tentatives · régions · 2005–2021 ↗</a><span>Historique</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/sante-mentale-episodes-depressifs-caracterises-dans-les-12-derniers-mois_fra/" target="_blank" rel="noreferrer">Épisodes dépressifs · France hexagonale · 2005–2021 ↗</a><span>Historique · référence</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/sante-mentale-pensees-suicidaires-et-tentatives-de-suicide_fra/" target="_blank" rel="noreferrer">Pensées et tentatives · France hexagonale · 2005–2021 ↗</a><span>Historique · référence</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-hospitalisations-departement/" target="_blank" rel="noreferrer">Séjours hospitaliers · départements ↗</a><span>Territoires</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-hospitalisations-france/" target="_blank" rel="noreferrer">Séjours hospitaliers · France ↗</a><span>Référence</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-patients-hospitalises-france/" target="_blank" rel="noreferrer">Patients hospitalisés · France ↗</a><span>Âge × sexe</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-passages-aux-urgences-departement/" target="_blank" rel="noreferrer">Passages aux urgences · départements ↗</a><span>Territoires</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-passages-aux-urgences-france/" target="_blank" rel="noreferrer">Passages aux urgences · France ↗</a><span>Référence</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/suicides-deces-departement/" target="_blank" rel="noreferrer">Décès par suicide · départements ↗</a><span>Territoires</span></li><li className="method-reveal"><a href="https://odisse.santepubliquefrance.fr/explore/dataset/suicides-deces-france/" target="_blank" rel="noreferrer">Décès par suicide · France ↗</a><span>Référence</span></li></ol></div><p className="method-source-note method-reveal">Les séries nationales des Baromètres historiques complètent les séries régionales. Les 14 jeux Odissé et les 17 rapports régionaux du Baromètre 2024 sont reliés à leurs exports et à leurs transformations dans le registre de provenance, avec les contrôles des intervalles de confiance. Les contours de sélection proviennent de l’IGN / Admin Express COG et des codes INSEE 2018, via France GeoJSON, sous Licence Ouverte ; les gris représentent les évolutions comparables de la frise ou, dans Inégalités sociales 2024, les prévalences régionales tous profils confondus.</p><a className="method-source-manifest method-reveal" href="./data/sources.json" target="_blank" rel="noreferrer">Consulter le registre des sources et des exports ↗</a><div className="method-reuse method-reveal"><h3>Des sources aux graphiques</h3><p>Une application statique, des données servies localement et des calculs reproductibles. React, TypeScript et SVG pour la lecture ; Python pour préparer les données.</p><a href="https://github.com/m4nR3is/odisse-sante-mentale" target="_blank" rel="noreferrer">Ouvrir le code, les données et les analyses ↗</a><p className="generation">Données web régénérées le {data.meta.generated} · Code MIT · Textes et visuels originaux CC-BY 4.0 · Données Odissé Licence Ouverte 2.0.</p></div></div>
   </section>;
 }
 

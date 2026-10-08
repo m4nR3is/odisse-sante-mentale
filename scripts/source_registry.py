@@ -87,6 +87,12 @@ def write_source_registry(root: Path, payload_path: Path) -> None:
             source["raw_exports"].append({"path": str(path.relative_to(root)), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(), "url": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/" + str(path.relative_to(root))})
         sources.append(source)
     registry = {"generated": datetime.now(timezone.utc).strftime("%Y-%m-%d"), "scope": "14 jeux Odissé utilisés par les graphiques, complétés par les contours IGN/INSEE documentés pour la carte de sélection. Archives DREES et ancien fichier géographique non sourcé exclus de la livraison web.", "data_file": payload_path.name, "data_sha256": hashlib.sha256(payload_path.read_bytes()).hexdigest(), "transformations": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/scripts/build_web_data.py", "notes": ["Les taux et effectifs diffusés peuvent être arrondis. Les références regroupées par âge sont approchées ; la référence décès des 0–17 ans n’est pas reconstruite.", "Les évolutions et rapports présentés sont calculés à partir des données préparées, sans inférence causale.", "Les empreintes identifient les exports effectivement utilisés ; la date generated est celle de préparation du fichier web, pas celle de collecte de l’enquête."], "sources": sources}
+    regional_path = root / "data/raw/barometre-regional/social-regional-extracted.json"
+    regional = json.loads(regional_path.read_text())
+    registry["regional_reports"] = {"publisher": "Santé publique France", "output_field": "regionalSocial", "raw_export": str(regional_path.relative_to(root)), "sha256": hashlib.sha256(regional_path.read_bytes()).hexdigest(), "transformations": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/scripts/extract_regional_social.py", "reports": regional["reports"], "notes": regional["notes"]}
+    for source in sources:
+        if source["output_field"] == "social":
+            source["output_fields"] = ["social", "socialRegions"]
     geography_path = payload_path.with_name("geography.json")
     if geography_path.exists():
         geography = json.loads(geography_path.read_text())

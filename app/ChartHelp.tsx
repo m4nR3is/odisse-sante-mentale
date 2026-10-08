@@ -7,7 +7,7 @@ type ChartExplanation = {
   population: string;
   reading: string;
   limits: string;
-  sources: { label: string; dataset: string }[];
+  sources: { label: string; dataset?: string; url?: string }[];
 };
 
 const hospitalScope = "MCO signifie médecine, chirurgie et obstétrique. Les hospitalisations en psychiatrie, enregistrées dans une autre base, sont exclues. Les gestes auto-infligés comprennent les tentatives de suicide et les automutilations, sans pouvoir les distinguer ici. Ces données reflètent aussi l’accès aux soins et le codage ; elles ne mesurent pas toute la souffrance psychique.";
@@ -102,5 +102,5 @@ export default function ChartHelp({ explanation }: { explanation: ChartExplanati
     if (event.target !== event.currentTarget) return;
     const bounds = event.currentTarget.getBoundingClientRect();
     if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) event.currentTarget.close();
-  }}><header><p>COMPRENDRE LES CHIFFRES</p><button type="button" className="chart-help-close" autoFocus onClick={() => dialog.current?.close()} aria-label="Fermer les précisions">Fermer ×</button><h2 id={`${id}-title`}>{explanation.title}</h2></header><dl>{[["Ce qui est mesuré", explanation.measure], ["Qui, où, quand", explanation.population], ["Lire le graphique et les chiffres", explanation.reading], ["Les limites", explanation.limits]].map(([label, copy]) => <div key={label}><dt>{label}</dt><dd>{copy}</dd></div>)}</dl><footer><p>Sources · Santé publique France / Odissé</p>{explanation.sources.map((source) => <a key={source.dataset} href={`https://odisse.santepubliquefrance.fr/explore/dataset/${source.dataset}/`} target="_blank" rel="noreferrer">{source.label} ↗</a>)}</footer></dialog>, document.body)}</>;
+  }}><header><p>COMPRENDRE LES CHIFFRES</p><button type="button" className="chart-help-close" autoFocus onClick={() => dialog.current?.close()} aria-label="Fermer les précisions">Fermer ×</button><h2 id={`${id}-title`}>{explanation.title}</h2></header><dl>{[["Ce qui est mesuré", explanation.measure], ["Qui, où, quand", explanation.population], ["Lire le graphique et les chiffres", explanation.reading], ["Les limites", explanation.limits]].map(([label, copy]) => <div key={label}><dt>{label}</dt><dd>{copy}</dd></div>)}</dl><footer><p>Sources · Santé publique France / Odissé</p>{explanation.sources.map((source) => <a key={source.url ?? source.dataset} href={source.url ?? `https://odisse.santepubliquefrance.fr/explore/dataset/${source.dataset}/`} target="_blank" rel="noreferrer">{source.label} ↗</a>)}</footer></dialog>, document.body)}</>;
 }

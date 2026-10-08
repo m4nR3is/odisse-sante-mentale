@@ -1,0 +1,40 @@
+{
+  "regions": 17,
+  "regionalFinancialPoints": 203,
+  "mapPoints": 51,
+  "regionalTables": 51,
+  "missingPublishedCells": 1,
+  "validIntervals": true,
+  "pdfHashesVerified": 17,
+  "existingHealthArraysUnchanged": [
+    "odissePatients",
+    "national",
+    "social",
+    "declaredHistory",
+    "departments",
+    "emergencyDepartments",
+    "emergencyNational",
+    "suicideDepartments",
+    "suicideNational"
+  ],
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "width": 1280,
+      "height": 500
+    },
+    {
+      "width": 390,
+      "height": 844
+    },
+    {
+      "width": 390,
+      "height": 600
+    }
+  ],
+  "browserChecks": "France default, region preview and retained selection, source links, 32px buttons, reset and Nd ratio passed",
+  "visualChecks": "51 table crops plus corrected full regional tables; desktop and mobile screenshots"
+}

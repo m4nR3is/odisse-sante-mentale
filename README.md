@@ -167,3 +167,10 @@ Le code source est publié sur GitHub et la visualisation sur Vercel :
 https://odisse-sante-mentale.vercel.app. L’accès sans connexion et le chargement
 des données ont été vérifiés sur ordinateur et mobile. La remise sur le dépôt
 GitLab officiel reste à effectuer.
+
+
+La vue « Inégalités sociales · 2024 » conserve la France par défaut. Une carte permanente permet de comparer les quatre situations financières dans une région avec la référence nationale : survol pour l’aperçu, clic pour conserver la région, bouton France pour revenir. Les gris représentent la prévalence régionale tous profils confondus, issue des trois jeux Odissé 2024. Les gradients régionaux proviennent des tableaux Ensemble des 17 rapports officiels de Santé publique France, avec leurs IC à 95 %, numéros de page et liens PDF. Le registre `production/data/sources.json` (ou `public/data/sources.json` dans le code source) documente ces rapports et les empreintes des PDF.
+
+Une cellule d’anxiété « à l’aise » en Guadeloupe n’est pas diffusée : elle n’est ni remplacée par zéro ni utilisée pour calculer le rapport financier. Pour l’Occitanie, la dépression « en difficulté » utilise le tableau 1, page 56, à 28,5 %, et non le résumé contradictoire à 28,8 %. Les écarts ne démontrent ni causalité ni significativité statistique.
+
+Reproduction des tableaux régionaux : `python3 scripts/fetch_regional_reports.py`, puis (avec PyMuPDF installé) `python scripts/extract_regional_social.py`, puis `python3 scripts/build_web_data.py`. Les PDF restent dans `../tmp/pdfs/barometre-regional/` ; le fichier brut extrait conserve les lignes sources, les pages et les empreintes.

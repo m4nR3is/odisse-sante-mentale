@@ -9,3 +9,6 @@
 - **Dépendances :** React, Vite et les autres bibliothèques conservent leurs licences respectives. Les notices de React, React DOM et Scheduler, incorporés au site compilé, sont reprises dans `public/LICENCES.txt`, également distribué avec le site. Les outils de construction gardent leurs notices dans les paquets installés par npm.
 
 Cette proposition indépendante n’a pas été produite ou validée par Santé publique France.
+
+
+Tableaux régionaux complémentaires : Santé publique France, Baromètre de Santé publique France 2024, 17 éditions régionales. Réutilisation des valeurs publiques avec attribution, liens et pages exactes dans data/sources.json. Les PDF originaux ne sont pas redistribués ; ils conservent leurs droits et notices propres. Les valeurs extraites et leur provenance sont dans data/raw/barometre-regional/social-regional-extracted.json du dépôt source.

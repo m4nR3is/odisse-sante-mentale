@@ -56,3 +56,8 @@ Le dépôt contient les commandes de construction, les transformations, les règ
 ## Licence
 
 Code original : **MIT**. Textes et visuels originaux : **CC-BY 4.0**. Données Odissé : **Licence Ouverte 2.0**, avec attribution à Santé publique France et conservation des liens sources. Les dépendances et archives tierces conservent leurs licences propres. Les textes et notices figurent dans `LICENSE`, `LICENSES.md` et `public/LICENCES.txt` du dépôt source.
+
+
+La vue « Inégalités sociales · 2024 » conserve la France par défaut. Une carte permanente permet de comparer les quatre situations financières dans une région avec la référence nationale : survol pour l’aperçu, clic pour conserver la région, bouton France pour revenir. Les gris représentent la prévalence régionale tous profils confondus, issue des trois jeux Odissé 2024. Les gradients régionaux proviennent des tableaux Ensemble des 17 rapports officiels de Santé publique France, avec leurs IC à 95 %, numéros de page et liens PDF. Le registre `production/data/sources.json` (ou `public/data/sources.json` dans le code source) documente ces rapports et les empreintes des PDF.
+
+Une cellule d’anxiété « à l’aise » en Guadeloupe n’est pas diffusée : elle n’est ni remplacée par zéro ni utilisée pour calculer le rapport financier. Pour l’Occitanie, la dépression « en difficulté » utilise le tableau 1, page 56, à 28,5 %, et non le résumé contradictoire à 28,8 %. Les écarts ne démontrent ni causalité ni significativité statistique.

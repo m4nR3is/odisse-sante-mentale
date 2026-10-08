@@ -2,7 +2,7 @@
   "generated": "2026-10-08",
   "scope": "14 jeux Odissé utilisés par les graphiques, complétés par les contours IGN/INSEE documentés pour la carte de sélection. Archives DREES et ancien fichier géographique non sourcé exclus de la livraison web.",
   "data_file": "experience-data.json",
-  "data_sha256": "90affeb49ffc78f39e9c7fb826e84cbf464e372592c3366c5ee75fc73f137d50",
+  "data_sha256": "4e826e5c97f69118fc64d74b08862f8f88b0d4403437f7b6a586897b2857419b",
   "transformations": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/scripts/build_web_data.py",
   "notes": [
     "Les taux et effectifs diffusés peuvent être arrondis. Les références regroupées par âge sont approchées ; la référence décès des 0–17 ans n’est pas reconstruite.",
@@ -25,6 +25,10 @@
           "sha256": "f096e77842684bcb6dbd85ba47ef950eaa77900c6bc587abeab827658f086342",
           "url": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/data/raw/odisse/episodes-depressif-indicateurs-du-barometre-2024.csv"
         }
+      ],
+      "output_fields": [
+        "social",
+        "socialRegions"
       ]
     },
     {
@@ -93,6 +97,10 @@
           "sha256": "488e100b1d22f0d16a542322621634dabaedeac1263ddcc2e83f3fde64caf326",
           "url": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/data/raw/odisse/trouble-anxieux-generalise-indicateurs-du-barometre-2024.csv"
         }
+      ],
+      "output_fields": [
+        "social",
+        "socialRegions"
       ]
     },
     {
@@ -178,6 +186,10 @@
           "sha256": "31ccaeaf68a31036f007ee18c81a0f908bd845fdd8c3a030bfc004ae9c58eab4",
           "url": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/data/raw/odisse/conduites-sucidaires-indicateurs-du-barometre-2024.csv"
         }
+      ],
+      "output_fields": [
+        "social",
+        "socialRegions"
       ]
     },
     {
@@ -259,6 +271,156 @@
       ]
     }
   ],
+  "regional_reports": {
+    "publisher": "Santé publique France",
+    "output_field": "regionalSocial",
+    "raw_export": "data/raw/barometre-regional/social-regional-extracted.json",
+    "sha256": "9be9ce5f4a461c58244636ae5d22c445f98b2a402475a021f6055a849864023c",
+    "transformations": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/scripts/extract_regional_social.py",
+    "reports": [
+      {
+        "code": "84",
+        "name": "Auvergne-Rhône-Alpes",
+        "url": "https://www.santepubliquefrance.fr/sites/default/files/cadic_files/documents/spf00006401.pdf",
+        "publication": "https://www.santepubliquefrance.fr/regions-et-territoires/auvergne-rhone-alpes/enquetesetudes/barometre-de-sante-publique-france-resultats-de-ledition-2024-edition-auvergne-rhone-alpes",
+        "sha256": "e7de4593418069ec683384eaf6a0eede354b329df42be9033fbdc13d6790b356",
+        "bytes": 5877329
+      },
+      {
+        "code": "27",
+        "name": "Bourgogne-Franche-Comté",
+        "url": "https://www.santepubliquefrance.fr/sites/default/files/rdd/document/907144_spf00006381.pdf",
+        "publication": "https://www.santepubliquefrance.fr/regions-et-territoires/bourgogne-franche-comte/enquetesetudes/barometre-de-sante-publique-france-resultats-de-ledition-2024-edition-bourgogne-franche-comte",
+        "sha256": "3816a6a423a8007a48ab6bb0e2341086fe8e43f5bef557423740fd9a4e2308f5",
+        "bytes": 4467601
+      },
+      {
+        "code": "53",
+        "name": "Bretagne",
+        "url": "https://www.santepubliquefrance.fr/sites/default/files/cadic_files/documents/spf00006405.pdf",
+        "publication": "https://www.santepubliquefrance.fr/regions-et-territoires/bretagne/enquetesetudes/barometre-de-sante-publique-france-resultats-de-ledition-2024-edition-bretagne",
+        "sha256": "cfd17212b1df1210e93860c897a082b9112fa8e7c3e9c67ba4348de9fa24b263",
+        "bytes": 7166043
+      },
+      {
+        "code": "24",
+        "name": "Centre-Val de Loire",
+        "url": "https://www.santepubliquefrance.fr/sites/default/files/cadic_files/documents/spf00006403.pdf",
+        "publication": "https://www.santepubliquefrance.fr/regions-et-territoires/centre-val-de-loire/enquetesetudes/barometre-de-sante-publique-france-resultats-de-ledition-2024-edition-centre-val-de-loire",
+        "sha256": "3a397d4b172127246685bb74d15697a1e4984b482ee6e9b6823dcdd34598e8b9",
+        "bytes": 4212719
+      },
+      {
+        "code": "94",
+        "name": "Corse",
+        "url": "https://www.santepubliquefrance.fr/sites/default/files/cadic_files/documents/spf00006402.pdf",
+        "publication": "https://www.santepubliquefrance.fr/regions-et-territoires/provence-alpes-cote-dazur-et-corse/enquetesetudes/barometre-de-sante-publique-france-resultats-de-ledition-2024-edition-corse",
+        "sha256": "20277a093aef9fded06c813d2662b050ca1cadb34afd3489e3e8b870880c96f8",
+        "bytes": 6582957
+      },
+      {
+        "code": "01",
+        "name": "Guadeloupe",
+        "url": "https://www.santepubliquefrance.fr/sites/default/files/2026-04/Le_Point_Sur_Barometre2024_Guadeloupe_20260428.pdf",
+        "publication": "https://www.santepubliquefrance.fr/regions-et-territoires/antilles/rapportsynthese/barometre-de-sante-publique-france-resultats-de-ledition-2024-edition-guadeloupe",
+        "sha256": "5a9be0ff4e2cef4fa3b088d0c871f07731f2447c16c6823da0ef7fee0ecc8907",
+        "bytes": 6415673
+      },
+      {
+        "code": "03",
+        "name": "Guyane",
+        "url": "https://www.santepubliquefrance.fr/sites/default/files/2026-06/Le_Point_Sur_Barom%C3%A8tre2024_Guyane_20260626.pdf",
+        "publication": "https://www.santepubliquefrance.fr/regions-et-territoires/guyane/rapportsynthese/barometre-de-sante-publique-france-resultats-de-ledition-2024-edition-guyane",
+        "sha256": "803e0839eb4721aeab2cbb25825b7914dabd583c7dde09a9966ccd8b37486c8c",
+        "bytes": 5918387
+      },
+      {
+        "code": "44",
+        "name": "Grand Est",
+        "url": "https://www.santepubliquefrance.fr/sites/default/files/cadic_files/documents/spf00006404_0.pdf",
+        "publication": "https://www.santepubliquefrance.fr/regions-et-territoires/grand-est/enquetesetudes/barometre-de-sante-publique-france-resultats-de-ledition-2024-edition-grand-est",
+        "sha256": "46bca2ee1a649f39b7a35780f40cabc10284656cc7e614d3cbfa4a150be64d5d",
+        "bytes": 6836422
+      },
+      {
+        "code": "32",
+        "name": "Hauts-de-France",
+        "url": "https://www.santepubliquefrance.fr/sites/default/files/cadic_files/documents/spf00006379_0.pdf",
+        "publication": "https://www.santepubliquefrance.fr/regions-et-territoires/hauts-de-france/enquetesetudes/barometre-de-sante-publique-france-resultats-de-ledition-2024-edition-hauts-de-france",
+        "sha256": "6ae8d7e5dd4418a2fceb0ad22138995e0f0296bd4d25d14ba7b62f50e07857a2",
+        "bytes": 6897798
+      },
+      {
+        "code": "11",
+        "name": "Ile-de-France",
+        "url": "https://www.santepubliquefrance.fr/sites/default/files/rdd/document/907190_spf00006406.pdf",
+        "publication": "https://www.santepubliquefrance.fr/regions-et-territoires/ile-de-france/enquetesetudes/barometre-de-sante-publique-france-resultats-de-ledition-2024-edition-ile-de-france",
+        "sha256": "46631c42665306541b2e6b468fe8c66ff51ae17e9d4aa251eb6c6df3d7c71e48",
+        "bytes": 4415485
+      },
+      {
+        "code": "04",
+        "name": "La Réunion",
+        "url": "https://www.santepubliquefrance.fr/sites/default/files/cadic_files/documents/spf00006385.pdf",
+        "publication": "https://www.santepubliquefrance.fr/regions-et-territoires/ocean-indien/enquetesetudes/barometre-de-sante-publique-france-resultats-de-ledition-2024-edition-la-reunion",
+        "sha256": "16af88d989ced661ec7d5e0b613caa5e26fb0485e19f203da2e852e5092bd45f",
+        "bytes": 6512456
+      },
+      {
+        "code": "02",
+        "name": "Martinique",
+        "url": "https://www.santepubliquefrance.fr/sites/default/files/2026-04/Le_Point_Sur_Barometre2024_Martinique_20260428.pdf",
+        "publication": "https://www.santepubliquefrance.fr/regions-et-territoires/antilles/rapportsynthese/barometre-de-sante-publique-france-resultats-de-ledition-2024-edition-martinique",
+        "sha256": "68033f8158df693521bd209728b03cff3a030994781be8e9742f44cf7967dd73",
+        "bytes": 6133611
+      },
+      {
+        "code": "75",
+        "name": "Nouvelle Aquitaine",
+        "url": "https://www.santepubliquefrance.fr/sites/default/files/cadic_files/documents/spf00006380.pdf",
+        "publication": "https://www.santepubliquefrance.fr/regions-et-territoires/nouvelle-aquitaine/enquetesetudes/barometre-de-sante-publique-france-resultats-de-ledition-2024-edition-nouvelle-aquitaine",
+        "sha256": "ae644307af10b7fb10aa5ad39b624caef676b7e1b734542eb5efa5ebaed62f8a",
+        "bytes": 6028170
+      },
+      {
+        "code": "28",
+        "name": "Normandie",
+        "url": "https://www.santepubliquefrance.fr/sites/default/files/cadic_files/documents/spf00006378.pdf",
+        "publication": "https://www.santepubliquefrance.fr/regions-et-territoires/normandie/enquetesetudes/barometre-de-sante-publique-france-resultats-de-ledition-2024-edition-normandie",
+        "sha256": "d2fe512da42d76d8f6e5eef2b5d4a6b9583fe59944ed93996c079bb8bd18a959",
+        "bytes": 6796457
+      },
+      {
+        "code": "76",
+        "name": "Occitanie",
+        "url": "https://www.santepubliquefrance.fr/sites/default/files/cadic_files/documents/spf00006382_0.pdf",
+        "publication": "https://www.santepubliquefrance.fr/regions-et-territoires/occitanie/enquetesetudes/barometre-de-sante-publique-france-resultats-de-ledition-2024-edition-occitanie",
+        "sha256": "6b2b708113db3f9f76bf3c8cec62cfeef510671314c42d61447f5203ff4d0883",
+        "bytes": 6984597
+      },
+      {
+        "code": "52",
+        "name": "Pays de la Loire",
+        "url": "https://www.santepubliquefrance.fr/sites/default/files/cadic_files/documents/spf00006384.pdf",
+        "publication": "https://www.santepubliquefrance.fr/regions-et-territoires/pays-de-la-loire/enquetesetudes/barometre-de-sante-publique-france-resultats-de-ledition-2024-edition-pays-de-la-loire",
+        "sha256": "e9f15fd010dcfe36aa8a57d6f265a9a8afaf1a0b3d8f99a4a0484f00cc247ec4",
+        "bytes": 8369719
+      },
+      {
+        "code": "93",
+        "name": "Provence-Alpes-Côte d'Azur",
+        "url": "https://www.santepubliquefrance.fr/sites/default/files/cadic_files/documents/spf00006383_0.pdf",
+        "publication": "https://www.santepubliquefrance.fr/regions-et-territoires/provence-alpes-cote-dazur-et-corse/enquetesetudes/barometre-de-sante-publique-france-resultats-de-ledition-2024-edition-provence-alpes-cote-dazur",
+        "sha256": "43955bc7c22cfd5c2319792d305b152c8c4b0170bf43b2a1100f042292f3f62f",
+        "bytes": 7324675
+      }
+    ],
+    "notes": [
+      "Columns Ensemble (all sexes), weighted prevalences and exact confidence intervals; national estimates remain from Odissé.",
+      "Les cellules Nd/SD ne valent pas zéro. Guadeloupe, anxiété, à l’aise : Nd malgré n=76 ; aucun rapport financier calculé. Les IC incohérents ne sont pas dessinés.",
+      "Occitanie depression: use Table 1, page 56 (28.5%), rather than the inconsistent key-point summary (28.8%)."
+    ]
+  },
   "geography": {
     "repository": "https://github.com/gregoiredavid/france-geojson",
     "commit": "5d34ee6d0140c29f785fdb047d9329f1aab58833",

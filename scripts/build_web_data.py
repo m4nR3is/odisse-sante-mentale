@@ -252,6 +252,26 @@ def build_social() -> list[dict]:
     return output
 
 
+def build_regional_social() -> list[dict]:
+    payload = json.loads((ROOT / "data/raw/barometre-regional/social-regional-extracted.json").read_text())
+    return [{k: v for k, v in point.items() if k not in ("sourceRow", "intervalValid")} for point in payload["points"]]
+
+
+def build_social_regions() -> list[dict]:
+    names = {"Auvergne-Rhône-Alpes":"84", "Bourgogne-Franche-Comté":"27", "Bretagne":"53", "Centre-Val de Loire":"24", "Corse":"94", "Grand Est":"44", "Guadeloupe":"01", "Guyane":"03", "Hauts-de-France":"32", "Ile-de-France":"11", "Martinique":"02", "Normandie":"28", "Nouvelle-Aquitaine":"75", "Occitanie":"76", "Pays de la Loire":"52", "Provence-Alpes-Côte d'Azur":"93", "Réunion":"04"}
+    sources = [("Dépression", "episodes-depressif-indicateurs-du-barometre-2024.csv"), ("Anxiété", "trouble-anxieux-generalise-indicateurs-du-barometre-2024.csv"), ("Pensées suicidaires", "conduites-sucidaires-indicateurs-du-barometre-2024.csv")]
+    output = []
+    for indicator, filename in sources:
+        for row in rows(ODISSE / filename):
+            name = row.get("nouvelles_regions")
+            if name not in names or any(row.get(d, "Tous") not in ("", "Tous") for d in ["sexe", "classe_d_age", "pcs", "diplome", "type_de_menage", "situation_professionnelle", "situation_financiere_percue"]):
+                continue
+            if indicator == "Pensées suicidaires" and row["indicateur"] != "Pensées suicidaires au cours des 12 derniers mois":
+                continue
+            output.append({"territoryCode":names[name], "territory":name, "indicator":indicator, "estimate":num(row["estimation"]), "low":num(row["ic_inf"]), "high":num(row["ic_sup"]), "sample":num(row["effectif_brut"])})
+    return output
+
+
 def json_results(*filenames: str) -> list[dict]:
     output = []
     for filename in filenames:
@@ -324,6 +344,8 @@ def main() -> None:
         "odissePatients": build_odisse_patients(),
         "national": build_national(),
         "social": build_social(),
+        "socialRegions": build_social_regions(),
+        "regionalSocial": build_regional_social(),
         "declaredHistory": build_declared_history(),
         **build_departments(),
         **build_emergency(),

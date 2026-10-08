@@ -8,11 +8,12 @@ type MapLayer = { features: MapFeature[]; insets: { label: string; x: number; y:
 export type MapItem = { code: string; name: string; detail?: string; value?: number; available?: boolean };
 let geographyRequest: Promise<Geography> | undefined;
 
-export default function TerritoryMap({ level, items, selected, preview, legend, context, onPreview, onSelect }: {
+export default function TerritoryMap({ level, items, selected, preview, legend, context, signedValues = true, onPreview, onSelect }: {
   level: "departments" | "regions";
   items: MapItem[];
   legend: string;
   context: string;
+  signedValues?: boolean;
   selected: string;
   preview: string | null;
   onPreview: (code: string | null) => void;
@@ -30,7 +31,7 @@ export default function TerritoryMap({ level, items, selected, preview, legend, 
     const shade = Math.round(220 - (high === low ? .5 : (item!.value! - low) / (high - low)) * 170);
     return `rgb(${shade}, ${shade}, ${shade})`;
   };
-  const label = (value: number) => `${value < 0 ? "−" : "+"}${Math.abs(value).toLocaleString("fr-FR", { maximumFractionDigits: 1 })}`;
+  const label = (value: number) => `${value < 0 ? "−" : signedValues ? "+" : ""}${Math.abs(value).toLocaleString("fr-FR", { maximumFractionDigits: 1 })}`;
   const [geography, setGeography] = useState<Geography | null>(null);
   const [failed, setFailed] = useState(false);
   const [localHover, setLocalHover] = useState<string | null>(null);
@@ -104,7 +105,7 @@ export default function TerritoryMap({ level, items, selected, preview, legend, 
       {frontFeature && <path data-front-code={frontFeature.code} className={`map-territory map-territory-overlay is-hovered${selected === frontFeature.code ? " is-selected" : ""}`} d={frontFeature.path} transform={transform(frontFeature)} style={{ "--territory-fill": color(lookup.get(frontFeature.code)) } as CSSProperties} fillRule="evenodd" pointerEvents="none" aria-hidden="true" />}
     </svg> : <p className="map-loading">{failed ? "Carte indisponible · le menu reste utilisable" : "Chargement des contours…"}</p>}
     {missingShapes.length > 0 && <div className="map-missing-shapes">{missingShapes.map((item) => <button type="button" key={item.code} aria-label={`${item.name}, contour non fourni ; sélectionner`} aria-pressed={selected === item.code} onPointerEnter={(event) => hover(item.code, event.clientX, event.clientY)} onPointerLeave={() => hover(null)} onFocus={(event) => { const bounds = event.currentTarget.getBoundingClientRect(); hover(item.code, bounds.x, bounds.y); }} onBlur={() => hover(null)} onClick={() => onSelect(item.code)}>{item.code}</button>)}<span>COM · sans contour</span></div>}
-    <div className="territory-map-caption"><span>{legend}</span><div className="map-color-legend" role="img" title="Échelle de gris propre à la vue et aux filtres actifs · hachures : évolution non interprétable" aria-label={values.length ? `Gris clair : ${label(low)} ; gris foncé : ${label(high)}. Hachures : évolution non interprétable. Échelle propre à cette vue.` : "Aucune évolution comparable"}><span>{values.length ? label(low) : "—"}</span><i aria-hidden="true"/><span>{values.length ? label(high) : "—"}</span><em aria-hidden="true"/><span title="Évolution non comparable ou indisponible">N/C</span></div><a href="https://github.com/gregoiredavid/france-geojson#sources--mises-à-jour" target="_blank" rel="noreferrer">IGN / INSEE · 2018 · encarts hors échelle ↗</a></div>
+    <div className="territory-map-caption"><span>{legend}</span><div className="map-color-legend" role="img" title="Échelle de gris propre à la vue et aux filtres actifs · hachures : données indisponibles ou non comparables" aria-label={values.length ? `Gris clair : ${label(low)} ; gris foncé : ${label(high)}. Hachures : données indisponibles ou non comparables. Échelle propre à cette vue.` : "Aucune évolution comparable"}><span>{values.length ? label(low) : "—"}</span><i aria-hidden="true"/><span>{values.length ? label(high) : "—"}</span><em aria-hidden="true"/><span title="Évolution non comparable ou indisponible">N/C</span></div><a href="https://github.com/gregoiredavid/france-geojson#sources--mises-à-jour" target="_blank" rel="noreferrer">IGN / INSEE · 2018 · encarts hors échelle ↗</a></div>
     {localHover && featured && <ViewportTooltip x={anchor.x} y={anchor.y} className="map-tooltip"><span>{featured.name}</span><small>{context} · {legend}</small><strong>{Number.isFinite(featured.value) ? featured.detail?.split(" · ")[0] : "N/C"}</strong>{!Number.isFinite(featured.value) && <small>Évolution non interprétable : données manquantes, périmètre modifié ou effectifs insuffisants.</small>}</ViewportTooltip>}
   </div>;
 }
