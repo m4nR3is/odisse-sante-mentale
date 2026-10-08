@@ -99,12 +99,13 @@
       "appearance replays on return to scene",
       "reduced motion completes immediately",
       "labels reveal independently",
-      "circle outline draws before filling",
       "percentage starts at zero and counts to actual estimate",
       "on-chart explanation distinguishes estimate from confidence interval",
       "marker starts at zero percent on the horizontal axis",
       "marker position follows the animated percentage",
-      "interval and label travel with the marker and finish at actual values"
+      "interval and label travel with the marker and finish at actual values",
+      "point stays small and black while moving",
+      "point reaches final value before growing and turning orange"
     ],
     "build": "TypeScript and Vite passed"
   }

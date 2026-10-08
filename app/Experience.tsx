@@ -766,15 +766,16 @@ function StoryFigure({ data, scene: requestedScene }: { data: ExperienceData; sc
             const phase = (start: number, duration: number) => Math.max(0, Math.min(1, (progress - start) / duration));
             const labelProgress = phase(0, .25);
             const intervalProgress = phase(.15, .55);
-            const circleProgress = phase(0, .6);
-            const countProgress = phase(.15, .85);
+            const countProgress = phase(.15, .6);
+            const arrival = phase(.75, .25);
+            const growth = arrival * arrival * (3 - 2 * arrival);
             const animatedEstimate = point.estimate * countProgress;
             const center = 136 + animatedEstimate / 32 * 382;
             const intervalScale = intervalProgress * countProgress;
             return <g className="story-social-row" key={point.financial} data-progress={progress} data-estimate={animatedEstimate} opacity={progress > 0 ? 1 : 0}>
               <text className="story-social-label" x="0" y={68 + index * 60} opacity={labelProgress} transform={`translate(0 ${(1 - labelProgress) * 10})`}>{FINANCIAL_SHORT[point.financial]}</text>
               <line className="story-interval" x1={center + (point.low - point.estimate) / 32 * 382 * intervalScale} x2={center + (point.high - point.estimate) / 32 * 382 * intervalScale} y1={63 + index * 60} y2={63 + index * 60} opacity={intervalProgress} />
-              <circle className="story-dot story-social-dot" cx={center} cy={63 + index * 60} r="5" stroke="var(--accent)" strokeWidth="1.5" pathLength="1" strokeDasharray="1 1" strokeDashoffset={1 - circleProgress} strokeOpacity={circleProgress > 0 ? 1 : 0} fillOpacity={phase(.7, .3)} transform={`rotate(-90 ${center} ${63 + index * 60})`} />
+              <circle className="story-dot story-social-dot" cx={center} cy={63 + index * 60} r={2 + 3 * growth} style={{ fill: growth === 0 ? "var(--ink)" : `color-mix(in srgb, var(--ink) ${(1 - growth) * 100}%, var(--accent))` }} />
               <text className="story-value" x={center + (point.high - point.estimate) / 32 * 382 * intervalScale + 10} y={68 + index * 60} opacity={phase(0, .12)}>{fmt(animatedEstimate)} %</text>
             </g>;
           })}
