@@ -1259,7 +1259,7 @@ function IntroOpening() {
             const eased = phase * phase * (3 - 2 * phase);
             const travel = target.left + line.offsetLeft + line.offsetWidth * 1.09 + 32;
             line.style.transform = eased === 1 ? "none" : `translateX(${-travel * (1 - eased)}px) scale(${1 + .18 * (1 - eased)})`;
-            line.style.opacity = String(Math.min(1, phase * 4));
+            line.style.opacity = String(eased);
           });
           return;
         }
