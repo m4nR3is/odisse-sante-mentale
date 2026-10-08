@@ -105,5 +105,10 @@ Captures relues sur ordinateur et mobile (390 px), sans débordement horizontal
 dans les vues testées. La régénération du fichier de données est identique
 octet par octet. Résultats : `analysis/validation-finale.json`.
 
+L’explorateur adapte sa hauteur à la fenêtre sur ordinateur (à partir de 981 px
+de largeur). Les filtres passent sur une ligne puis la distribution se place
+sous le résumé sur les fenêtres basses. Les axes et les points conservent leur
+taille lisible. Sur mobile, le module reste dans le flux vertical.
+
 La publication, les URL de remise et le report dans le template officiel restent
 à réaliser. Le dépôt local ne possède pas encore de dépôt distant configuré.

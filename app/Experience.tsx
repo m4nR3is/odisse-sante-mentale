@@ -279,12 +279,13 @@ type DistributionFrame = {
   increaseShare: number;
 };
 
-function distributionFrame(target: { department: Department; change: number | null }[], selectedCode: string): DistributionFrame {
+function distributionFrame(target: { department: Department; change: number | null }[], selectedCode: string, width = 720, height = 160): DistributionFrame {
   const min = Math.min(0, ...target.map((row) => row.change!));
   const max = Math.max(0, ...target.map((row) => row.change!));
-  const scaleX = (value: number) => 20 + (value - min) / Math.max(0.001, max - min) * 680;
-  const normalRadius = 4.1;
-  const collisionGap = 0.28;
+  const scaleX = (value: number) => 20 + (value - min) / Math.max(0.001, max - min) * (width - 40);
+  const pixelScale = 160 / Math.max(20, height);
+  const normalRadius = 4.1 * pixelScale;
+  const collisionGap = 0.28 * pixelScale;
   type PhysicsNode = DistributionFrame["rows"][number] & { x: number };
   const nodes: PhysicsNode[] = [...target].sort((a, b) => a.change! - b.change!).map((row, index) => ({
     department: row.department,
@@ -316,7 +317,7 @@ function distributionFrame(target: { department: Department; change: number | nu
 
   for (let iteration = 0; iteration < 180; iteration += 1) resolveCollisions(0.075);
   const selectedNode = nodes.find((node) => node.department.code === selectedCode);
-  if (selectedNode) selectedNode.radius = 9;
+  if (selectedNode) selectedNode.radius = 9 * pixelScale;
   for (let iteration = 0; iteration < 140; iteration += 1) resolveCollisions(0.055);
   for (let iteration = 0; iteration < 20; iteration += 1) resolveCollisions(0);
 
@@ -413,11 +414,11 @@ function DeclaredExplorer({ data }: { data: ExperienceData }) {
   return <div className="declared-shell"><div className="measure-subnav declared-subnav" role="group" aria-label="Lecture des données déclarées"><button type="button" aria-pressed={view === "social"} onClick={() => setView("social")}>Inégalités sociales · 2024</button><button type="button" aria-pressed={view === "history"} onClick={() => setView("history")}>Évolution déclarée · 2005–2021</button></div>{view === "social" ? <SocialDeclaredView data={data} /> : <HistoricalDeclaredView data={data} />}</div>;
 }
 
-function useAnimatedDistribution(target: { department: Department; change: number | null }[], selectedCode: string, duration = 650) {
-  const [displayed, setDisplayed] = useState(() => distributionFrame(target, selectedCode));
+function useAnimatedDistribution(target: { department: Department; change: number | null }[], selectedCode: string, width: number, height: number, duration = 650) {
+  const [displayed, setDisplayed] = useState(() => distributionFrame(target, selectedCode, width, height));
   const current = useRef(displayed);
   useEffect(() => {
-    const destination = distributionFrame(target, selectedCode);
+    const destination = distributionFrame(target, selectedCode, width, height);
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       current.current = destination;
       setDisplayed(destination);
@@ -451,7 +452,7 @@ function useAnimatedDistribution(target: { department: Department; change: numbe
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [duration, selectedCode, target]);
+  }, [duration, height, selectedCode, target, width]);
   return displayed;
 }
 
@@ -505,14 +506,19 @@ function TerritoryAppendix({ data, guidedView }: { data: ExperienceData; guidedV
   const [hoveredCode, setHoveredCode] = useState<string | null>(null);
   const chartSvgRef = useRef<SVGSVGElement>(null);
   const [chartWidth, setChartWidth] = useState(500);
+  const [chartLabelSize, setChartLabelSize] = useState(10);
   const distributionSvgRef = useRef<SVGSVGElement>(null);
   const [distributionWidth, setDistributionWidth] = useState(720);
+  const [distributionHeight, setDistributionHeight] = useState(160);
   useLayoutEffect(() => {
     const element = chartSvgRef.current;
     if (!element) return;
     const updateWidth = () => {
       const bounds = element.getBoundingClientRect();
-      if (bounds.width > 0 && bounds.height > 0) setChartWidth(260 * bounds.width / bounds.height);
+      if (bounds.width > 0 && bounds.height > 0) {
+        setChartWidth(260 * bounds.width / bounds.height);
+        setChartLabelSize(260 * 10 / bounds.height);
+      }
     };
     updateWidth();
     const observer = new ResizeObserver(updateWidth);
@@ -524,7 +530,10 @@ function TerritoryAppendix({ data, guidedView }: { data: ExperienceData; guidedV
     if (!element) return;
     const updateWidth = () => {
       const bounds = element.getBoundingClientRect();
-      if (bounds.width > 0 && bounds.height > 0) setDistributionWidth(160 * bounds.width / bounds.height);
+      if (bounds.width > 0 && bounds.height > 0) {
+        setDistributionWidth(160 * bounds.width / bounds.height);
+        setDistributionHeight(bounds.height);
+      }
     };
     updateWidth();
     const observer = new ResizeObserver(updateWidth);
@@ -557,7 +566,7 @@ function TerritoryAppendix({ data, guidedView }: { data: ExperienceData; guidedV
   const animatedLevelGap = useAnimatedNumber(levelGap);
   const animatedSeries = useAnimatedSeries(chartSeries);
   const animatedReference = useAnimatedSeries(chartReference);
-  const animatedDistribution = useAnimatedDistribution(activeMetrics, selectedCode);
+  const animatedDistribution = useAnimatedDistribution(activeMetrics, selectedCode, distributionWidth, distributionHeight);
   const targetMaxRate = useMemo(() => Math.max(1, ...chartSeries.map((point) => point.rate), ...chartReference.map((point) => point.rate)) * 1.12, [chartReference, chartSeries]);
   const axisScale = useAnimatedAxisScale(targetMaxRate);
   const maxRate = axisScale.domainMax;
@@ -634,11 +643,11 @@ function TerritoryAppendix({ data, guidedView }: { data: ExperienceData; guidedV
   const chartYears = Array.from({ length: endYear - startYear + 1 }, (_, index) => startYear + index);
   return <section className="territory-appendix" id="territoires">
     <header className="section-heading"><p className="chapter data-change" key={`chapter-${mode}-${territoryDataset}`}>{mode === "declared" ? "EXPLORER · SOUFFRANCE DÉCLARÉE" : mode === "territories" ? `EXPLORER · ${territoryConfig.shortLabel.toUpperCase()}` : "EXPLORER · PATIENTS"}</p><div className="data-change" key={`heading-${mode}-${territoryDataset}`}>{mode === "declared" ? <><h2>Quand la souffrance<br />devient-elle visible&nbsp;?</h2><p>Les enquêtes documentent une expérience déclarée, y compris sans recours aux soins. La situation financière révèle une dimension des inégalités sociales de santé.</p></> : mode === "territories" ? <><h2>Explorer sans classer<br />les territoires.</h2><p>{territoryConfig.description}. Chaque mesure conserve son propre dénominateur et ne représente ni toute la souffrance psychique ni un classement des territoires.</p></> : <><h2>Une moyenne.<br />Seize trajectoires.</h2><p>La moyenne nationale masque des évolutions très différentes selon l’âge et le sexe. Les seize profils sont comparés sur une même échelle pour rendre visibles les bifurcations.</p></>}</div></header>
-    <div className="territory-lab" id="territory-explorer">
+    <div className="territory-lab" id="territory-explorer" data-mode={mode} data-dataset={territoryDataset}>
       <div className="explorer-navigation"><div className="explorer-mode data-types" role="group" aria-label="Choisir une mesure de santé mentale"><button type="button" aria-pressed={family === "declared"} onClick={() => chooseMeasureFamily("declared")}>Déclaré <span>Enquête · expérience rapportée</span></button><button type="button" aria-pressed={family === "emergency"} onClick={() => chooseMeasureFamily("emergency")}>Urgences <span>Recours aigu · OSCOUR®</span></button><button type="button" aria-pressed={family === "hospital"} onClick={() => chooseMeasureFamily("hospital")}>Hôpital <span>Patients et séjours · MCO</span></button><button type="button" aria-pressed={family === "deaths"} onClick={() => chooseMeasureFamily("deaths")}>Décès <span>Suicides enregistrés</span></button></div>
       {family === "hospital" && <div className="measure-subnav" role="group" aria-label="Vue hospitalière"><button type="button" aria-pressed={mode === "territories"} onClick={() => switchTerritoryDataset("hospitalisations")}>Séjours · départements</button><button type="button" aria-pressed={mode === "profiles"} onClick={() => switchMode("profiles")}>Patients · âge × sexe</button></div>}</div>
-      {mode === "declared" ? <DeclaredExplorer data={data} /> : <><div className="territory-selector" style={{ "--filter-width": filterWidth } as CSSProperties}><div className="territory-filters">{mode === "territories" && <label htmlFor="department">Département<select id="department" value={selected.department.code} onChange={(event) => setCode(event.target.value)}>{departmentOptions.map((row) => <option key={row.department.code} value={row.department.code}>{row.department.code} · {row.department.name}</option>)}</select></label>}<label htmlFor="territory-age">Tranche d’âge<select id="territory-age" value={mode === "territories" ? age : profileAge} onChange={(event) => mode === "territories" ? setAge(event.target.value) : setProfileAge(event.target.value)}>{(mode === "territories" ? TERRITORY_AGES : ODISSE_AGES).map((item) => <option key={item} value={item}>{item === "Tous" ? "Tous les âges" : item}</option>)}</select></label><label htmlFor="territory-sex">Sexe<select id="territory-sex" value={mode === "territories" ? sex : profileSex} onChange={(event) => mode === "territories" ? setSex(event.target.value) : setProfileSex(event.target.value)}>{(mode === "territories" ? TERRITORY_SEXES : ["Femmes", "Hommes"]).map((item) => <option key={item} value={item}>{item === "Hommes et Femmes" ? "Tous les sexes" : item}</option>)}</select></label></div><div className="metric-definition"><b>{measureLabel}</b><span>{measureUnit}</span></div>{selected.comparable ? <><span className="metric-period">{changeLabel} · {startYear} → {endYear}</span><strong className="animated-number" aria-hidden="true">{formatEvolution(animatedChange)}{evolutionUnit}</strong><span className="metric-endpoints">{fmt(selectedFirst!.rate)} en {startYear} → {fmt(selectedLast!.rate)} en {endYear}</span></> : <div className="low-sample"><strong>{selected.change == null ? "Comparaison indisponible" : "Effectif faible"}</strong><span>{selected.change == null ? "Deux valeurs comparables sont nécessaires aux dates retenues." : "Moins de 10 décès à l’une des deux dates : évolution non interprétable."} La courbe disponible reste descriptive.</span></div>}{mode === "territories" && selected.comparable && (hasNationalReference ? <p className={`relative-level ${Math.abs(animatedLevelGap) < .05 ? "is-neutral" : animatedLevelGap > 0 ? "is-positive" : "is-negative"}`}>{Math.abs(animatedLevelGap) < .05 ? <>Au niveau de la France en {endYear}</> : <><b>{formatEvolution(animatedLevelGap)}</b> {usesAbsoluteChange ? "point de taux pour 100 000" : ""} par rapport à la France en {endYear}</>}</p> : <p className="relative-level is-neutral">Référence nationale indisponible pour ce regroupement</p>)}<span className="sr-only" aria-live="polite">{title}. {measureLabel}. {selected.comparable ? `${changeLabel} ${formatEvolution(selected.change!)}${evolutionUnit} entre ${startYear} et ${endYear}.` : "Évolution non interprétable."}</span></div>
-      <div className="territory-chart"><h3 className="data-change" key={`${mode}-${selected.department.code}`}>{title}</h3><p className="territory-context">{context}</p>{!usesAbsoluteChange && <div className="chart-view-toggle" role="group" aria-label="Mesure affichée"><button type="button" aria-pressed={chartView === "level"} onClick={() => setChartView("level")}>Niveau</button><button type="button" aria-pressed={chartView === "change"} onClick={() => setChartView("change")}>Évolution · base 100</button></div>}<svg ref={chartSvgRef} viewBox={`0 0 ${chartWidth} 260`} role="img" aria-label={`${title}, ${chartView === "level" ? "taux réel" : "évolution en base 100"}, comparé à ${referenceLabel}`}><g className="chart-grid chart-grid-old" opacity={1 - axisScale.progress}>{[axisScale.previousMax / 2, axisScale.previousMax].map((tick, index) => <g key={`old-${index}`}><line x1="4" x2={chartWidth - 4} y1={y({ rate: tick })} y2={y({ rate: tick })} /><text x="4" y={y({ rate: tick }) - 5}>{fmt(tick, 0)}</text></g>)}</g><g className="chart-grid chart-grid-new" opacity={axisScale.progress}>{[targetMaxRate / 2, targetMaxRate].map((tick, index) => <g key={`new-${index}`}><line x1="4" x2={chartWidth - 4} y1={y({ rate: tick })} y2={y({ rate: tick })} /><text x="4" y={y({ rate: tick }) - 5}>{fmt(tick, 0)}</text></g>)}</g><g className="chart-grid chart-grid-zero"><line x1="4" x2={chartWidth - 4} y1={y({ rate: 0 })} y2={y({ rate: 0 })} /><text x="4" y={y({ rate: 0 }) - 5}>0</text></g>{chartView === "change" && <line className="index-baseline" x1="4" x2={chartWidth - 4} y1={y({ rate: 100 })} y2={y({ rate: 100 })} />}<path className="national-line" d={linePath(animatedReference, x, y)} />{chartHoveredSeries && <path key={`${hoveredMetric?.department.code}-${chartView}`} className="hover-line" d={linePath(chartHoveredSeries, x, y)} aria-hidden="true" />}<path className="department-line" d={linePath(animatedSeries, x, y)} />{animatedSeries.map((point) => {
+      {mode === "declared" ? <DeclaredExplorer data={data} /> : <><div className="territory-selector" style={{ "--filter-width": filterWidth } as CSSProperties}><div className="territory-filters">{mode === "territories" && <label htmlFor="department">Département<select id="department" value={selected.department.code} onChange={(event) => setCode(event.target.value)}>{departmentOptions.map((row) => <option key={row.department.code} value={row.department.code}>{row.department.code} · {row.department.name}</option>)}</select></label>}<label htmlFor="territory-age">Tranche d’âge<select id="territory-age" value={mode === "territories" ? age : profileAge} onChange={(event) => mode === "territories" ? setAge(event.target.value) : setProfileAge(event.target.value)}>{(mode === "territories" ? TERRITORY_AGES : ODISSE_AGES).map((item) => <option key={item} value={item}>{item === "Tous" ? "Tous les âges" : item}</option>)}</select></label><label htmlFor="territory-sex">Sexe<select id="territory-sex" value={mode === "territories" ? sex : profileSex} onChange={(event) => mode === "territories" ? setSex(event.target.value) : setProfileSex(event.target.value)}>{(mode === "territories" ? TERRITORY_SEXES : ["Femmes", "Hommes"]).map((item) => <option key={item} value={item}>{item === "Hommes et Femmes" ? "Tous les sexes" : item}</option>)}</select></label></div><div className="territory-summary"><div className="metric-definition"><b>{measureLabel}</b><span>{measureUnit}</span></div>{selected.comparable ? <><span className="metric-period">{changeLabel} · {startYear} → {endYear}</span><strong className="animated-number" aria-hidden="true">{formatEvolution(animatedChange)}{evolutionUnit}</strong><span className="metric-endpoints">{fmt(selectedFirst!.rate)} en {startYear} → {fmt(selectedLast!.rate)} en {endYear}</span></> : <div className="low-sample"><strong>{selected.change == null ? "Comparaison indisponible" : "Effectif faible"}</strong><span>{selected.change == null ? "Deux valeurs comparables sont nécessaires aux dates retenues." : "Moins de 10 décès à l’une des deux dates : évolution non interprétable."} La courbe disponible reste descriptive.</span></div>}{mode === "territories" && selected.comparable && (hasNationalReference ? <p className={`relative-level ${Math.abs(animatedLevelGap) < .05 ? "is-neutral" : animatedLevelGap > 0 ? "is-positive" : "is-negative"}`}>{Math.abs(animatedLevelGap) < .05 ? <>Au niveau de la France en {endYear}</> : <><b>{formatEvolution(animatedLevelGap)}</b> {usesAbsoluteChange ? "point de taux pour 100 000" : ""} par rapport à la France en {endYear}</>}</p> : <p className="relative-level is-neutral">Référence nationale indisponible pour ce regroupement</p>)}<span className="sr-only" aria-live="polite">{title}. {measureLabel}. {selected.comparable ? `${changeLabel} ${formatEvolution(selected.change!)}${evolutionUnit} entre ${startYear} et ${endYear}.` : "Évolution non interprétable."}</span></div></div>
+      <div className="territory-chart"><h3 className="data-change" key={`${mode}-${selected.department.code}`}>{title}</h3><p className="territory-context">{measureLabel} · {context}</p>{!usesAbsoluteChange && <div className="chart-view-toggle" role="group" aria-label="Mesure affichée"><button type="button" aria-pressed={chartView === "level"} onClick={() => setChartView("level")}>Niveau</button><button type="button" aria-pressed={chartView === "change"} onClick={() => setChartView("change")}>Évolution · base 100</button></div>}<svg ref={chartSvgRef} style={{ "--chart-label-size": `${chartLabelSize}px` } as CSSProperties} viewBox={`0 0 ${chartWidth} 260`} role="img" aria-label={`${title}, ${chartView === "level" ? "taux réel" : "évolution en base 100"}, comparé à ${referenceLabel}`}><g className="chart-grid chart-grid-old" opacity={1 - axisScale.progress}>{[axisScale.previousMax / 2, axisScale.previousMax].map((tick, index) => <g key={`old-${index}`}><line x1="4" x2={chartWidth - 4} y1={y({ rate: tick })} y2={y({ rate: tick })} /><text x="4" y={y({ rate: tick }) - 5}>{fmt(tick, 0)}</text></g>)}</g><g className="chart-grid chart-grid-new" opacity={axisScale.progress}>{[targetMaxRate / 2, targetMaxRate].map((tick, index) => <g key={`new-${index}`}><line x1="4" x2={chartWidth - 4} y1={y({ rate: tick })} y2={y({ rate: tick })} /><text x="4" y={y({ rate: tick }) - 5}>{fmt(tick, 0)}</text></g>)}</g><g className="chart-grid chart-grid-zero"><line x1="4" x2={chartWidth - 4} y1={y({ rate: 0 })} y2={y({ rate: 0 })} /><text x="4" y={y({ rate: 0 }) - 5}>0</text></g>{chartView === "change" && <line className="index-baseline" x1="4" x2={chartWidth - 4} y1={y({ rate: 100 })} y2={y({ rate: 100 })} />}<path className="national-line" d={linePath(animatedReference, x, y)} />{chartHoveredSeries && <path key={`${hoveredMetric?.department.code}-${chartView}`} className="hover-line" d={linePath(chartHoveredSeries, x, y)} aria-hidden="true" />}<path className="department-line" d={linePath(animatedSeries, x, y)} />{animatedSeries.map((point) => {
         const targetValue = chartSeries.find((candidate) => candidate.year === point.year)?.rate ?? point.rate;
         const targetPoint = selected.series.find((candidate) => candidate.year === point.year);
         const pointTooltip = { label: selected.department.name, year: point.year, rate: targetValue, count: targetPoint && "count" in targetPoint ? targetPoint.count : undefined };
@@ -652,7 +661,7 @@ function TerritoryAppendix({ data, guidedView }: { data: ExperienceData; guidedV
         return <g key={row.department.code} className={`distribution-point${isSelected ? " selected" : ""}${hoveredCode === row.department.code ? " is-hovered" : ""}`} role="button" tabIndex={0} aria-label={`${row.department.name}, ${row.department.region}, évolution ${formatEvolution(row.targetChange)}${evolutionUnit}. Sélectionner.`} onFocus={(event) => { const bounds = event.currentTarget.getBoundingClientRect(); setHoveredCode(row.department.code); setTooltip({ x: bounds.left + bounds.width / 2, y: bounds.top, ...tooltipData }); }} onBlur={() => { setHoveredCode(null); setTooltip(null); }} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); selectItem(); } }}><circle className="distribution-dot" cx={distributionX(row.change)} cy={row.y} r={row.radius}><title>{row.department.name} · {row.department.region} : {formatEvolution(row.targetChange)}{evolutionUnit}</title></circle></g>;
       })}</svg>{tooltip && <ViewportTooltip x={tooltip.x} y={tooltip.y}><span>{tooltip.department}</span><small>{tooltip.region}</small><strong>{formatEvolution(tooltip.change)}{evolutionUnit}</strong></ViewportTooltip>}<span>{formatEvolution(distributionMin)}{evolutionUnit}</span><span>{formatEvolution(distributionMax)}{evolutionUnit}</span></div></>}
     </div>
-    <p className="source-note"><b>Lecture.</b> Chaque bouton ouvre une mesure distincte. MCO désigne la médecine, la chirurgie et l’obstétrique. Les gestes auto-infligés incluent les tentatives de suicide et les automutilations non suicidaires. Les séjours MCO, les passages aux urgences, les décès par suicide et les patients hospitalisés ne forment pas un entonnoir individuel et n’ont pas tous le même dénominateur. Pour les taux de population, pour les séjours et les décès, « Tous les âges » utilise le taux standardisé et les classes d’âge le taux brut. Les urgences expriment une part pour 100 000 passages, pas un taux dans la population. Pour les décès, l’évolution est exprimée en points de taux pour 100 000, et non en pourcentage relatif. Pour les décès par suicide, un département dont l’effectif est inférieur à 10 à l’une des deux dates reste visible dans la courbe, mais est exclu de la comparaison et de la distribution. Ce seuil est une règle de prudence de cette interface, pas un test statistique. Les références nationales par âges regroupés sont approchées à partir des effectifs et taux diffusés, arrondis par la source. Source : Odissé, Santé publique France.</p>
+    <p className="source-note"><b>Lecture.</b> Dans la distribution, chaque point représente un département (ou un profil âge × sexe) avec une évolution calculable aux deux dates. Le trait France est un repère national distinct des départements. Chaque bouton ouvre une mesure distincte. MCO désigne la médecine, la chirurgie et l’obstétrique. Les gestes auto-infligés incluent les tentatives de suicide et les automutilations non suicidaires. Les séjours MCO, les passages aux urgences, les décès par suicide et les patients hospitalisés ne forment pas un entonnoir individuel et n’ont pas tous le même dénominateur. Pour les taux de population, pour les séjours et les décès, « Tous les âges » utilise le taux standardisé et les classes d’âge le taux brut. Les urgences expriment une part pour 100 000 passages, pas un taux dans la population. Pour les décès, l’évolution est exprimée en points de taux pour 100 000, et non en pourcentage relatif. Pour les décès par suicide, un département dont l’effectif est inférieur à 10 à l’une des deux dates reste visible dans la courbe, mais est exclu de la comparaison et de la distribution. Ce seuil est une règle de prudence de cette interface, pas un test statistique. Les références nationales par âges regroupés sont approchées à partir des effectifs et taux diffusés, arrondis par la source. Source : Odissé, Santé publique France.</p>
   </section>;
 }
 

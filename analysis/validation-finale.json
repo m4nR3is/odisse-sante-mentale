@@ -49,5 +49,26 @@
     "checks": 106,
     "failures": 0,
     "method": "Progressive scrolling down and back up, 65 px increments; active scene follows the text crossing the viewport midpoint."
+  },
+  "adaptiveExplorer": {
+    "checks": 41,
+    "failures": 0,
+    "desktopHeightRange": "360–1000 px",
+    "widths": [
+      1024,
+      1280,
+      1440
+    ],
+    "mobile": "390 × 844 px, vertical flow, no horizontal overflow",
+    "cases": [
+      "hospital stays",
+      "emergency",
+      "deaths",
+      "age and sex profiles",
+      "declared social inequalities",
+      "declared history",
+      "low sample"
+    ],
+    "build": "TypeScript and Vite passed"
   }
 }
