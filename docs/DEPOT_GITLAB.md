@@ -22,7 +22,7 @@ Chaque source garde son dénominateur : prévalence déclarée, part de l’acti
 
 Le site est statique, adapté aux ordinateurs et mobiles, utilisable au clavier et respectueux de la préférence de réduction des mouvements. Les ressources d’aide sont accessibles dans l’expérience. Les données sont servies localement, sans outil de suivi ni service de cartographie externe.
 
-Une archive du code et une version compilée sont fournies dans `production/`. La proposition est indépendante et n’a pas été produite ou validée par Santé publique France.
+Le site compilé est fourni directement dans `production/` (`index.html`, `assets/`, `data/` et notices de licence). Le code source complet, les exports et les scripts sont disponibles dans le dépôt GitHub public indiqué ci-dessus. La proposition est indépendante et n’a pas été produite ou validée par Santé publique France.
 
 ## Les données utilisées
 

@@ -14,10 +14,10 @@
 2. Importer ce dépôt dans Vercel. Framework : Vite ; Root Directory : `.` ; Node.js : 22.x. `vercel.json` fournit les commandes et le dossier de sortie. Vérifier d’abord l’URL HTTPS fournie par Vercel.
 3. Si retenu, ajouter `odisse.m4nu.net` dans les domaines du projet Vercel puis appliquer l’enregistrement DNS indiqué par Vercel. Le sous-domaine est une proposition, pas un domaine déjà configuré. L’URL Vercel suffit pour la remise si le DNS n’est pas prêt.
 4. Compléter `DEPOT_GITLAB.md` avec les noms, une adresse de contact, l’URL du site et celle du code public. Régénérer le dossier de remise.
-5. Dans le dépôt officiel [Odissé Dataviz Challenge 2026](https://gitlab.com/odisse-dataviz-challenge-2026/dataviz), à l’intérieur du dossier du défi santé mentale, déposer le dossier `defi-1_m4nu/` et son contenu. Le nom de dossier retenu est `defi-1_m4nu`. Si l’écriture directe n’est pas disponible, demander l’accès ou utiliser une branche/fork avec merge request selon les droits proposés par GitLab.
-6. Ouvrir le README et ses liens sans connexion, télécharger l’archive de code, et vérifier que la contribution est visible dans le dépôt officiel. Une publication GitHub ou Vercel seule ne constitue pas la remise officielle.
+5. Dans le dépôt officiel [Odissé Dataviz Challenge 2026](https://gitlab.com/odisse-dataviz-challenge-2026/dataviz), à l’intérieur du dossier du défi santé mentale, déposer le dossier `defi-1_Manuel_Reismann/` et son contenu. Le nom de dossier retenu est `defi-1_Manuel_Reismann`. Si l’écriture directe n’est pas disponible, demander l’accès ou utiliser une branche/fork avec merge request selon les droits proposés par GitLab.
+6. Ouvrir le README et ses liens sans connexion, consulter le code source public, et vérifier que la contribution est visible dans le dépôt officiel. Une publication GitHub ou Vercel seule ne constitue pas la remise officielle.
 
-Le README officiel demande une **URL accessible en ligne et le code source** pour une visualisation interactive. Le dossier généré contient donc le code en archive ainsi que le site compilé. La configuration CI du dépôt personnel ne doit pas être installée à la racine du dépôt collectif du challenge.
+Le README officiel demande une **URL accessible en ligne et le code source** pour une visualisation interactive. Le dossier généré contient le site compilé directement dans `production/` et le lien vers le code source complet sur GitHub. La configuration CI du dépôt personnel ne doit pas être installée à la racine du dépôt collectif du challenge.
 
 ## Préparer les fichiers
 
@@ -29,19 +29,26 @@ npm run build
 python3 scripts/prepare_publication.py
 ```
 
-Le dossier est généré dans `../tmp/publication/defi-1_m4nu/` :
+Le dossier est généré dans `../tmp/publication/defi-1_Manuel_Reismann/` :
 
 ```text
 README.md
+LICENSE
+LICENSES.md
 production/
-  code-source.zip
-  visualisation.zip
+  index.html
+  favicon.svg
+  LICENCES.txt
   LIENS.md
+  assets/
+  data/
 ```
 
-Le script prend les fichiers suivis et les nouveaux fichiers non ignorés du
-dépôt. Il exclut les dépendances, secrets locaux et fichiers ignorés. L’archive
-du site compilé doit être extraite et servie par HTTP(S), pas ouverte en `file://`.
+Le script copie uniquement le contenu compilé de `dist/`, les notices de licence
+et la fiche de dépôt. Le code complet reste sur GitHub. La précédente production
+est conservée dans `../tmp/publication-backups/`, en dehors du dossier à déposer.
+Conserver toute la structure de `production/` et servir son contenu par HTTP(S),
+pas en `file://`.
 Les champs `[À COMPLÉTER …]` restent explicitement visibles jusqu’à leur saisie.
 
 ## Alternatives disponibles

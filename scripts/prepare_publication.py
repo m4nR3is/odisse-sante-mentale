@@ -1,36 +1,33 @@
 #!/usr/bin/env python3
 """Assemble les fichiers de remise sans publier sur un service distant."""
+from datetime import datetime, timezone
 from pathlib import Path
-import subprocess
-import zipfile
+import shutil
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT.parent / "tmp" / "publication" / "defi-1_m4nu"
+OUTPUT = ROOT.parent / "tmp" / "publication" / "defi-1_Manuel_Reismann"
 
 
 def main():
     dist = ROOT / "dist"
     if not (dist / "index.html").is_file():
         raise SystemExit("Construire le site avec npm run build avant de préparer la remise.")
+    OUTPUT.mkdir(parents=True, exist_ok=True)
     production = OUTPUT / "production"
-    production.mkdir(parents=True, exist_ok=True)
+    if production.exists():
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+        backup = ROOT.parent / "tmp" / "publication-backups" / stamp
+        backup.mkdir(parents=True)
+        shutil.move(str(production), str(backup / "production"))
+    shutil.copytree(dist, production)
     doc = (ROOT / "docs" / "DEPOT_GITLAB.md").read_text()
     (OUTPUT / "README.md").write_text(doc)
     links = "\n".join(line for line in doc.splitlines() if line.startswith(("**Visualisation interactive", "**Code source public")))
-    (production / "LIENS.md").write_text("# Accès au projet\n\n" + links + "\n\nLe code est également fourni dans `code-source.zip`. Extraire `visualisation.zip` et servir son contenu par HTTP(S) pour consulter la copie compilée.\n")
-    filenames = subprocess.check_output(
-        ["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"], cwd=ROOT
-    ).decode().split("\0")
-    with zipfile.ZipFile(production / "code-source.zip", "w", zipfile.ZIP_DEFLATED) as archive:
-        for name in sorted(set(filenames) - {""}):
-            path = ROOT / name
-            if path.is_file() and not path.is_symlink():
-                archive.write(path, name)
-    with zipfile.ZipFile(production / "visualisation.zip", "w", zipfile.ZIP_DEFLATED) as archive:
-        for path in sorted(dist.rglob("*")):
-            if path.is_file() and not path.is_symlink():
-                archive.write(path, path.relative_to(dist))
+    (production / "LIENS.md").write_text("# Accès au projet\n\n" + links + "\n\nCe dossier contient directement le site compilé : index.html, assets/, data/, favicon.svg et les notices de licence. Conserver toute sa structure et le servir par HTTP(S). Le code source complet, les exports sources et les scripts de préparation sont accessibles dans le dépôt GitHub public ci-dessus.\n")
+    for name in ["LICENSE", "LICENSES.md"]:
+        shutil.copy2(ROOT / name, OUTPUT / name)
     print(f"Dossier préparé : {OUTPUT}")
+    print("Site compilé copié directement dans production/, sans ZIP. Code source : dépôt GitHub public.")
     if "[À COMPLÉTER" in doc:
         print("À finaliser avant remise : les champs signalés dans docs/DEPOT_GITLAB.md, puis relancer ce script.")
 
