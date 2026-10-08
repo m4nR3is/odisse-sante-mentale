@@ -884,6 +884,55 @@ function GuidedOpening({ data, onExplore }: { data: ExperienceData; onExplore: (
   </section>;
 }
 
+const READING_SECTIONS = [
+  { id: "constats", label: "Comprendre" },
+  { id: "territoires", label: "Explorer" },
+  { id: "methode", label: "Méthode" },
+];
+
+function ReadingNavigation() {
+  const header = useRef<HTMLElement>(null);
+  const [reading, setReading] = useState({ active: -1, progress: 0 });
+  useEffect(() => {
+    let frame = 0;
+    const synchronize = () => {
+      frame = 0;
+      const readingLine = (header.current?.getBoundingClientRect().bottom ?? 60) + 16;
+      let active = -1, progress = 0;
+      READING_SECTIONS.forEach((section, index) => {
+        const element = document.getElementById(section.id);
+        if (!element) return;
+        const bounds = element.getBoundingClientRect();
+        const next = document.getElementById(READING_SECTIONS[index + 1]?.id ?? "");
+        const end = next?.getBoundingClientRect().top ?? bounds.bottom;
+        if (bounds.top <= readingLine && end > readingLine) {
+          active = index;
+          progress = Math.round(Math.max(0, Math.min(1, (readingLine - bounds.top) / Math.max(1, end - bounds.top))) * 1000) / 1000;
+        }
+      });
+      setReading((current) => current.active === active && current.progress === progress ? current : { active, progress });
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(synchronize); };
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    const observer = new ResizeObserver(schedule);
+    observer.observe(document.body);
+    if (header.current) observer.observe(header.current);
+    synchronize();
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+  return <header className="topbar" ref={header}>
+    <a href="#top" className="brand">ODISSÉ <span>DATAVIZ 2026</span></a>
+    <nav aria-label="Rubriques et progression de lecture">{READING_SECTIONS.map((section, index) => <a key={section.id} href={`#${section.id}`} aria-current={reading.active === index ? "location" : undefined} data-progress={reading.active === index ? reading.progress : 0} style={{ "--section-progress": reading.active === index ? reading.progress : 0 } as CSSProperties}><span className="nav-chapter" aria-hidden="true">0{index + 1}</span>{section.label}<span className="nav-reading-progress" aria-hidden="true" /></a>)}</nav>
+    <a href="tel:3114" className="top-help">Besoin d’aide ? 3114</a>
+  </header>;
+}
+
 export default function Experience({ initialData: data }: { initialData: ExperienceData }) {
   const [guidedView, setGuidedView] = useState<GuidedView | null>(null);
   const explore = (view: "declared" | "profiles") => {
@@ -892,7 +941,7 @@ export default function Experience({ initialData: data }: { initialData: Experie
   };
   return <main>
     <a className="skip-link" href="#constats">Aller aux observations</a>
-    <header className="topbar"><a href="#top" className="brand">ODISSÉ <span>DATAVIZ 2026</span></a><nav><a href="#constats">Comprendre</a><a href="#territoires">Explorer</a><a href="#methode">Méthode</a></nav><a href="tel:3114" className="top-help">Besoin d’aide ? 3114</a></header>
+    <ReadingNavigation />
     <section className="hero meta-hero" id="top"><div className="hero-copy"><p className="overline">Santé mentale · recours aux soins · inégalités</p><h1>Quand la souffrance<br />devient visible.</h1><p className="hero-lead">Que montrent les données de santé mentale selon qu’on regarde les enquêtes, les urgences, les hospitalisations ou les décès ? Chaque source éclaire une dimension différente. Aucune ne suffit à en dresser le portrait.</p><a href="#constats" className="read-data">Comprendre ce que les données révèlent <span>↓</span></a></div><p className="hero-question">Une mesure éclaire. Elle laisse aussi une part hors champ.</p></section>
     <GuidedOpening data={data} onExplore={explore} />
     <TerritoryAppendix data={data} guidedView={guidedView} />

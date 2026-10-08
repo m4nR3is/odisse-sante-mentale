@@ -115,5 +115,10 @@ avant le dessin du suivant. À âge égal, la courbe des filles reste en place
 pendant l’ajout ou le retrait de celle des garçons. Les animations sont
 interruptibles et respectent la préférence de réduction des mouvements.
 
+La navigation reste visible pendant la lecture. La rubrique active porte un
+trait de progression lié au scroll, dans les deux sens, comme sur le portfolio.
+Les ancres, le graphique persistant et l’explorateur tiennent compte de sa
+hauteur, sur ordinateur et mobile.
+
 La publication, les URL de remise et le report dans le template officiel restent
 à réaliser. Le dépôt local ne possède pas encore de dépôt distant configuré.

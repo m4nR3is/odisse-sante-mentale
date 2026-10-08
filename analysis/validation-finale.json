@@ -123,5 +123,18 @@
       "viewport containment on desktop and 1024 × 480"
     ],
     "build": "TypeScript and Vite passed"
+  },
+  "readingNavigation": {
+    "progressChecks": 15,
+    "explorerLayouts": 12,
+    "failures": [],
+    "checks": [
+      "fixed navigation across the full page",
+      "active section and progress synchronize in both scroll directions",
+      "links and progress remain visible on mobile",
+      "anchor targets stay below navigation",
+      "adaptive explorer fits remaining viewport including 360 px height"
+    ],
+    "build": "TypeScript and Vite passed"
   }
 }
