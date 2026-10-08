@@ -279,9 +279,9 @@
         "sha256": "a573b672264184d11a2f98220867653b092fe3a964433e30e3a0a4708d72d167"
       }
     ],
-    "transformations": "Projection Lambert conforme conique (44°/49°, méridien 3°), ajustement des encarts séparément, simplification Douglas-Peucker à 0,25 unité SVG. Carte de sélection, sans valeurs colorées ; encarts hors échelle. COM non fournies par la source : boutons séparés.",
+    "transformations": "Projection Lambert conforme conique (44°/49°, méridien 3°), ajustement des encarts séparément, simplification Douglas-Peucker à 0,25 unité SVG. Évolution comparable encodée en gris par la vue active ; encarts hors échelle. COM non fournies par la source : boutons séparés.",
     "file": "geography.json",
-    "sha256": "60ffc51b52640daa119f69184936da2f9c5492f6a7bf38abef36ee280c7900d0",
+    "sha256": "f1733da07cfc27cdeb02153b42149119b9ca85c34e33ab1487c8840bd141c2f8",
     "script": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/scripts/build_geography.py"
   }
 }

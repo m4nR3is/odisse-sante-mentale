@@ -31,6 +31,8 @@ par âge et sexe, et le changement d’échelle verticale, sont explicités.
 Les chiffres sont calculés depuis les données livrées.
 
 L’explorateur propose ensuite quatre regards dans un module persistant.
+La carte d’Explorer représente en gris les évolutions comparables de la frise. Les bornes, la période et l’unité figurent sous la carte ; l’échelle est recalculée à chaque vue ou filtre. Les évolutions indisponibles ou non interprétables sont hachurées. La sélection orange et le contour noir au survol suivent le code graphique des autres visualisations.
+
 Les vues territoriales démarrent sur la référence nationale, sans département présélectionné. Une carte permanente partage la colonne des filtres et du chiffre ; la frise prend la largeur du graphique. Le survol de la carte ou de la distribution révèle un territoire ; un clic ou le menu le sélectionne. Aux urgences, la vue nationale présente le niveau de 2024, sans calculer une évolution sur le périmètre variable. Le
 scroll traverse dix étapes : les trois indicateurs de 2024, les trois
 indicateurs historiques, les urgences, les séjours hospitaliers, les profils
@@ -82,7 +84,7 @@ Les 14 jeux Odissé sont reliés dans la section Méthode et les fiches « ? ».
 Le registre `public/data/sources.json` relie chaque jeu aux exports utilisés,
 avec leurs empreintes SHA-256 et le script de transformation. Les données
 DREES des anciennes explorations et les contours géographiques non utilisés
-sont exclus du fichier web publié. Les nouveaux contours IGN / INSEE 2018, via France GeoJSON, sont documentés dans le registre et utilisés uniquement pour la sélection géographique. Les taux tous âges des patients, séjours et décès sont standardisés ; les taux
+sont exclus du fichier web publié. Les nouveaux contours IGN / INSEE 2018, via France GeoJSON, sont documentés dans le registre et utilisés pour la sélection géographique et la représentation des évolutions comparables. Les taux tous âges des patients, séjours et décès sont standardisés ; les taux
 par âge sont bruts. Les urgences sont rapportées aux passages, pas à la population.
 Les références nationales par classes d’âge regroupées sont recalculées à partir
 des effectifs et populations reconstituées depuis les taux diffusés : elles sont

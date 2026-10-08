@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-08",
+  "checks": {
+    "svg_projection_north_above_south": true,
+    "svg_projection_west_left_of_east": true,
+    "health_series_unchanged": true,
+    "grayscale_from_comparable_distribution_values": true,
+    "missing_or_noncomparable_values_hatched": true,
+    "legend_period_unit_and_dynamic_bounds": true,
+    "shared_viewport_tooltip_for_map_curve_distribution_story": true,
+    "pointer_preview_and_keyboard_selection": true,
+    "selection_orange_hover_black_outline_preserves_fill": true,
+    "source_registry_and_fourteen_health_links": true,
+    "build_typescript_vite": true,
+    "no_browser_errors": true
+  },
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "width": 1280,
+      "height": 500
+    },
+    {
+      "width": 390,
+      "height": 844
+    },
+    {
+      "width": 390,
+      "height": 600
+    }
+  ],
+  "views_checked": {
+    "story": 5,
+    "explorer": 10,
+    "territory_maps": 4
+  },
+  "encoding": "Light to dark gray for increasing comparable evolution. Percent except historical prevalence differences in percentage points and mortality rate differences in points per 100,000. Range recalculated for each view and filters. Hatching for missing/non-interpretable evolution; orange selection overrides gray.",
+  "geography_bytes": 159162
+}

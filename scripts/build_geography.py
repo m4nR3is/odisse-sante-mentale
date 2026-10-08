@@ -1,4 +1,4 @@
-"""Contours de sélection SVG : IGN/INSEE 2018 via france-geojson, sans taux cartographié."""
+"""Contours de sélection SVG : IGN/INSEE 2018 via france-geojson."""
 import hashlib
 import json
 import math
@@ -22,7 +22,7 @@ def project(point):
     f = math.cos(phi1) * math.tan(math.pi / 4 + phi1 / 2) ** n / n
     rho = f / math.tan(math.pi / 4 + lat / 2) ** n
     theta = n * (lon - math.radians(3))
-    return rho * math.sin(theta), -rho * math.cos(theta)
+    return rho * math.sin(theta), rho * math.cos(theta)  # SVG : le nord doit avoir un y plus petit.
 
 
 def simplify(points, tolerance):
@@ -82,7 +82,7 @@ def build_layer(name, regions=False):
 def main():
     source = json.loads((RAW / "source.json").read_text())
     source["raw_exports"] = [{"path": str(p.relative_to(ROOT)), "sha256": hashlib.sha256(p.read_bytes()).hexdigest()} for p in [RAW / name for name in source["files"]]]
-    source["transformations"] = "Projection Lambert conforme conique (44°/49°, méridien 3°), ajustement des encarts séparément, simplification Douglas-Peucker à 0,25 unité SVG. Carte de sélection, sans valeurs colorées ; encarts hors échelle. COM non fournies par la source : boutons séparés."
+    source["transformations"] = "Projection Lambert conforme conique (44°/49°, méridien 3°), ajustement des encarts séparément, simplification Douglas-Peucker à 0,25 unité SVG. Évolution comparable encodée en gris par la vue active ; encarts hors échelle. COM non fournies par la source : boutons séparés."
     payload = {"source": source, "departments": build_layer("departements-avec-outre-mer.geojson"), "regions": build_layer("regions-avec-outre-mer.geojson", True)}
     output = ROOT / "public/data/geography.json"
     output.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n")
