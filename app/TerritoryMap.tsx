@@ -35,8 +35,7 @@ export default function TerritoryMap({ level, items, selected, preview, legend, 
   const [geography, setGeography] = useState<Geography | null>(null);
   const [failed, setFailed] = useState(false);
   const [localHover, setLocalHover] = useState<string | null>(null);
-  const [view, setView] = useState({ x: 0, y: 0, zoom: 1 });
-  const drag = useRef<{ x: number; y: number; startX: number; startY: number; scale: number } | null>(null);
+  const drag = useRef<{ x: number; y: number; } | null>(null);
   const dragged = useRef(false);
   useEffect(() => {
     let active = true;
@@ -66,7 +65,7 @@ export default function TerritoryMap({ level, items, selected, preview, legend, 
     observer.observe(element); resize();
     return () => observer.disconnect();
   }, [layer, localHover, preview]);
-  useEffect(() => { setView({ x: 0, y: 0, zoom: 1 }); drag.current = null; }, [bottomInsets]);
+  useEffect(() => { drag.current = null; }, [bottomInsets]);
   const transform = (feature: MapFeature) => {
     if (!bottomInsets) return undefined;
     if (!feature.overseas) return "translate(5 4) scale(1.26637554585) translate(-5 -4)";
@@ -80,22 +79,14 @@ export default function TerritoryMap({ level, items, selected, preview, legend, 
   const featured = lookup.get(featuredCode);
   const missingShapes = layer ? items.filter((item) => !layer.features.some((shape) => shape.code === item.code)) : [];
   const hover = (code: string | null, x?: number, y?: number) => { if (x != null && y != null) setAnchor({ x, y }); setLocalHover(code); onPreview(code); };
-  const selectFrance = () => { onSelect("FR"); hover(null); setView({ x: 0, y: 0, zoom: 1 }); };
+  const selectFrance = () => { onSelect("FR"); hover(null); };
   const select = (code: string) => { if (!dragged.current) onSelect(code); };
-  const zoom = (direction: number) => setView((current) => {
-    const next = Math.max(1, Math.min(5, current.zoom + direction));
-    return next === 1 ? { x: 0, y: 0, zoom: 1 } : { x: current.x + 150 / current.zoom - 150 / next, y: current.y + mapHeight / 2 / current.zoom - mapHeight / 2 / next, zoom: next };
-  });
   return <div className="territory-map" data-level={level} data-insets={bottomInsets ? "bottom" : "side"}>
-    <div className="territory-map-toolbar"><span>{level === "regions" ? "RÉGIONS" : "DÉPARTEMENTS"}</span><div>
-      <button type="button" aria-label="Dézoomer la carte" disabled={view.zoom === 1} onClick={() => zoom(-1)}>−</button>
-      <button type="button" aria-label="Zoomer la carte" disabled={view.zoom === 5} onClick={() => zoom(1)}>+</button>
-      <button type="button" className={selected === "FR" ? "is-active" : ""} onClick={selectFrance}>France</button>
-    </div></div>
-    {layer ? <svg ref={svg} viewBox={`${view.x} ${view.y} ${300 / view.zoom} ${mapHeight / view.zoom}`} role="group" style={{ touchAction: view.zoom > 1 ? "none" : "pan-y" }} aria-label={`Carte de sélection des ${level === "regions" ? "régions" : "départements"}. Zoom avec les boutons, déplacement par glisser. Un clic sur le fond sélectionne la France.`}
+    {layer ? <svg ref={svg} viewBox={`0 0 300 ${mapHeight}`} role="group" tabIndex={0} style={{ touchAction: "pan-y" }} aria-label={`Carte de sélection des ${level === "regions" ? "régions" : "départements"}. Un clic sur le fond ou la touche Échap sélectionne la France.`}
       onClick={(event) => { if (!dragged.current && !(event.target as Element).closest("[data-code]")) selectFrance(); }}
-      onPointerDown={(event) => { dragged.current = false; if (view.zoom > 1) drag.current = { x: event.clientX, y: event.clientY, startX: view.x, startY: view.y, scale: 1 / (event.currentTarget.getScreenCTM()?.a ?? 1) }; }}
-      onPointerMove={(event) => { setAnchor({ x: event.clientX, y: event.clientY }); if (!drag.current) return; const origin = drag.current; const dx = event.clientX - origin.x, dy = event.clientY - origin.y; if (Math.hypot(dx, dy) > 4) dragged.current = true; if (dragged.current) setView((current) => ({ ...current, x: origin.startX - dx * origin.scale, y: origin.startY - dy * origin.scale })); }}
+      onKeyDown={(event) => { if (event.key === "Escape") { event.preventDefault(); selectFrance(); } }}
+      onPointerDown={(event) => { dragged.current = false; drag.current = { x: event.clientX, y: event.clientY }; }}
+      onPointerMove={(event) => { setAnchor({ x: event.clientX, y: event.clientY }); if (!drag.current) return; const origin = drag.current; const dx = event.clientX - origin.x, dy = event.clientY - origin.y; if (Math.hypot(dx, dy) > 4) dragged.current = true; }}
       onPointerUp={() => { drag.current = null; }} onPointerCancel={() => { drag.current = null; }} onPointerLeave={() => { drag.current = null; hover(null); }}>
       <defs><pattern id={patternId} width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="#e8e8e4"/><path d="M-1,1L1,-1M0,4L4,0M3,5L5,3" stroke="#b9b9b5" strokeWidth=".45"/></pattern></defs>
       {layer.features.map((feature) => {
@@ -108,6 +99,6 @@ export default function TerritoryMap({ level, items, selected, preview, legend, 
     </svg> : <p className="map-loading">{failed ? "Carte indisponible · le menu reste utilisable" : "Chargement des contours…"}</p>}
     {missingShapes.length > 0 && <div className="map-missing-shapes">{missingShapes.map((item) => <button type="button" key={item.code} aria-label={`${item.name}, contour non fourni ; sélectionner`} aria-pressed={selected === item.code} onPointerEnter={(event) => hover(item.code, event.clientX, event.clientY)} onPointerLeave={() => hover(null)} onFocus={(event) => { const bounds = event.currentTarget.getBoundingClientRect(); hover(item.code, bounds.x, bounds.y); }} onBlur={() => hover(null)} onClick={() => onSelect(item.code)}>{item.code}</button>)}<span>COM · sans contour</span></div>}
     <div className="territory-map-caption"><span>{legend}</span><div className="map-color-legend" role="img" title="Échelle de gris propre à la vue et aux filtres actifs · hachures : données indisponibles ou non comparables" aria-label={values.length ? `Gris clair : ${label(low)} ; gris foncé : ${label(high)}. Hachures : données indisponibles ou non comparables. Échelle propre à cette vue.` : "Aucune évolution comparable"}><span>{values.length ? label(low) : "—"}</span><i aria-hidden="true"/><span>{values.length ? label(high) : "—"}</span><em aria-hidden="true"/><span title="Évolution non comparable ou indisponible">N/C</span></div><a href="https://github.com/gregoiredavid/france-geojson#sources--mises-à-jour" target="_blank" rel="noreferrer">IGN / INSEE · 2018 · encarts hors échelle ↗</a></div>
-    {localHover && featured && <ViewportTooltip x={anchor.x} y={anchor.y} className="map-tooltip"><span>{featured.name}</span><small>{context} · {legend}</small><strong>{Number.isFinite(featured.value) ? featured.detail?.split(" · ")[0] : "N/C"}</strong>{!Number.isFinite(featured.value) && <small>Évolution non interprétable : données manquantes, périmètre modifié ou effectifs insuffisants.</small>}</ViewportTooltip>}
+    {localHover && featured && <ViewportTooltip x={anchor.x} y={anchor.y} className="map-tooltip"><span>{featured.name}</span><small>{context} · {legend}</small><strong>{Number.isFinite(featured.value) ? featured.detail?.split(" · ")[0] : "N/C"}</strong>{Number.isFinite(featured.value) && featured.detail?.includes(" · ") && <small>{featured.detail.split(" · ").slice(1).join(" · ")}</small>}{!Number.isFinite(featured.value) && <small>Évolution non interprétable : données manquantes, périmètre modifié ou effectifs insuffisants.</small>}</ViewportTooltip>}
   </div>;
 }

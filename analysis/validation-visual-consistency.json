@@ -1,0 +1,31 @@
+{
+  "scope": [
+    "Accueil",
+    "Comprendre",
+    "Explorer",
+    "Méthode",
+    "Sources",
+    "Footer"
+  ],
+  "viewports": [
+    "1440×900",
+    "1280×500",
+    "390×844",
+    "390×600"
+  ],
+  "browserChecks": {
+    "storyViews": 5,
+    "explorerViews": 10,
+    "methodViews": 4,
+    "layoutOverflow": false,
+    "runtimeErrors": []
+  },
+  "mapToolbarRemoved": true,
+  "nationalReset": "background click or Escape",
+  "colors": {
+    "referenceFrance": "#757970",
+    "selection": "#ed5d43",
+    "preview": "#121310"
+  },
+  "healthDataChanged": false
+}

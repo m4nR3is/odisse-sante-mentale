@@ -418,7 +418,7 @@ function SocialDeclaredView({ data, indicator, onIndicator, position }: { data: 
     </div>
     <div className="declared-chart">
       <p><b>{declaredMeasure(indicator)}</b><span>12 derniers mois · estimation et IC à 95 %</span></p>
-      <div className="social-comparison-key"><span style={{ color: comparing ? "var(--muted)" : "var(--accent)" }}>● France</span>{comparing && <span style={{ color: preview ? "var(--ink)" : "var(--accent)" }}>● {territory}{preview ? " · aperçu" : ""}</span>}</div>
+      <div className="social-comparison-key"><span style={{ color: "var(--reference)" }}>● France</span>{comparing && <span style={{ color: preview ? "var(--ink)" : "var(--accent)" }}>● {territory}{preview ? " · aperçu" : ""}</span>}</div>
       <svg viewBox="0 0 720 260" role="img" aria-label={`${declaredMeasure(indicator)} selon la situation financière en 2024 · ${territory} et France`}>
         {Array.from({ length: max / 10 + 1 }, (_, i) => i * 10).map((tick) => <g className="declared-grid" key={tick}><line x1={x(tick)} x2={x(tick)} y1="20" y2="225" /><text x={x(tick)} y="248" textAnchor="middle">{tick} %</text></g>)}
         {FINANCIAL_ORDER.map((financial, index) => {
@@ -427,7 +427,7 @@ function SocialDeclaredView({ data, indicator, onIndicator, position }: { data: 
           const local = regional.find((point) => point.financial === financial);
           return <g key={financial} opacity={progress}><text className="social-financial-label" x="4" y={cy + 4}>{FINANCIAL_SHORT[financial]}</text>{[national[index], ...(comparing && local ? [local] : [])].map((point, series) => {
             const name = series ? territory : "France";
-            const color = series ? preview ? "var(--ink)" : "var(--accent)" : comparing ? "var(--muted)" : "var(--accent)";
+            const color = series ? preview ? "var(--ink)" : "var(--accent)" : "var(--reference)";
             const y = cy + (comparing ? series ? 7 : -7 : 0);
             const travel = Math.min(1, progress / .75), arrival = Math.max(0, (progress - .75) / .25);
             const cx = x(point.estimate * travel);
@@ -435,7 +435,7 @@ function SocialDeclaredView({ data, indicator, onIndicator, position }: { data: 
           })}{comparing && !local && <text className="social-missing" x="635" y={cy + 10}>Non diffusé</text>}</g>;
         })}
       </svg>
-      <dl className="evidence-mobile-values">{FINANCIAL_ORDER.map((financial, i) => { const local = regional.find((p) => p.financial === financial); return <div key={financial} tabIndex={0} style={{ opacity: Math.max(0, Math.min(1, (reveal.progress - i * .15) / .55)) }} onPointerMove={(e) => setHovered({ x: e.clientX, y: e.clientY, point: local ?? national[i], territory: local ? territory : "France" })} onPointerLeave={() => setHovered(null)} onFocus={(e) => { const r = e.currentTarget.getBoundingClientRect(); setHovered({ x: r.left + r.width / 2, y: r.top, point: local ?? national[i], territory: local ? territory : "France" }); }} onBlur={() => setHovered(null)}><dt>{FINANCIAL_SHORT[financial]}</dt><dd><span>France {fmt(national[i].estimate)} %</span>{comparing && <span className="social-mobile-region">{territory} {local ? `${fmt(local.estimate)} %` : "non diffusé"}</span>}<small>{local ? "" : "France · "}{intervalLabel(local ?? national[i])}</small></dd></div>; })}</dl>
+      <dl className="evidence-mobile-values">{FINANCIAL_ORDER.map((financial, i) => { const local = regional.find((p) => p.financial === financial); return <div key={financial} tabIndex={0} style={{ opacity: Math.max(0, Math.min(1, (reveal.progress - i * .15) / .55)) }} onPointerMove={(e) => setHovered({ x: e.clientX, y: e.clientY, point: local ?? national[i], territory: local ? territory : "France" })} onPointerLeave={() => setHovered(null)} onFocus={(e) => { const r = e.currentTarget.getBoundingClientRect(); setHovered({ x: r.left + r.width / 2, y: r.top, point: local ?? national[i], territory: local ? territory : "France" }); }} onBlur={() => setHovered(null)}><dt>{FINANCIAL_SHORT[financial]}</dt><dd><span>France {fmt(national[i].estimate)} %</span>{comparing && <span className="social-mobile-region" style={{ color: preview ? "var(--ink)" : "var(--accent)" }}>{territory} {local ? `${fmt(local.estimate)} %` : "non diffusé"}</span>}<small>{local ? "" : "France · "}{intervalLabel(local ?? national[i])}</small></dd></div>; })}</dl>
       {hovered && <ViewportTooltip x={hovered.x} y={hovered.y} className="declared-tooltip"><span>{FINANCIAL_SHORT[hovered.point.financial]}</span><small>{declaredMeasure(indicator)} · {hovered.territory} · 2024</small><strong>{fmt(hovered.point.estimate)} %</strong><small>{intervalLabel(hovered.point)}</small></ViewportTooltip>}
       <div className="declared-caution"><b>Une association observée</b><span>Les écarts ne démontrent ni causalité ni différence statistiquement significative.</span>{source && <a href={source} target="_blank" rel="noreferrer">Tableau régional · p. {regional[0].sourcePage} ↗</a>}</div>
     </div>
