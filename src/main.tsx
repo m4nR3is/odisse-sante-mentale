@@ -2,6 +2,7 @@ import { StrictMode, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import Experience, { type ExperienceData } from "../app/Experience";
 import "../app/site.css";
+import "../app/visual-system.css";
 
 function Application() {
   const [data, setData] = useState<ExperienceData | null>(null);

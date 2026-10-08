@@ -1,0 +1,86 @@
+/* Shared visual roles. Layout and storytelling remain in site.css. */
+:root {
+  --sans: Inter,"Helvetica Neue",Arial,sans-serif;
+  --mono: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+  --type-caption: 11px;
+  --type-control: 11px;
+  --viz-label: 11px;
+  --viz-note: 10px;
+  --data-label: 16px;
+  --data-axis: 12px;
+  --data-value: 16px;
+}
+body { font-family:var(--sans); }
+button,select,input,textarea { font-family:inherit; }
+.chapter,.overline,.story-stat span,.story-chart-note,.story-legend,.story-source,
+.method-takeaway,.method-source-note,.method-source-manifest,.generation,
+footer p,footer .footer-credits { font-family:var(--mono);font-size:var(--type-caption);line-height:1.5; }
+.section-heading>div>p,.reading-takeaway>p,.method-reuse>p:not(.generation),.conclusion-copy { font-family:var(--sans);font-size:var(--type-body);line-height:1.6; }
+.story-progress a,.method-steps a,.explorer-mode button,.measure-subnav button,
+.chart-view-toggle button,.declared-indicators button,.conclusion-links a { font-family:var(--mono);font-size:var(--type-control);line-height:1.4; }
+.story-legend,.territory-lab .legend,.territory-lab .social-comparison-key { font:var(--viz-label)/1.5 var(--mono);color:var(--muted); }
+.territory-lab .declared-caution b,.territory-lab .declared-caution span,
+.territory-lab .distribution-explanation,.territory-lab .chart-scope-note,
+.territory-lab .monthly-method,.territory-map-caption,.territory-map-caption>span { font:var(--viz-note)/1.5 var(--mono);color:var(--muted); }
+.territory-map-caption a,.map-color-legend,.map-missing-shapes span { font:9px/1.4 var(--mono); }
+/* These sizes are corrected for the rendered SVG scale by useChartTypography. */
+main.experience svg[data-chart-type] text { font-family:var(--mono);font-size:var(--chart-axis,var(--data-axis));font-weight:400;fill:var(--muted); }
+main.experience svg[data-chart-type] text.story-social-label,
+main.experience svg[data-chart-type] text.social-financial-label { font-size:var(--chart-label,var(--data-label));font-weight:400;fill:var(--muted); }
+main.experience svg[data-chart-type] text.story-value,
+main.experience svg[data-chart-type] text.declared-value { font-size:var(--chart-value,var(--data-value));font-weight:600; }
+main.experience svg[data-chart-type] .declared-grid text { font-size:var(--chart-axis,var(--data-axis)); }
+main.experience svg[data-chart-type="distribution"] text { font-size:var(--chart-note,11px); }
+main.experience svg[data-chart-type="main"] circle.story-dot,
+main.experience svg[data-chart-type="main"] circle.story-dot-muted,
+main.experience svg[data-chart-type="main"] .declared-row circle:not(.declared-point-hit),
+main.experience svg[data-chart-type="main"] circle.chart-dot,
+main.experience svg[data-chart-type="main"] circle.reference-dot,
+main.experience svg[data-chart-type="main"] .declared-history-point circle:not(.history-point-hit) { r:var(--chart-dot,6.5px); }
+.story-figure[data-scene="4"] .story-interval { stroke:var(--reference); }
+main.experience .story-figure[data-scene="4"] svg text.story-value { fill:var(--reference); }
+/* One tooltip grammar for maps, points, curves and distributions. */
+.distribution-tooltip { font-family:var(--mono);background:var(--ink);color:var(--white);border:1px solid var(--ink);border-radius:0;box-shadow:none; }
+.distribution-tooltip>span { font:600 14px/1.35 var(--sans);color:var(--white); }
+.distribution-tooltip>small { font:11px/1.5 var(--mono);color:var(--on-dark-muted); }
+.distribution-tooltip>strong { font:600 20px/1.2 var(--mono);color:var(--accent); }
+.story-mobile-values dt,.evidence-mobile-values dt { font:16px/1.4 var(--mono);color:var(--muted); }
+.story-mobile-values dd,.evidence-mobile-values dd { font:600 16px/1.4 var(--mono); }
+.social-has-map .evidence-mobile-values dd span { font:600 16px/1.4 var(--mono); }
+.story-mobile-values small,.social-has-map .evidence-mobile-values small { font:11px/1.5 var(--mono);color:var(--muted); }
+.story-mobile-values dd { color:var(--reference); }
+@media(max-width:650px) {
+  :root { --type-control:10px;--type-caption:10px;--viz-label:10px;--viz-note:9px; }
+  .territory-map-caption a,.map-color-legend,.map-missing-shapes span { font-size:8px; }
+}
+@media(max-height:650px) {
+  :root { --type-control:10px;--type-caption:10px;--viz-note:9px; }
+}
+
+main.experience svg[data-chart-type] .reading-oval { scale:var(--chart-unscale,1);transform-origin:0 0; }
+main.experience svg[data-chart-type="distribution"][data-chart-dense="true"] text { dominant-baseline:hanging; }
+main.experience svg[data-chart-type="distribution"][data-chart-dense="true"] .national-marker-label { display:none; }
+
+/* A fixed hit area and one hover/focus response for every data point. */
+main.experience svg[data-chart-type] g[data-chart-point] { outline:none; }
+main.experience svg[data-chart-type] g[data-chart-point="value"] { cursor:pointer; }
+main.experience svg[data-chart-type] g[data-chart-point] circle[data-point-hit] { r:var(--chart-hit,14px);fill:transparent;stroke:none;pointer-events:all; }
+main.experience svg[data-chart-type] g[data-chart-point] circle[data-point-dot] { transform:none;r:var(--chart-dot,6.5px);transition:r 160ms ease,stroke 160ms ease;vector-effect:non-scaling-stroke; }
+main.experience svg[data-chart-type="distribution"] g[data-chart-point] circle[data-point-dot] { r:var(--chart-distributionDot,4.5px); }
+main.experience svg[data-chart-type="distribution"] g[data-chart-point]:is(.selected,.is-selected) circle[data-point-dot] { r:var(--chart-distributionSelected,7px); }
+main.experience svg[data-chart-type] g[data-chart-point]:is(:hover,:focus,.is-hovered):not([data-interactive="false"]) circle[data-point-dot] { transform:none;r:var(--chart-hover,10.5px);stroke:var(--ink);stroke-width:1.5; }
+@media(prefers-reduced-motion:reduce) { main.experience svg[data-chart-type] g[data-chart-point] circle[data-point-dot] { transition:none; } }
+main.experience svg[data-chart-type] g[data-chart-point][data-interactive="false"] circle[data-point-hit] { pointer-events:none; }
+.story-visual svg mask path { stroke-width:calc(var(--chart-hit,14px)*2); }
+
+.distribution-tooltip.story-tooltip>strong,.distribution-tooltip.declared-tooltip>strong { font:600 20px/1.2 var(--mono); }
+/* Distribution selections use fill and size, with no outline. */
+main.experience svg[data-chart-type="distribution"] g[data-chart-point] circle[data-point-dot] { stroke:none; }
+main.experience svg[data-chart-type="distribution"] g[data-chart-point]:is(:hover,:focus,.is-hovered,.selected,.is-selected):not([data-interactive="false"]) circle[data-point-dot] { stroke:none; }
+
+/* Hover adds a regional lane without reflowing the national reference. */
+.social-has-map .social-comparison-key { flex-wrap:nowrap;min-width:0; }
+.social-has-map .social-comparison-key>span:first-child { flex-shrink:0; }
+.social-has-map .social-comparison-region { flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.social-has-map .social-source-slot { display:block;height:1.5em;line-height:1.5; }
+.social-has-map .social-source-slot>a { display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font:inherit; }

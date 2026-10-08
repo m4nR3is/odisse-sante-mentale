@@ -644,3 +644,27 @@ a,button,input,select,textarea,[tabindex]{-webkit-tap-highlight-color:transparen
 .story-annotations .reading-ink{stroke-width:1.25;stroke-dasharray:1;animation:reading-ink-draw .75s ease both}
 @keyframes reading-ink-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
 @media(prefers-reduced-motion:reduce){.story-annotations .reading-ink{animation:none!important;stroke-dashoffset:0;stroke-dasharray:none}}
+
+/* Le gradient social utilise les dimensions réelles du panneau, y compris en portrait. */
+.social-has-map .declared-chart>svg{width:100%;height:100%;aspect-ratio:auto}
+.social-has-map .declared-chart svg text{font:14px var(--mono)}
+.social-has-map .declared-chart svg .declared-value{font-size:16px}
+.social-has-map .declared-chart svg .social-financial-label{font-size:16px}
+.social-has-map .declared-chart svg .declared-grid text{font-size:12px}
+
+/* Une fermeture du récit, en écho à l’ouverture. */
+.reading-conclusion{padding:clamp(64px,10svh,120px) 7vw;background:var(--night);color:var(--white);min-height:calc(100svh - 60px);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:32px;scroll-margin-top:0}
+.reading-conclusion .chapter{margin:0;color:var(--on-dark-muted)}
+.reading-conclusion h2{margin:0;font-size:clamp(48px,7.8vw,120px);font-weight:450;line-height:.96;letter-spacing:-.065em}
+.conclusion-copy{margin:0;max-width:760px;font-size:var(--type-body);line-height:1.6;color:var(--on-dark-muted)}
+.conclusion-takeaway{margin:12px 0 0;max-width:900px;font-size:clamp(24px,3vw,42px);font-weight:450;line-height:1.15;letter-spacing:-.035em}
+.conclusion-links{display:flex;flex-wrap:wrap;gap:20px 40px;margin-top:8px}
+.conclusion-links a{display:inline-flex;align-items:center;gap:24px;padding:12px 0;border-top:1px solid var(--on-dark-line);font:var(--type-caption)/1.5 var(--mono)}
+.conclusion-links a span{color:var(--accent)}
+.conclusion-links a:hover{color:var(--accent)}
+.method-source-section{scroll-margin-top:0}
+@media(max-width:650px){.reading-conclusion{padding:64px 22px;gap:24px;min-height:0}.reading-conclusion h2{font-size:clamp(42px,11vw,68px)}.conclusion-copy{font-size:16px}.conclusion-takeaway br{display:none}.conclusion-links{gap:12px 28px}}
+
+.reading-conclusion .method-reveal{clip-path:none;opacity:min(1,calc(var(--method-reveal)*2))}
+.reading-conclusion .method-reveal:focus-within{opacity:1}
+@media(prefers-reduced-motion:reduce){.reading-conclusion .method-reveal{opacity:1}}

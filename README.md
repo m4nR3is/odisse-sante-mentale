@@ -45,8 +45,10 @@ par âge et sexe, et le changement d’échelle verticale, sont explicités.
 Les chiffres sont calculés depuis les données livrées.
 
 Des annotations dessinées soulignent les valeurs du récit et
-sont visibles par défaut sur les graphiques et distributions d’Explorer, puis
-suivent les points survolés ou comparés. Les liaisons portent
+sont visibles par défaut sur les graphiques principaux d’Explorer. Dans les distributions,
+la sélection est indiquée par la couleur et la taille du point, sans contour ni annotation.
+Leurs points d’ancrage restent fixes au survol ; ils s’adaptent à la sélection
+et aux filtres. Les liaisons portent
 sur des valeurs de la même année et de la même mesure ; elles ne constituent
 pas un test de significativité. Les comparaisons exclues restent sans liaison.
 
@@ -70,6 +72,8 @@ Les quatre regards :
   seize profils d’âge et de sexe, avec comparaison à l’autre sexe au même âge.
 - **Décès** : taux de décès par suicide 2019–2023 ; variations exprimées en
   points de taux pour 100 000 habitants.
+
+Une conclusion après « Interpréter » referme le récit : « Un chiffre national / Des réalités différentes ». Deux phrases rappellent les différences entre populations, territoires et sources, puis les liens permettent de revenir aux données ou de consulter les sources. Les ancres `#conclusion` et `#sources` suivent le scroll sans ajouter d’entrée au menu.
 
 La rubrique Méthode devient un parcours au scroll en quatre gestes :
 Distinguer, Rapporter, Comparer et Interpréter. Un panneau persistant révèle
@@ -135,7 +139,10 @@ conservées comme archives, distinctes de la proposition actuelle.
 ## Fichiers utiles
 
 - `app/Experience.tsx` : récit, interactions, graphiques et règles de comparaison.
-- `app/site.css` : identité graphique, responsive et navigation clavier.
+- `app/site.css` : mises en page, animations, responsive et navigation clavier.
+- `app/visual-system.css` : hiérarchie typographique et couleurs communes aux rubriques, graphiques, légendes et infobulles.
+- `app/useChartTypography.ts` : tailles des textes, points et zones de survol en pixels écran, indépendantes de l’échelle des SVG.
+- `app/useChartInteractions.ts` : réponse commune au survol et au focus clavier ; clic ou Entrée/Espace sur un point de valeur conserve sa précision, Échap ou clic ailleurs la ferme. Les clics sur la carte et les distributions conservent leur fonction de sélection. Les annotations ne suivent pas le survol.
 - `app/IntroPortrait.tsx`, `app/PortraitVariants.tsx`, `app/PortraitStyles.ts`,
   `app/FacialFeatures.tsx` : illustration SVG, 50 portraits et interactions.
 - `public/data/experience-data.json` : données préparées et livrées localement.

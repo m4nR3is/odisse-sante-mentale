@@ -9,6 +9,7 @@
 - Sous-domaine personnalisé non configuré.
 - Remise officielle publiée dans `Défi 1 - Santé mentale/defi-1_Manuel_Reismann/` du dépôt GitLab du challenge.
 - Les nouvelles versions sont publiées sur demande explicite de Manuel ; les ajustements intermédiaires restent locaux.
+- Version finale du 8 octobre 2026 : conclusion, harmonisation des tailles et interactions, suppression des contours et annotations dans les frises, stabilité verticale des gradients sociaux. Publication sur GitHub, Vercel et dans le dossier officiel GitLab ; l’adresse Vercel actuelle est conservée pour la remise.
 
 ## Procédure
 
@@ -63,9 +64,13 @@ Les champs `[À COMPLÉTER …]` restent explicitement visibles jusqu’à leur 
 Vérifier le chargement des données, les dix étapes de l’explorateur dans les deux
 sens, le survol régional et une lecture mobile. Vérifier également les liens
 sources, les ressources d’aide, les notices de licence et l’accès sans compte.
-Contrôler la présence des annotations dès l’arrivée des dix graphiques et dans
-les distributions, leurs positions hors du tracé pour les accolades, et l’accès
-aux infobulles. Le portrait de l’accueil change un seul quart toutes les 500 ms
+Contrôler la présence des annotations dès l’arrivée des graphiques principaux,
+leurs positions hors du tracé pour les accolades, et l’accès aux infobulles.
+Les frises n’ont ni contour ni annotation autour des points sélectionnés.
+Vérifier les tailles communes, l’agrandissement au survol et au focus, le clic
+pour conserver une infobulle et Échap pour la fermer. Dans les gradients
+sociaux, les lignes France et les catégories restent fixes au survol régional.
+Vérifier la conclusion, ses deux liens et les ancres au scroll et au rechargement. Le portrait de l’accueil change un seul quart toutes les 500 ms
 au repos ; il s’arrête hors écran et avec la réduction des mouvements.
 La clarification Slack fixe 23 h 58 le 8 octobre 2026 ; le README officiel indique
 23 h 59. Conserver 23 h 58 comme limite opérationnelle.

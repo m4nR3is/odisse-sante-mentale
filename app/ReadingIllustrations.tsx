@@ -1,7 +1,7 @@
 type Scene = 0 | 1 | 2 | 3 | 4;
 
 function Oval({ x, y, size = 14 }: { x: number; y: number; size?: number }) {
-  return <path className="reading-ink reading-ink-accent" pathLength="1" transform={`translate(${x} ${y}) scale(${size / 14})`} d="M-14-4C-13-13-1-16 9-12C18-9 19 1 14 10C8 17-5 16-12 9C-18 3-18-4-12-9C-5-14 9-16 15-7" />;
+  return <g transform={`translate(${x} ${y})`}><path className="reading-ink reading-ink-accent reading-oval" pathLength="1" transform={`scale(${size / 14})`} d="M-14-4C-13-13-1-16 9-12C18-9 19 1 14 10C8 17-5 16-12 9C-18 3-18-4-12-9C-5-14 9-16 15-7" /></g>;
 }
 
 function RightBracket({ x, top, bottom, size = 14 }: { x: number; top: number; bottom: number; size?: number }) {
@@ -30,14 +30,5 @@ export function ExplorerAnnotation({ x, y, comparisonY, comparisonX, rightX, bra
   const bottom = paired ? Math.max(y, comparisonY!) : y;
   return <g className="story-annotations explorer-annotations" aria-hidden="true">
     {horizontal ? <path className="reading-ink reading-ink-accent" pathLength="1" d={`M${left} ${y+12}Q${left-3} ${y+23} ${left+8} ${y+21}L${right-8} ${y+22}Q${right+3} ${y+24} ${right} ${y+12}`} /> : paired ? <RightBracket x={rightX ?? x + 17} top={top} bottom={bottom} size={bracketSize} /> : <Oval x={x} y={y} />}
-  </g>;
-}
-
-// A selection is encircled; without a regional/department selection, mark the spread rather than an arbitrary point.
-export function DistributionAnnotation({ x, y, from, to, height }: { x?: number; y: number; from: number; to: number; height: number }) {
-  const size = Math.min(12, height * .18);
-  const depth = Math.min(16, height - y - 3);
-  return <g className="story-annotations explorer-annotations distribution-annotations" aria-hidden="true">
-    {x != null ? <Oval x={x} y={y} size={size} /> : to - from > 24 && <path className="reading-ink reading-ink-accent" pathLength="1" d={`M${from} ${y+depth*.35}Q${from-2} ${y+depth} ${from+8} ${y+depth}L${to-8} ${y+depth}Q${to+2} ${y+depth} ${to} ${y+depth*.35}`} />}
   </g>;
 }
