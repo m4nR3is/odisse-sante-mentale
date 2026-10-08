@@ -1244,6 +1244,50 @@ function IntroOpening() {
     };
   }, []);
 
+  useEffect(() => {
+    const root = track.current, viewport = stage.current;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!root || !viewport || motion.matches || window.scrollY > 4 || (location.hash && location.hash !== "#top")) return;
+    let frame = 0, stopped = false, running = false, lastScroll = window.scrollY;
+    const stop = () => {
+      stopped = true;
+      running = false;
+      clearTimeout(timer);
+      cancelAnimationFrame(frame);
+    };
+    const timer = window.setTimeout(() => {
+      if (stopped || document.hidden || motion.matches || window.scrollY > 4) return;
+      running = true;
+      const from = window.scrollY;
+      const inset = parseFloat(getComputedStyle(root).paddingTop) || 0;
+      const destination = from + root.getBoundingClientRect().top + root.offsetHeight - viewport.offsetHeight - inset;
+      const started = performance.now();
+      const advance = (now: number) => {
+        if (stopped) return;
+        const progress = Math.min(1, (now - started) / 10000);
+        const eased = progress * progress * (3 - 2 * progress);
+        lastScroll = from + (destination - from) * eased;
+        window.scrollTo({ top: lastScroll, behavior: "instant" });
+        if (progress < 1) frame = requestAnimationFrame(advance);
+        else stop();
+      };
+      frame = requestAnimationFrame(advance);
+    }, 3000);
+    const onScroll = () => { if (!running || Math.abs(window.scrollY - lastScroll) > 2) stop(); };
+    const interactions = ["wheel", "touchstart", "pointerdown", "pointermove", "keydown", "focusin", "resize"] as const;
+    interactions.forEach((event) => window.addEventListener(event, stop, { passive: true }));
+    window.addEventListener("scroll", onScroll, { passive: true });
+    document.addEventListener("visibilitychange", stop);
+    motion.addEventListener("change", stop);
+    return () => {
+      stop();
+      interactions.forEach((event) => window.removeEventListener(event, stop));
+      window.removeEventListener("scroll", onScroll);
+      document.removeEventListener("visibilitychange", stop);
+      motion.removeEventListener("change", stop);
+    };
+  }, []);
+
   const flight = (text: string, index: number) => <span className="intro-flight-target"><span className="intro-flight" ref={(element) => { flights.current[index] = element; }}>{index === 0 ? <><span className="intro-word-fill">{text}<span className="intro-baseline" aria-hidden="true" /></span><svg className="intro-ink" ref={ink} aria-hidden="true" focusable="false"><text x="0">SANTÉ MENTALE</text></svg></> : text}</span></span>;
   return <section className="intro-scroll-track" id="top" ref={track} aria-labelledby="intro-title">
     <div className="hero meta-hero intro-stage" ref={stage}>
