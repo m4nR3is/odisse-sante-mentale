@@ -651,7 +651,6 @@ function TerritoryAppendix({ data, guidedView }: { data: ExperienceData; guidedV
     setTooltip(null);
     setChartTooltip(null);
     setHoveredCode(null);
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) lab.current?.animate([{ opacity: .45 }, { opacity: 1 }], { duration: 420, easing: "ease-out" });
   }, [step]);
   useEffect(() => {
     if (!guidedView) return;
