@@ -837,25 +837,25 @@ function TerritoryAppendix({ data, guidedView }: { data: ExperienceData; guidedV
 }
 
 const METHOD_SCENES = [
-  { word: "Distinguer.", label: "QUATRE REGARDS", title: "Des réalités différentes.", copy: "Interroger une personne, compter un passage aux urgences, un séjour ou un décès : chaque source rend une dimension visible.", takeaway: "Ces sources ne sont pas les étapes d’un même parcours individuel.", rows: [
+  { word: "Distinguer", label: "QUATRE REGARDS", title: "Des réalités différentes.", copy: "Interroger une personne, compter un passage aux urgences, un séjour ou un décès : chaque source rend une dimension visible.", takeaway: "Ces sources ne sont pas les étapes d’un même parcours individuel.", rows: [
     ["Déclaré", "Une expérience rapportée", "Épisode dépressif caractérisé, trouble anxieux généralisé et pensées suicidaires déclarés dans les enquêtes."],
     ["Urgences", "Un recours aigu", "Passages pour gestes auto-infligés dans OSCOUR® ; le périmètre national varie depuis 2022."],
     ["Hôpital", "Une prise en charge", "Patients et séjours en MCO pour gestes auto-infligés ; hospitalisations en psychiatrie exclues."],
     ["Décès", "Une mortalité enregistrée", "Décès par suicide, documentés séparément."],
   ] },
-  { word: "Rapporter.", label: "LE DÉNOMINATEUR COMPTE", title: "Un chiffre, rapporté à quoi ?", copy: "Le dénominateur donne son sens à la mesure. Une part de l’activité des urgences et un taux dans la population répondent à des questions différentes.", takeaway: "Les niveaux ne se comparent pas d’une source à l’autre.", rows: [
+  { word: "Rapporter", label: "LE DÉNOMINATEUR COMPTE", title: "Un chiffre, rapporté à quoi ?", copy: "Le dénominateur donne son sens à la mesure. Une part de l’activité des urgences et un taux dans la population répondent à des questions différentes.", takeaway: "Les niveaux ne se comparent pas d’une source à l’autre.", rows: [
     ["Déclaré", "% des personnes", "Prévalence déclarée dans la population couverte par l’enquête."],
     ["Urgences", "Pour 100 000 passages", "Part des gestes auto-infligés parmi les passages avec au moins un diagnostic renseigné."],
     ["Hôpital", "Pour 100 000 habitants", "Taux de patients ou de séjours : deux unités de comptage distinctes."],
     ["Décès", "Pour 100 000 habitants", "Taux de décès par suicide ; évolutions exprimées en points de taux."],
   ] },
-  { word: "Comparer.", label: "GARDER LES MÊMES REPÈRES", title: "Des comparaisons sous conditions.", copy: "Avant de rapprocher deux valeurs, vérifier la population, la période et la définition. L’incertitude fait partie de la lecture.", takeaway: "Un seuil de prudence n’est pas un test de significativité.", rows: [
+  { word: "Comparer", label: "GARDER LES MÊMES REPÈRES", title: "Des comparaisons sous conditions.", copy: "Avant de rapprocher deux valeurs, vérifier la population, la période et la définition. L’incertitude fait partie de la lecture.", takeaway: "Un seuil de prudence n’est pas un test de significativité.", rows: [
     ["Population", "Brut ou standardisé", "Les taux hospitaliers et de décès tous âges sont standardisés ; les taux par âge sont bruts. Certaines références nationales regroupées sont approchées à partir de valeurs arrondies."],
     ["Période", "2005–2021 ≠ 2024", "Les Baromètres historiques restent séparés de 2024, dont le protocole a changé."],
     ["Incertitude", "Conserver les intervalles", "Les IC à 95 % sont affichés lorsqu’ils sont cohérents. Une borne incohérente dans la source est signalée ; une donnée absente reste absente."],
     ["Petits effectifs", "Au moins 10 décès", "Pour comparer les évolutions départementales, ce seuil doit être atteint aux deux dates. La courbe disponible reste visible."],
   ] },
-  { word: "Interpréter.", label: "SAVOIR OÙ S’ARRÊTER", title: "Observer un écart. Garder ses limites.", copy: "Une visualisation permet de repérer des différences et de poser des questions. Elle ne suffit pas à identifier leur cause.", takeaway: "Derrière les données, des personnes. Aucun indicateur ne résume leur expérience.", rows: [
+  { word: "Interpréter", label: "SAVOIR OÙ S’ARRÊTER", title: "Observer un écart. Garder ses limites.", copy: "Une visualisation permet de repérer des différences et de poser des questions. Elle ne suffit pas à identifier leur cause.", takeaway: "Derrière les données, des personnes. Aucun indicateur ne résume leur expérience.", rows: [
     ["Association", "Une relation observée", "Le gradient financier déclaré ne démontre pas une cause des hospitalisations."],
     ["Prise en charge", "Un regard sur les soins", "Les données reflètent aussi l’accès, l’offre et le codage, pas toute la souffrance psychique."],
     ["Territoires", "Situer, sans classer", "Une distribution décrit des écarts de mesure ; elle ne classe pas la souffrance des habitants."],
@@ -914,7 +914,7 @@ function MethodSection({ data }: { data: ExperienceData }) {
           const line = (document.querySelector(".topbar")?.getBoundingClientRect().bottom ?? 60) + 18;
           window.scrollTo({ top: window.scrollY + bounds.top - line + bounds.height * .55, behavior: "instant" });
           setClickRevision((revision) => revision + 1);
-        }}><span>0{index + 1}</span>{scene.word.replace(".", "")}<ScrollIndicator progress={reading.scene === index ? reading.fraction : 0} /></a>)}</nav>
+        }}><span>0{index + 1}</span>{scene.word}<ScrollIndicator progress={reading.scene === index ? reading.fraction : 0} /></a>)}</nav>
         <div className={`method-stage-body${clickRevision ? " method-click-arrival" : ""}`} key={`method-${reading.scene}-${clickRevision}`}>
           <div className="method-reading"><p className="chapter">{step.label}</p><h3 style={{ transform: eased === 1 ? "none" : `translateY(${(1 - eased) * 25}px) scale(${1 + (1 - eased) * .35})` }}>{step.word}</h3><h4>{step.title}</h4><p>{step.copy}</p></div>
           <div className="method-rules" key={reading.scene}>{step.rows.map(([label, title, copy], index) => {
