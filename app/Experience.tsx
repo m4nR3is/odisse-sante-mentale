@@ -1111,7 +1111,7 @@ function IntroOpening() {
           ? Math.max(1, Math.min(stageBounds.width * .9 / Math.max(1, target.width), stageBounds.height * .7 / Math.max(1, target.height)))
           : Math.max(2.5, Math.min(28, stageBounds.width / Math.max(1, target.width) * 2.2));
         const scale = 1 + (large - 1) * (1 - arrival);
-        element.style.transform = `translate3d(${dx * (1 - arrival)}px, ${dy * (1 - arrival)}px, 0) scale(${scale})`;
+        element.style.transform = arrival === 1 ? "none" : `translate(${dx * (1 - arrival)}px, ${dy * (1 - arrival)}px) scale(${scale})`;
         element.style.opacity = progress >= starts[index] ? String(Math.min(1, local * 10 + (index === 0 ? 1 : 0))) : "0";
         element.dataset.arrival = arrival.toFixed(3);
       });
