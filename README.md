@@ -12,10 +12,7 @@ Contact : ecrire@m4nu.net · [Visualisation en ligne](https://odisse-sante-menta
 
 L’accueil se construit au scroll : Santé mentale, Recours aux soins et Inégalités
 arrivent depuis le centre, à très grande taille, puis rejoignent leur place.
-Le titre et la question apparaissent à leur tour. Le scroll déclenche chaque
-étape, puis son animation se termine automatiquement en une seconde, même
-lorsque le défilement s’arrête. Les étapes traversées rapidement sont jouées
-dans l’ordre ; un retour attend la fin du mouvement lancé. La séquence est réversible,
+Le titre et la question apparaissent à leur tour. La séquence est réversible,
 peut être passée et affiche immédiatement sa composition finale avec la
 préférence de réduction des mouvements.
 

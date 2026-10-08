@@ -1090,67 +1090,40 @@ function IntroOpening() {
     if (!root || !viewport) return;
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let frame = 0;
-    const triggers = [.025, .17, .34, .49, .64, .79];
-    const arrivals = [0, 0, 0, 0, 0, 0];
-    let completed = -1, desired = -1;
-    let animation: { index: number; direction: number; start: number; from: number } | null = null;
-    const synchronize = (now: number) => {
+    const starts = [0, .17, .34, .49, .64, .79];
+    const synchronize = () => {
       frame = 0;
       const bounds = root.getBoundingClientRect();
       const stageBounds = viewport.getBoundingClientRect();
       const inset = parseFloat(getComputedStyle(root).paddingTop) || 0;
       const distance = Math.max(1, root.offsetHeight - viewport.offsetHeight - inset);
       const progress = motion.matches ? 1 : Math.max(0, Math.min(1, -bounds.top / distance));
-      desired = triggers.reduce((active, threshold, index) => progress >= threshold ? index : active, -1);
       viewport.dataset.introProgress = progress.toFixed(3);
-      // Scroll chooses a destination; an already launched flight finishes on its own clock.
-      if (motion.matches || bounds.bottom <= inset || bounds.top >= window.innerHeight) {
-        completed = desired;
-        animation = null;
-        arrivals.forEach((_, index) => { arrivals[index] = index <= completed ? 1 : 0; });
-      } else {
-        if (!animation && desired !== completed) {
-          const direction = desired > completed ? 1 : -1;
-          const index = direction === 1 ? completed + 1 : completed;
-          animation = { index, direction, start: now, from: arrivals[index] };
-        }
-        if (animation) {
-          const elapsed = Math.max(0, Math.min(1, (now - animation.start) / 1000));
-          const eased = elapsed * elapsed * (3 - 2 * elapsed);
-          arrivals[animation.index] = animation.from + ((animation.direction === 1 ? 1 : 0) - animation.from) * eased;
-          if (elapsed === 1) {
-            completed += animation.direction;
-            animation = null;
-          }
-        }
-      }
-      viewport.dataset.introCompleted = String(completed);
-      viewport.dataset.introAnimating = animation ? String(animation.index) : "none";
       flights.current.forEach((element, index) => {
         if (!element) return;
+        // Measure the untransformed wrapper: animation cannot alter its destination.
         const target = element.parentElement!.getBoundingClientRect();
-        const arrival = arrivals[index];
+        const local = Math.max(0, Math.min(1, (progress - starts[index]) / .14));
+        const arrival = local * local * (3 - 2 * local);
         const dx = stageBounds.left + stageBounds.width / 2 - (target.left + target.width / 2);
         const dy = stageBounds.top + stageBounds.height / 2 - (target.top + target.height / 2);
         const large = index === 0
           ? Math.max(1, Math.min(stageBounds.width * .9 / Math.max(1, target.width), stageBounds.height * .7 / Math.max(1, target.height)))
           : Math.max(2.5, Math.min(28, stageBounds.width / Math.max(1, target.width) * 2.2));
-        element.style.transform = `translate3d(${dx * (1 - arrival)}px, ${dy * (1 - arrival)}px, 0) scale(${1 + (large - 1) * (1 - arrival)})`;
-        const visible = index === 0 || index <= completed || animation?.index === index;
-        element.style.opacity = visible ? String(index === 0 ? 1 : Math.min(1, arrival * 10)) : "0";
+        const scale = 1 + (large - 1) * (1 - arrival);
+        element.style.transform = `translate3d(${dx * (1 - arrival)}px, ${dy * (1 - arrival)}px, 0) scale(${scale})`;
+        element.style.opacity = progress >= starts[index] ? String(Math.min(1, local * 10 + (index === 0 ? 1 : 0))) : "0";
         element.dataset.arrival = arrival.toFixed(3);
       });
-      viewport.querySelectorAll<HTMLElement>(".intro-topic-divider").forEach((divider, index) => { divider.style.opacity = String(arrivals[index + 1] * .6); });
-      const scene = animation?.index ?? completed;
-      if (caption.current) caption.current.textContent = scene < 1 ? "Ce que l’on ressent." : scene < 2 ? "Ce que les soins rendent visible." : scene < 3 ? "Ce qui diffère selon les vies." : "Une mesure éclaire. Elle laisse aussi une part hors champ.";
+      viewport.querySelectorAll<HTMLElement>(".intro-topic-divider").forEach((divider, index) => { divider.style.opacity = progress >= starts[index + 1] + .14 ? ".6" : "0"; });
+      if (caption.current) caption.current.textContent = progress < .17 ? "Ce que l’on ressent." : progress < .34 ? "Ce que les soins rendent visible." : progress < .49 ? "Ce qui diffère selon les vies." : "Une mesure éclaire. Elle laisse aussi une part hors champ.";
       if (progressLine.current) progressLine.current.style.transform = `scaleX(${progress})`;
       if (action.current) {
-        const visible = completed === 5 && !animation;
-        action.current.style.opacity = visible ? "1" : "0";
+        const visible = progress >= .9;
+        action.current.style.opacity = String(Math.max(0, Math.min(1, (progress - .9) / .08)));
         action.current.style.visibility = visible ? "visible" : "hidden";
         action.current.tabIndex = visible ? 0 : -1;
       }
-      if (animation || desired !== completed) frame = requestAnimationFrame(synchronize);
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(synchronize); };
     window.addEventListener("scroll", schedule, { passive: true });
@@ -1159,7 +1132,7 @@ function IntroOpening() {
     const observer = new ResizeObserver(schedule);
     observer.observe(viewport);
     observer.observe(root);
-    synchronize(performance.now());
+    synchronize();
     return () => {
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
