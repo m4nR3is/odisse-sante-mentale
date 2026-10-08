@@ -80,6 +80,7 @@ export default function TerritoryMap({ level, items, selected, preview, legend, 
   const featured = lookup.get(featuredCode);
   const missingShapes = layer ? items.filter((item) => !layer.features.some((shape) => shape.code === item.code)) : [];
   const hover = (code: string | null, x?: number, y?: number) => { if (x != null && y != null) setAnchor({ x, y }); setLocalHover(code); onPreview(code); };
+  const selectFrance = () => { onSelect("FR"); hover(null); setView({ x: 0, y: 0, zoom: 1 }); };
   const select = (code: string) => { if (!dragged.current) onSelect(code); };
   const zoom = (direction: number) => setView((current) => {
     const next = Math.max(1, Math.min(5, current.zoom + direction));
@@ -89,9 +90,10 @@ export default function TerritoryMap({ level, items, selected, preview, legend, 
     <div className="territory-map-toolbar"><span>{level === "regions" ? "RÉGIONS" : "DÉPARTEMENTS"}</span><div>
       <button type="button" aria-label="Dézoomer la carte" disabled={view.zoom === 1} onClick={() => zoom(-1)}>−</button>
       <button type="button" aria-label="Zoomer la carte" disabled={view.zoom === 5} onClick={() => zoom(1)}>+</button>
-      <button type="button" className={selected === "FR" ? "is-active" : ""} onClick={() => { onSelect("FR"); hover(null); setView({ x: 0, y: 0, zoom: 1 }); }}>France</button>
+      <button type="button" className={selected === "FR" ? "is-active" : ""} onClick={selectFrance}>France</button>
     </div></div>
-    {layer ? <svg ref={svg} viewBox={`${view.x} ${view.y} ${300 / view.zoom} ${mapHeight / view.zoom}`} role="group" style={{ touchAction: view.zoom > 1 ? "none" : "pan-y" }} aria-label={`Carte de sélection des ${level === "regions" ? "régions" : "départements"}. Zoom avec les boutons, déplacement par glisser.`}
+    {layer ? <svg ref={svg} viewBox={`${view.x} ${view.y} ${300 / view.zoom} ${mapHeight / view.zoom}`} role="group" style={{ touchAction: view.zoom > 1 ? "none" : "pan-y" }} aria-label={`Carte de sélection des ${level === "regions" ? "régions" : "départements"}. Zoom avec les boutons, déplacement par glisser. Un clic sur le fond sélectionne la France.`}
+      onClick={(event) => { if (!dragged.current && !(event.target as Element).closest("[data-code]")) selectFrance(); }}
       onPointerDown={(event) => { dragged.current = false; if (view.zoom > 1) drag.current = { x: event.clientX, y: event.clientY, startX: view.x, startY: view.y, scale: 1 / (event.currentTarget.getScreenCTM()?.a ?? 1) }; }}
       onPointerMove={(event) => { setAnchor({ x: event.clientX, y: event.clientY }); if (!drag.current) return; const origin = drag.current; const dx = event.clientX - origin.x, dy = event.clientY - origin.y; if (Math.hypot(dx, dy) > 4) dragged.current = true; if (dragged.current) setView((current) => ({ ...current, x: origin.startX - dx * origin.scale, y: origin.startY - dy * origin.scale })); }}
       onPointerUp={() => { drag.current = null; }} onPointerCancel={() => { drag.current = null; }} onPointerLeave={() => { drag.current = null; hover(null); }}>

@@ -521,3 +521,7 @@ a:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid var(
 .social-has-map .monthly-method{grid-column:1/-1;grid-row:2}
 .social-has-map .declared-caution{display:none}
 }
+
+footer .footer-credits{display:flex;flex-direction:column;gap:8px;margin-top:18px;font:10px/1.5 var(--mono);max-width:540px}
+footer .footer-credits>span{display:block;font:inherit;color:inherit}
+footer .footer-credits a{font:inherit;line-height:inherit}
