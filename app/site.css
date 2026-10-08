@@ -1,5 +1,5 @@
 :root{--paper:#f1efe8;--ink:#121310;--muted:#666962;--line:#c9c8c0;--accent:#ed5d43;--accent-soft:#f7d8cf;--night:#151816;--night-line:#41443f;--white:#f8f7f1;--mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-family:Inter,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--paper);font-synthesis:none}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper)}a{color:inherit;text-decoration:none}button,select{font:inherit}svg{display:block}.topbar{height:60px;padding:0 4vw;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;border-bottom:1px solid rgba(255,255,255,.28);color:var(--white);position:absolute;inset:0 0 auto;z-index:5;font-size:11px}.brand{font-weight:800;letter-spacing:.05em}.brand span{font-weight:400;opacity:.58;margin-left:7px}.topbar nav{display:flex;gap:28px}.topbar nav a{opacity:.7}.topbar nav a:hover{opacity:1}.top-help{justify-self:end;border-bottom:1px solid;padding-bottom:2px}
+*{box-sizing:border-box}html{scroll-behavior:auto}body{margin:0;background:var(--paper)}a{color:inherit;text-decoration:none}button,select{font:inherit}svg{display:block}.topbar{height:60px;padding:0 4vw;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;border-bottom:1px solid rgba(255,255,255,.28);color:var(--white);position:absolute;inset:0 0 auto;z-index:5;font-size:11px}.brand{font-weight:800;letter-spacing:.05em}.brand span{font-weight:400;opacity:.58;margin-left:7px}.topbar nav{display:flex;gap:28px}.topbar nav a{opacity:.7}.topbar nav a:hover{opacity:1}.top-help{justify-self:end;border-bottom:1px solid;padding-bottom:2px}
 .hero{min-height:760px;background:var(--night);color:var(--white);padding:150px 7vw 80px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.65fr);gap:9vw;align-items:center;position:relative}.hero-copy{max-width:840px}.overline,.chapter{font:10px/1.4 var(--mono);text-transform:uppercase;letter-spacing:.13em}.overline{color:#b8bbb5}.hero h1{font-size:clamp(76px,10.5vw,160px);font-weight:450;line-height:.78;letter-spacing:-.085em;margin:32px 0 46px}.hero-lead{font-size:clamp(19px,2vw,28px);line-height:1.35;max-width:700px;color:#d5d7d1}.read-data{display:inline-flex;gap:45px;border-top:1px solid #777b75;padding:16px 0;margin-top:38px;font:11px var(--mono);text-transform:uppercase;letter-spacing:.08em}.read-data span{color:var(--accent)}.hero-question{position:absolute;right:4vw;bottom:25px;font:10px var(--mono);letter-spacing:.08em;color:#8f938c}
 .hero.meta-hero{grid-template-columns:1fr;min-height:680px}.hero.meta-hero .hero-copy{max-width:1100px}.hero.meta-hero h1{font-size:clamp(76px,11vw,168px);max-width:1100px}
 .national-signal{border-top:1px solid #72756f;border-bottom:1px solid #72756f;padding:24px 0}.national-signal__head{display:flex;justify-content:space-between;align-items:baseline}.national-signal__head span{font:10px var(--mono);text-transform:uppercase}.national-signal__head strong{font-size:48px;font-weight:350;color:var(--accent)}.national-signal svg{width:100%;margin:10px 0}.national-signal svg line{stroke:#4f534d}.national-signal svg path{fill:none;stroke:var(--white);stroke-width:2.5}.national-signal svg circle{fill:var(--accent)}.national-signal svg text{fill:#a5a9a2;font:9px var(--mono)}.national-signal p{font:9px var(--mono);color:#90948d;margin:0}
@@ -332,3 +332,31 @@ a:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid var(
 @media(prefers-reduced-motion:reduce){.intro-lead-line{transform:none!important;opacity:1!important}}
 
 .territory-chart>.chart-scope-note{grid-row:6;font:9px/1.4 var(--mono);color:var(--muted);margin:6px 0 0}.territory-chart circle.reference-dot{fill:#888c85}
+
+/* Contextual explanations stay outside the chart layout and scroll scenes. */
+.has-chart-help{position:relative}
+.has-chart-help>h3,.has-chart-help>p:first-of-type{padding-right:38px}
+.chart-help-button{position:absolute;z-index:3;right:0;top:0;display:grid;place-items:center;width:28px;height:28px;padding:0;border:1px solid currentColor;border-radius:50%;background:transparent;color:inherit;font:13px/1 var(--mono);cursor:pointer}
+.chart-help-button:hover{background:var(--ink);color:var(--paper)}
+.chart-help-button:focus-visible,.chart-help-close:focus-visible,.chart-help-dialog a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.chart-help-dialog{position:fixed;inset:0;width:min(600px,calc(100vw - 32px));max-height:calc(100dvh - 40px);margin:auto;padding:clamp(20px,4vw,36px);box-sizing:border-box;border:1px solid var(--ink);background:var(--paper);color:var(--ink);overflow:auto;overscroll-behavior:contain;text-align:left}
+.chart-help-dialog::backdrop{background:rgb(0 0 0 / .65)}
+.chart-help-dialog header{position:relative;padding-top:0;padding-right:90px}
+.chart-help-dialog header>p,.chart-help-dialog footer>p{margin:0 0 16px;font:10px/1.5 var(--mono);letter-spacing:.05em}
+.chart-help-dialog h2{margin:0;font-size:clamp(24px,4vw,32px);line-height:1.12;letter-spacing:-.04em}
+.chart-help-close{position:absolute;right:0;top:0;border:1px solid var(--ink);background:transparent;color:inherit;padding:7px 9px;font:11px/1.2 var(--mono);cursor:pointer}
+.chart-help-close:hover{background:var(--ink);color:var(--paper)}
+.chart-help-dialog dl{margin:24px 0}
+.chart-help-dialog dl>div{margin:0;padding:16px 0;border-top:1px solid var(--line)}
+.chart-help-dialog dt{font:11px/1.5 var(--mono);margin:0 0 8px}
+.chart-help-dialog dd{margin:0;font-size:14px;line-height:1.6}
+.chart-help-dialog footer{display:block;background:transparent;color:var(--ink);padding:16px 0 0;border-top:1px solid var(--ink);margin:0}
+.chart-help-dialog footer>p{margin-bottom:8px}
+.chart-help-dialog a{display:block;color:inherit;font:11px/1.6 var(--mono);margin-top:8px;text-underline-offset:3px}
+.story-figure-heading .chart-help-button{color:var(--ink)}
+@media(max-height:650px){.chart-help-dialog{max-height:calc(100dvh - 24px)}}
+
+@media(max-width:980px){.story-mobile-figure .story-figure-heading{display:block;min-height:28px}.story-mobile-figure .story-figure-heading>.chapter,.story-mobile-figure .story-figure-heading>h3{display:none}.story-mobile-figure .story-figure-heading>p:last-child{margin:0;min-height:28px;font-size:10px}}
+.method-click-arrival{animation:method-click-arrival .65s cubic-bezier(.2,.7,.2,1) both}
+@keyframes method-click-arrival{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.method-click-arrival{animation:none}}
