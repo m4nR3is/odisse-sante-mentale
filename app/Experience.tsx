@@ -695,20 +695,36 @@ function GuidedOpening({ data, onExplore }: { data: ExperienceData; onExplore: (
   const [scene, setScene] = useState<StoryScene>(0);
   const steps = useRef<Array<HTMLElement | null>>([]);
   useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      if (!entries.some((entry) => entry.isIntersecting)) return;
-      const midpoint = window.innerHeight / 2;
-      const nearest = steps.current.reduce<{ index: number; distance: number } | null>((best, element, index) => {
-        if (!element) return best;
-        const bounds = element.getBoundingClientRect();
-        const distance = Math.abs(bounds.top + bounds.height / 2 - midpoint);
-        return !best || distance < best.distance ? { index, distance } : best;
-      }, null);
-      if (nearest) setScene(nearest.index as StoryScene);
-    }, { rootMargin: "-35% 0px -35% 0px", threshold: 0 });
-    steps.current.forEach((element) => { if (element) observer.observe(element); });
-    return () => observer.disconnect();
+    let frame = 0;
+    // The same viewport position always selects the same scene, in either direction.
+    const synchronize = () => {
+      frame = 0;
+      const readingLine = window.innerHeight / 2;
+      let activeScene: StoryScene = 0;
+      steps.current.forEach((element, index) => {
+        if (element && element.getBoundingClientRect().top <= readingLine) {
+          activeScene = index as StoryScene;
+        }
+      });
+      setScene((current) => current === activeScene ? current : activeScene);
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(synchronize);
+    };
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    const observer = new ResizeObserver(schedule);
+    const container = steps.current[0]?.parentElement;
+    if (container) observer.observe(container);
+    synchronize();
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      observer.disconnect();
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, []);
+
   const series = (age: string, sex: string) => data.odissePatients.filter((point) => point.age === age && point.sex === sex).sort((a, b) => a.year - b.year);
   const national = series("Tous", "Hommes et Femmes"), girls = series("11–14 ans", "Femmes"), boys = series("11–14 ans", "Hommes");
   const change = (points: SeriesPoint[]) => 100 * (points.at(-1)!.rate / points[0].rate - 1);
@@ -730,7 +746,7 @@ function GuidedOpening({ data, onExplore }: { data: ExperienceData; onExplore: (
         {index === 2 && <button type="button" className="evidence-action" onClick={() => onExplore("profiles")}>Explorer les seize profils <span>↗</span></button>}
         {index === 3 && <button type="button" className="evidence-action" onClick={() => onExplore("declared")}>Explorer les indicateurs déclarés <span>↗</span></button>}
       </article>)}</div>
-      <aside className="story-sticky" aria-label="Visualisation du récit"><nav className="story-progress" aria-label="Scènes du récit">{scenes.map((step, index) => <a href={`#scene-${index + 1}`} key={step.chapter} aria-current={scene === index ? "step" : undefined} onClick={() => setScene(index as StoryScene)}><span>0{index + 1}</span><span className="sr-only"> {step.title}</span></a>)}</nav><StoryFigure data={data} scene={scene} /></aside>
+      <aside className="story-sticky" aria-label="Visualisation du récit"><nav className="story-progress" aria-label="Scènes du récit">{scenes.map((step, index) => <a href={`#scene-${index + 1}`} key={step.chapter} aria-current={scene === index ? "step" : undefined}><span>0{index + 1}</span><span className="sr-only"> {step.title}</span></a>)}</nav><StoryFigure data={data} scene={scene} /></aside>
     </div>
     <div className="reading-bridge"><p className="chapter">À VOUS DE CHANGER DE REGARD</p><p>Enquête, urgences, hospitalisations et décès éclairent des dimensions différentes. <b>Ces sources ne sont pas les étapes d’un même parcours individuel.</b> Explorez-les en conservant leurs propres populations, unités et périodes.</p><a href="#territoires">Explorer les quatre regards ↓</a></div>
   </section>;

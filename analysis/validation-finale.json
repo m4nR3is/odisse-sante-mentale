@@ -44,5 +44,10 @@
     "1440 × 1000",
     "1024 × 680",
     "390 × 844"
-  ]
+  ],
+  "scrollRegression": {
+    "checks": 106,
+    "failures": 0,
+    "method": "Progressive scrolling down and back up, 65 px increments; active scene follows the text crossing the viewport midpoint."
+  }
 }
