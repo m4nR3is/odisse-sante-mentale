@@ -1205,15 +1205,13 @@ function IntroOpening() {
         }
         const local = Math.max(0, Math.min(1, (progress - starts[index]) / .14));
         const arrival = local * local * (3 - 2 * local);
-        const travelLocal = index === 3 ? Math.max(0, Math.min(1, (local - .25) / .75)) : local;
-        const travel = travelLocal * travelLocal * (3 - 2 * travelLocal);
         const dx = stageBounds.left + stageBounds.width / 2 - (target.left + element.offsetLeft + element.offsetWidth / 2);
         const dy = stageBounds.top + stageBounds.height / 2 - (target.top + element.offsetTop + element.offsetHeight / 2);
-        const large = index === 0 || index === 3
+        const large = index === 0 || index === 3 || index === 4
           ? Math.max(1, Math.min(stageBounds.width * .9 / Math.max(1, target.width), stageBounds.height * .7 / Math.max(1, target.height)))
           : Math.max(2.5, Math.min(28, stageBounds.width / Math.max(1, target.width) * 2.2));
         const scale = 1 + (large - 1) * (1 - arrival);
-        element.style.transform = arrival === 1 ? "none" : `translate(${dx * (1 - travel)}px, ${dy * (1 - travel)}px) scale(${scale})`;
+        element.style.transform = arrival === 1 ? "none" : `translate(${dx * (1 - arrival)}px, ${dy * (1 - arrival)}px) scale(${scale})`;
         element.style.opacity = progress >= starts[index] ? String(Math.min(1, local * 10 + (index === 0 ? 1 : 0))) : "0";
         element.dataset.arrival = arrival.toFixed(3);
       });
