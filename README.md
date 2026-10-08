@@ -17,7 +17,14 @@ naviguer au clavier. Le changement de taux standardisé national à taux brut
 par âge et sexe, et le changement d’échelle verticale, sont explicités.
 Les chiffres sont calculés depuis les données livrées.
 
-L’explorateur propose ensuite quatre regards :
+L’explorateur propose ensuite quatre regards dans un module persistant. Le
+scroll traverse dix étapes : les trois indicateurs de 2024, les trois
+indicateurs historiques, les urgences, les séjours hospitaliers, les profils
+âge × sexe puis les décès. Les boutons et les listes d’indicateurs rejoignent
+les mêmes étapes. Les filtres restent utilisables dans chaque vue. Les
+changements se synchronisent dans les deux sens, sur ordinateur et mobile.
+
+Les quatre regards :
 
 - **Déclaré** : gradient financier du Baromètre 2024 et séries historiques
   régionales 2005–2021, présentées séparément.
@@ -105,10 +112,10 @@ Captures relues sur ordinateur et mobile (390 px), sans débordement horizontal
 dans les vues testées. La régénération du fichier de données est identique
 octet par octet. Résultats : `analysis/validation-finale.json`.
 
-L’explorateur adapte sa hauteur à la fenêtre sur ordinateur (à partir de 981 px
-de largeur). Les filtres passent sur une ligne puis la distribution se place
-sous le résumé sur les fenêtres basses. Les axes et les points conservent leur
-taille lisible. Sur mobile, le module reste dans le flux vertical.
+L’explorateur adapte sa hauteur à l’espace disponible sous la navigation,
+sur ordinateur et mobile. Les filtres et les graphiques changent de disposition
+sur les fenêtres basses. Sur mobile, les gradients déclarés prennent la forme
+de lignes de valeurs animées ; les séries temporelles conservent leurs courbes.
 
 Le récit conserve le même SVG sur ordinateur : le tracé précédent se retire
 avant le dessin du suivant. À âge égal, la courbe des filles reste en place

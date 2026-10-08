@@ -150,5 +150,32 @@
       "reduced motion shows final values directly"
     ],
     "build": "TypeScript and Vite passed"
+  },
+  "scrollExplorer": {
+    "steps": 10,
+    "layoutAndReverseChecks": 95,
+    "animatedTransitions": 10,
+    "failures": [],
+    "testedBuild": "Vite production served as static files for layout; development build for animated transitions",
+    "viewports": [
+      "1440 × 900",
+      "1280 × 600",
+      "1024 × 360",
+      "390 × 844",
+      "390 × 568"
+    ],
+    "checks": [
+      "same persistent module throughout ten steps",
+      "deterministic forward and reverse scroll",
+      "social and historical indicators controlled by scroll or navigation",
+      "points, confidence intervals, values and curves animate",
+      "regional distribution animates",
+      "territory filters and historical region preserved across adjacent steps",
+      "smooth family navigation",
+      "rapid direction changes",
+      "guided profile action",
+      "navigation to Method",
+      "module fits below fixed navigation on desktop and mobile"
+    ]
   }
 }

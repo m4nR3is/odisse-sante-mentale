@@ -57,6 +57,12 @@ Les chiffres d’ouverture sont calculés dans l’interface depuis le fichier d
 
 ## Ce que l’exploration apporte
 
+Un module persistant accompagne dix étapes au scroll : les trois indicateurs
+de 2024, les trois indicateurs historiques, les urgences, les séjours, les
+profils de patients puis les décès. Les commandes rejoignent les mêmes étapes ;
+les filtres restent actifs. Les transitions animent les points, courbes,
+intervalles et valeurs en respectant la préférence de réduction des mouvements.
+
 - Déclaré : trois indicateurs selon la situation financière, puis un mode
   historique régional 2005–2021 séparé de 2024.
 - Urgences : comparaison territoriale de la part des gestes auto-infligés dans
@@ -100,7 +106,9 @@ actuellement présenté.
 ## Design, accessibilité et frugalité
 
 Palette crème, noir et orange, avec tracés pointillés et légendes pour ne pas
-faire reposer les comparaisons sur la couleur seule. Les preuves restent lisibles sur mobile sans pilotage par le scroll ; les filtres et points interactifs sont accessibles au clavier.
+faire reposer les comparaisons sur la couleur seule. Les preuves d’ouverture restent dans le flux sur mobile. L’exploration suit
+le scroll ou les commandes, sur ordinateur et mobile ; les filtres et points
+interactifs restent accessibles au clavier.
 Les animations respectent la réduction des mouvements. Le site utilise React
 et SVG, sans backend, compte, service cartographique, police distante ou suivi.
 Les ressources 3114 et Santé mentale Info Service restent visibles.

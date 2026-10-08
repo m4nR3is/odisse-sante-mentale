@@ -330,41 +330,92 @@ function distributionFrame(target: { department: Department; change: number | nu
   };
 }
 
-function SocialDeclaredView({ data }: { data: ExperienceData }) {
+const EXPLORER_STEPS = [
+  { label: "Dépression · 2024", mode: "declared", view: "social", indicator: "Dépression", dataset: "hospitalisations" },
+  { label: "Anxiété · 2024", mode: "declared", view: "social", indicator: "Anxiété", dataset: "hospitalisations" },
+  { label: "Pensées suicidaires · 2024", mode: "declared", view: "social", indicator: "Pensées suicidaires", dataset: "hospitalisations" },
+  { label: "Dépression · 2005–2021", mode: "declared", view: "history", indicator: "Dépression", dataset: "hospitalisations" },
+  { label: "Pensées suicidaires · 2005–2021", mode: "declared", view: "history", indicator: "Pensées suicidaires", dataset: "hospitalisations" },
+  { label: "Tentatives de suicide · 2005–2021", mode: "declared", view: "history", indicator: "Tentatives de suicide", dataset: "hospitalisations" },
+  { label: "Urgences · départements", mode: "territories", view: "social", indicator: "Dépression", dataset: "emergency" },
+  { label: "Hôpital · séjours départementaux", mode: "territories", view: "social", indicator: "Dépression", dataset: "hospitalisations" },
+  { label: "Hôpital · patients par âge et sexe", mode: "profiles", view: "social", indicator: "Dépression", dataset: "hospitalisations" },
+  { label: "Décès · départements", mode: "territories", view: "social", indicator: "Dépression", dataset: "suicides" },
+] as const;
+
+function usePanelReveal(key: string) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [entered, setEntered] = useState(false);
+  const [progress, setProgress] = useState(0);
+  useEffect(() => {
+    if (!ref.current) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { setEntered(true); observer.disconnect(); }
+    });
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+  useLayoutEffect(() => {
+    let frame = 0;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const finish = () => { cancelAnimationFrame(frame); setProgress(entered ? 1 : 0); };
+    if (!entered || motion.matches) { finish(); return; }
+    setProgress(0);
+    const start = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / 1000);
+      setProgress(t * t * (3 - 2 * t));
+      if (t < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    motion.addEventListener("change", finish);
+    return () => { cancelAnimationFrame(frame); motion.removeEventListener("change", finish); };
+  }, [entered, key]);
+  return { ref, progress };
+}
+
+function SocialDeclaredView({ data, indicator, onIndicator }: { data: ExperienceData; indicator: string; onIndicator: (indicator: string) => void }) {
   const indicators = ["Dépression", "Anxiété", "Pensées suicidaires"];
-  const [indicator, setIndicator] = useState(indicators[0]);
+  const reveal = usePanelReveal(indicator);
   const points = FINANCIAL_ORDER.map((financial) => data.social.find((point) => point.indicator === indicator && point.financial === financial)).filter((point): point is SocialPoint => Boolean(point));
   const max = Math.max(32, ...points.map((point) => point.high));
   const first = points[0], last = points.at(-1);
   const ratio = first && last ? last.estimate / first.estimate : 0;
   const x = (value: number) => 118 + value / max * 562;
-  return <div className="declared-explorer">
+  return <div className="declared-explorer" ref={reveal.ref} data-reveal={reveal.progress}>
     <div className="declared-head">
       <p className="chapter">DÉCLARÉ · BAROMÈTRE 2024</p>
       <h3>Ce que l’enquête<br />rend visible.</h3>
       <p>Prévalence déclarée en France selon la situation financière. Cette vue décrit un gradient social national ; elle ne permet ni de suivre une trajectoire individuelle ni de comparer les départements.</p>
       <div className="declared-indicators" role="group" aria-label="Indicateur déclaré">
-        {indicators.map((item) => <button type="button" key={item} aria-pressed={indicator === item} onClick={() => setIndicator(item)}>{item}</button>)}
+        {indicators.map((item) => <button type="button" key={item} aria-pressed={indicator === item} onClick={() => onIndicator(item)}>{item}</button>)}
       </div>
-      {first && last && <div className="declared-ratio"><strong>× {fmt(ratio, 1)}</strong><span>entre les personnes « en difficulté » et celles « à l’aise »</span></div>}
+      {first && last && <div className="declared-ratio"><strong>× {fmt(ratio * reveal.progress, 1)}</strong><span>entre les personnes « en difficulté » et celles « à l’aise »</span></div>}
     </div>
     <div className="declared-chart">
       <p><b>{indicator}</b><span>estimation et intervalle de confiance à 95 %</span></p>
       <svg viewBox="0 0 720 260" role="img" aria-label={`${indicator} selon la situation financière en 2024`}>
         {[0, 10, 20, 30].filter((tick) => tick <= max).map((tick) => <g className="declared-grid" key={tick}><line x1={x(tick)} x2={x(tick)} y1="24" y2="220" /><text x={x(tick)} y="244" textAnchor="middle">{tick} %</text></g>)}
-        {points.map((point, index) => { const cy = 48 + index * 52; return <g className="declared-row" key={point.financial}><text x="4" y={cy + 4}>{FINANCIAL_SHORT[point.financial]}</text><line x1={x(point.low)} x2={x(point.high)} y1={cy} y2={cy} /><circle cx={x(point.estimate)} cy={cy} r="6"><title>{FINANCIAL_SHORT[point.financial]} : {fmt(point.estimate)} % (IC 95 % : {fmt(point.low)}–{fmt(point.high)} %)</title></circle><text className="declared-value" x={Math.min(692, x(point.estimate) + 12)} y={cy + 4}>{fmt(point.estimate)} %</text></g>; })}
+        {points.map((point, index) => {
+          const p = Math.max(0, Math.min(1, (reveal.progress - index * .15) / .55));
+          const travel = Math.min(1, p / .75), arrival = Math.max(0, (p - .75) / .25);
+          const estimate = point.estimate * travel, cx = x(estimate), cy = 48 + index * 52;
+          return <g className="declared-row" key={point.financial} opacity={p > 0 ? 1 : 0}><text x="4" y={cy + 4} opacity={Math.min(1, p * 4)}>{FINANCIAL_SHORT[point.financial]}</text><line x1={cx + (point.low - point.estimate) / max * 562 * arrival} x2={cx + (point.high - point.estimate) / max * 562 * arrival} y1={cy} y2={cy} opacity={arrival} /><circle cx={cx} cy={cy} r={2 + 4 * arrival} style={{ fill: arrival === 0 ? "var(--ink)" : `color-mix(in srgb, var(--ink) ${(1 - arrival) * 100}%, var(--accent))` }}><title>{FINANCIAL_SHORT[point.financial]} : {fmt(point.estimate)} % (IC 95 % : {fmt(point.low)}–{fmt(point.high)} %)</title></circle><text className="declared-value" x={Math.min(692, cx + (point.high - point.estimate) / max * 562 * arrival + 10)} y={cy + 4}>{fmt(estimate)} %</text></g>;
+        })}
       </svg>
-      <dl className="evidence-mobile-values">{points.map((point) => <div key={point.financial}><dt>{FINANCIAL_SHORT[point.financial]}</dt><dd>{fmt(point.estimate)} % <small>IC 95 % : {fmt(point.low)}–{fmt(point.high)} %</small></dd></div>)}</dl>
+      <dl className="evidence-mobile-values">{points.map((point, index) => {
+        const p = Math.max(0, Math.min(1, (reveal.progress - index * .15) / .55));
+        return <div key={point.financial} style={{ opacity: p, transform: `translateY(${(1 - p) * 6}px)` }}><dt>{FINANCIAL_SHORT[point.financial]}</dt><dd>{fmt(point.estimate * Math.min(1, p / .75))} % <small>IC 95 % : {fmt(point.low)}–{fmt(point.high)} %</small></dd></div>;
+      })}</dl>
       <div className="declared-caution"><b>Pont avec les inégalités sociales</b><span>Une association observée, pas une explication causale des hospitalisations, urgences ou décès.</span></div>
     </div>
     <p className="monthly-method"><b>Lecture.</b> Il s’agit de données déclaratives issues d’une enquête nationale. Elles rendent visible une souffrance qui ne se confond pas avec le recours aux soins. Source : Baromètre de Santé publique France 2024, Odissé.</p>
   </div>;
 }
 
-function HistoricalDeclaredView({ data }: { data: ExperienceData }) {
+function HistoricalDeclaredView({ data, indicator, onIndicator }: { data: ExperienceData; indicator: string; onIndicator: (indicator: string) => void }) {
   const indicators = ["Dépression", "Pensées suicidaires", "Tentatives de suicide"];
   const sexes = ["Hommes et Femmes", "Femmes", "Hommes"];
-  const [indicator, setIndicator] = useState(indicators[0]);
   const [sex, setSex] = useState(sexes[0]);
   const [territoryCode, setTerritoryCode] = useState("53");
   const [hovered, setHovered] = useState<{ x: number; y: number; label: string; year: number; estimate: number; low: number; high: number } | null>(null);
@@ -390,28 +441,31 @@ function HistoricalDeclaredView({ data }: { data: ExperienceData }) {
   const distributionMax = Math.max(0, ...regionChanges.map((point) => point.change));
   const distributionX = (value: number) => 28 + (value - distributionMin) / Math.max(.01, distributionMax - distributionMin) * 664;
   const showTooltip = (event: ReactPointerEvent<SVGGElement>, point: DeclaredHistoryPoint, label: string) => setHovered({ x: event.clientX, y: event.clientY, label, year: point.year, estimate: point.estimate, low: point.low, high: point.high });
-  return <div className="declared-history">
+  const reveal = usePanelReveal(`${indicator}|${sex}|${selectedCode}`);
+  const maskId = useId();
+  useEffect(() => { setHovered(null); }, [indicator, sex, selectedCode]);
+  return <div className="declared-history" ref={reveal.ref} data-reveal={reveal.progress}>
     <div className="declared-history-controls">
-      <label>Indicateur<select value={indicator} onChange={(event) => setIndicator(event.target.value)}>{indicators.map((item) => <option key={item}>{item}</option>)}</select></label>
+      <label>Indicateur<select value={indicator} onChange={(event) => onIndicator(event.target.value)}>{indicators.map((item) => <option key={item}>{item}</option>)}</select></label>
       <label>Région<select value={selectedCode} onChange={(event) => setTerritoryCode(event.target.value)}>{territories.map(([code, name]) => <option value={code} key={code}>{name}</option>)}</select></label>
       <label>Sexe<select value={sex} onChange={(event) => setSex(event.target.value)}>{sexes.map((item) => <option key={item}>{item === "Hommes et Femmes" ? "Tous les sexes" : item}</option>)}</select></label>
-      <div className="declared-history-kpi"><strong>{change >= 0 ? "+" : "−"}{fmt(Math.abs(change), 1)} pt</strong><span>évolution déclarée · 2005 → 2021</span><p className={gap > 0 ? "is-positive" : ""}>{gap >= 0 ? "+" : "−"}{fmt(Math.abs(gap), 1)} pt par rapport à la France en 2021</p></div>
+      <div className="declared-history-kpi"><strong>{change >= 0 ? "+" : "−"}{fmt(Math.abs(change) * reveal.progress, 1)} pt</strong><span>évolution déclarée · 2005 → 2021</span><p className={gap > 0 ? "is-positive" : ""}>{gap >= 0 ? "+" : "−"}{fmt(Math.abs(gap), 1)} pt par rapport à la France en 2021</p></div>
     </div>
     <div className="declared-history-chart"><h3>{selectedName}</h3><p>{indicator} · {sex === "Hommes et Femmes" ? "tous les sexes" : sex.toLowerCase()} · prévalence déclarée</p><svg viewBox="0 0 720 270" role="img" aria-label={`${indicator} en ${selectedName} et en France de 2005 à 2021`}>
       {[0, maxValue / 2, maxValue].map((tick) => <g className="declared-history-grid" key={tick}><line x1="50" x2="670" y1={y(tick)} y2={y(tick)} /><text x="46" y={y(tick) - 5} textAnchor="end">{fmt(tick, 0)} %</text></g>)}
-      <path className="declared-history-france" d={linePath(france, (point) => x(point.year), (point) => y(point.estimate))} />
+      <defs><mask id={maskId} maskUnits="userSpaceOnUse" x="0" y="0" width="720" height="270">{[france, selected].map((series, index) => <path key={index} d={linePath(series, (point) => x(point.year), (point) => y(point.estimate))} fill="none" stroke="white" strokeWidth="30" pathLength="1" strokeDasharray="1 1" strokeDashoffset={1 - reveal.progress} />)}</mask></defs><g mask={`url(#${maskId})`}><path className="declared-history-france" d={linePath(france, (point) => x(point.year), (point) => y(point.estimate))} />
       <path className="declared-history-region" d={linePath(selected, (point) => x(point.year), (point) => y(point.estimate))} />
-      {selected.map((point) => <g className="declared-history-point" key={point.year} role="img" aria-label={`${selectedName}, ${point.year}, ${fmt(point.estimate)} %, intervalle de confiance à 95 % ${fmt(point.low)} à ${fmt(point.high)} %`} tabIndex={0} onPointerMove={(event) => showTooltip(event, point, selectedName)} onPointerLeave={() => setHovered(null)} onFocus={(event) => { const bounds = event.currentTarget.getBoundingClientRect(); setHovered({ x: bounds.left + bounds.width / 2, y: bounds.top, label: selectedName, year: point.year, estimate: point.estimate, low: point.low, high: point.high }); }} onBlur={() => setHovered(null)}><line x1={x(point.year)} x2={x(point.year)} y1={y(point.low)} y2={y(point.high)} /><circle cx={x(point.year)} cy={y(point.estimate)} r="5" /></g>)}
+      </g>{selected.map((point) => <g opacity={Math.max(0, Math.min(1, (reveal.progress - (point.year - 2005) / 16 * .8) / .2))} className="declared-history-point" key={point.year} role="img" aria-label={`${selectedName}, ${point.year}, ${fmt(point.estimate)} %, intervalle de confiance à 95 % ${fmt(point.low)} à ${fmt(point.high)} %`} tabIndex={0} onPointerMove={(event) => showTooltip(event, point, selectedName)} onPointerLeave={() => setHovered(null)} onFocus={(event) => { const bounds = event.currentTarget.getBoundingClientRect(); setHovered({ x: bounds.left + bounds.width / 2, y: bounds.top, label: selectedName, year: point.year, estimate: point.estimate, low: point.low, high: point.high }); }} onBlur={() => setHovered(null)}><line x1={x(point.year)} x2={x(point.year)} y1={y(point.low)} y2={y(point.high)} /><circle cx={x(point.year)} cy={y(point.estimate)} r="5" /></g>)}
       {[2005, 2010, 2017, 2021].map((year) => <text className="declared-history-year" key={year} x={x(year)} y="258" textAnchor="middle">{year}</text>)}
     </svg><dl className="history-mobile-values">{selected.map((point) => <div key={point.year}><dt>{point.year}</dt><dd>{fmt(point.estimate)} % <small>IC 95 % : {fmt(point.low)}–{fmt(point.high)} %</small></dd></div>)}</dl><div className="legend"><span className="department selected-legend">{selectedName}</span><span className="france">France</span></div>{hovered && <ViewportTooltip x={hovered.x} y={hovered.y}><span>{hovered.label}</span><small>{hovered.year} · IC 95 % {fmt(hovered.low)}–{fmt(hovered.high)} %</small><strong>{fmt(hovered.estimate)} %</strong></ViewportTooltip>}</div>
-    <div className="declared-history-distribution"><small>DISTRIBUTION DES ÉVOLUTIONS RÉGIONALES · 2005 → 2021 · EN POINTS</small><svg viewBox="0 0 720 100" role="img" aria-label="Choisir une région dans la distribution de son évolution"><line className="distribution-axis" x1="28" x2="692" y1="54" y2="54" /><line className="zero-marker" x1={distributionX(0)} x2={distributionX(0)} y1="18" y2="86" /><text x={distributionX(0)} y="13" textAnchor="middle">0 pt</text>{regionChanges.map((point, index) => <g key={point.code} className={point.code === selectedCode ? "is-selected" : ""} aria-label={`${point.name}, évolution ${fmt(point.change)} points. Sélectionner.`} role="button" tabIndex={0} onClick={() => setTerritoryCode(point.code)} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setTerritoryCode(point.code); } }}><circle cx={distributionX(point.change)} cy={46 + index % 3 * 8} r={point.code === selectedCode ? 8 : 5}><title>{point.name} : {point.change >= 0 ? "+" : "−"}{fmt(Math.abs(point.change), 1)} pt</title></circle></g>)}</svg><span>{distributionMin >= 0 ? "+" : "−"}{fmt(Math.abs(distributionMin), 1)} pt</span><span>{distributionMax >= 0 ? "+" : "−"}{fmt(Math.abs(distributionMax), 1)} pt</span></div>
+    <div className="declared-history-distribution"><small>DISTRIBUTION DES ÉVOLUTIONS RÉGIONALES · 2005 → 2021 · EN POINTS</small><svg viewBox="0 0 720 100" role="img" aria-label="Choisir une région dans la distribution de son évolution"><line className="distribution-axis" x1="28" x2="692" y1="54" y2="54" /><line className="zero-marker" x1={distributionX(0)} x2={distributionX(0)} y1="18" y2="86" /><text x={distributionX(0)} y="13" textAnchor="middle">0 pt</text>{regionChanges.map((point, index) => <g key={point.code} className={point.code === selectedCode ? "is-selected" : ""} aria-label={`${point.name}, évolution ${fmt(point.change)} points. Sélectionner.`} role="button" tabIndex={0} onClick={() => setTerritoryCode(point.code)} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setTerritoryCode(point.code); } }}><circle cx={distributionX(point.change * reveal.progress)} cy={46 + index % 3 * 8} r={2 + ((point.code === selectedCode ? 8 : 5) - 2) * reveal.progress} opacity={reveal.progress}><title>{point.name} : {point.change >= 0 ? "+" : "−"}{fmt(Math.abs(point.change), 1)} pt</title></circle></g>)}</svg><span>{distributionMin >= 0 ? "+" : "−"}{fmt(Math.abs(distributionMin), 1)} pt</span><span>{distributionMax >= 0 ? "+" : "−"}{fmt(Math.abs(distributionMax), 1)} pt</span></div>
     <p className="monthly-method"><b>Comparabilité.</b> Les vagues historiques concernent les 18–75 ans. Les écarts entre estimations restent à lire avec leurs intervalles de confiance. Le Baromètre 2024 repose sur un protocole différent : ses valeurs ne sont pas raccordées à ces courbes. Sources : Baromètres de Santé publique France 2005, 2010, 2017 et 2021, Odissé.</p>
   </div>;
 }
 
-function DeclaredExplorer({ data }: { data: ExperienceData }) {
-  const [view, setView] = useState<"social" | "history">("social");
-  return <div className="declared-shell"><div className="measure-subnav declared-subnav" role="group" aria-label="Lecture des données déclarées"><button type="button" aria-pressed={view === "social"} onClick={() => setView("social")}>Inégalités sociales · 2024</button><button type="button" aria-pressed={view === "history"} onClick={() => setView("history")}>Évolution déclarée · 2005–2021</button></div>{view === "social" ? <SocialDeclaredView data={data} /> : <HistoricalDeclaredView data={data} />}</div>;
+function DeclaredExplorer({ data, step, onNavigate }: { data: ExperienceData; step: typeof EXPLORER_STEPS[number]; onNavigate: (index: number) => void }) {
+  const view = step.view;
+  return <div className="declared-shell"><div className="measure-subnav declared-subnav" role="group" aria-label="Lecture des données déclarées"><button type="button" aria-pressed={view === "social"} onClick={() => onNavigate(0)}>Inégalités sociales · 2024</button><button type="button" aria-pressed={view === "history"} onClick={() => onNavigate(3)}>Évolution déclarée · 2005–2021</button></div>{view === "social" ? <SocialDeclaredView data={data} indicator={step.indicator} onIndicator={(indicator) => onNavigate(EXPLORER_STEPS.findIndex((candidate) => candidate.view === "social" && candidate.indicator === indicator))} /> : <HistoricalDeclaredView data={data} indicator={step.indicator} onIndicator={(indicator) => onNavigate(EXPLORER_STEPS.findIndex((candidate) => candidate.view === "history" && candidate.indicator === indicator))} />}</div>;
 }
 
 function useAnimatedDistribution(target: { department: Department; change: number | null }[], selectedCode: string, width: number, height: number, duration = 650) {
@@ -459,6 +513,33 @@ function useAnimatedDistribution(target: { department: Department; change: numbe
 type GuidedView = { view: "declared" | "profiles"; revision: number };
 
 function TerritoryAppendix({ data, guidedView }: { data: ExperienceData; guidedView: GuidedView | null }) {
+  const [stepIndex, setStepIndex] = useState(0);
+  const step = EXPLORER_STEPS[stepIndex];
+  const landmarks = useRef<Array<HTMLLIElement | null>>([]);
+  const lab = useRef<HTMLDivElement>(null);
+  const navigateStep = (index: number) => {
+    const marker = landmarks.current[index];
+    if (!marker) return;
+    const line = (document.querySelector(".topbar")?.getBoundingClientRect().bottom ?? 60) + 16;
+    window.scrollTo({ top: window.scrollY + marker.getBoundingClientRect().top - line, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+  };
+  useEffect(() => {
+    let frame = 0;
+    const synchronize = () => {
+      frame = 0;
+      const line = (document.querySelector(".topbar")?.getBoundingClientRect().bottom ?? 60) + 17;
+      let index = 0;
+      landmarks.current.forEach((marker, candidate) => { if (marker && marker.getBoundingClientRect().top <= line) index = candidate; });
+      setStepIndex((current) => current === index ? current : index);
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(synchronize); };
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    const observer = new ResizeObserver(schedule);
+    if (landmarks.current[0]?.parentElement) observer.observe(landmarks.current[0].parentElement);
+    synchronize();
+    return () => { window.removeEventListener("scroll", schedule); window.removeEventListener("resize", schedule); observer.disconnect(); cancelAnimationFrame(frame); };
+  }, []);
   const [mode, setMode] = useState<"territories" | "profiles" | "declared">("declared");
   const [territoryDataset, setTerritoryDataset] = useState<"hospitalisations" | "emergency" | "suicides">("hospitalisations");
   const [chartView, setChartView] = useState<"level" | "change">("level");
@@ -492,14 +573,19 @@ function TerritoryAppendix({ data, guidedView }: { data: ExperienceData; guidedV
   const departmentOptions = useMemo(() => [...metrics].sort((a, b) => a.department.code.localeCompare(b.department.code, "fr")), [metrics]);
   const [code, setCode] = useState("80");
   useEffect(() => {
-    if (!guidedView) return;
-    setMode(guidedView.view);
+    setMode(step.mode);
+    setTerritoryDataset(step.dataset);
     setChartView("level");
-    setProfileAge("11–14 ans");
-    setProfileSex("Femmes");
     setTooltip(null);
     setChartTooltip(null);
     setHoveredCode(null);
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) lab.current?.animate([{ opacity: .45 }, { opacity: 1 }], { duration: 420, easing: "ease-out" });
+  }, [step]);
+  useEffect(() => {
+    if (!guidedView) return;
+    setProfileAge("11–14 ans");
+    setProfileSex("Femmes");
+    navigateStep(guidedView.view === "profiles" ? 8 : 0);
   }, [guidedView]);
   const [tooltip, setTooltip] = useState<{ x: number; y: number; department: string; region: string; change: number } | null>(null);
   const [chartTooltip, setChartTooltip] = useState<{ x: number; y: number; label: string; year: number; rate: number; count?: number } | null>(null);
@@ -607,26 +693,9 @@ function TerritoryAppendix({ data, guidedView }: { data: ExperienceData; guidedV
       setProfileSex(nextSex);
     }
   };
-  const switchMode = (nextMode: "territories" | "profiles" | "declared") => {
-    setTooltip(null);
-    setChartTooltip(null);
-    setHoveredCode(null);
-    setMode(nextMode);
-  };
-  const switchTerritoryDataset = (dataset: "hospitalisations" | "emergency" | "suicides") => {
-    setTooltip(null);
-    setChartTooltip(null);
-    setHoveredCode(null);
-    setTerritoryDataset(dataset);
-    if (dataset === "suicides") setChartView("level");
-    setMode("territories");
-  };
-  const chooseMeasureFamily = (family: "declared" | "emergency" | "hospital" | "deaths") => {
-    if (family === "declared") switchMode("declared");
-    else if (family === "emergency") switchTerritoryDataset("emergency");
-    else if (family === "hospital") switchTerritoryDataset("hospitalisations");
-    else switchTerritoryDataset("suicides");
-  };
+  const switchMode = (nextMode: "territories" | "profiles" | "declared") => navigateStep(nextMode === "profiles" ? 8 : nextMode === "declared" ? 0 : 7);
+  const switchTerritoryDataset = (dataset: "hospitalisations" | "emergency" | "suicides") => navigateStep(dataset === "emergency" ? 6 : dataset === "suicides" ? 9 : 7);
+  const chooseMeasureFamily = (family: "declared" | "emergency" | "hospital" | "deaths") => navigateStep(family === "declared" ? 0 : family === "emergency" ? 6 : family === "hospital" ? 7 : 9);
   const family = mode === "declared" ? "declared" : (mode === "territories" && territoryDataset === "emergency") ? "emergency" : mode === "profiles" || (mode === "territories" && territoryDataset === "hospitalisations") ? "hospital" : "deaths";
   const title = mode === "territories" ? selected.department.name : `${profileAge} · ${profileSex}`;
   const referenceLabel = mode === "territories" ? "France" : `${profileSex === "Femmes" ? "Hommes" : "Femmes"} · ${profileAge}`;
@@ -642,11 +711,13 @@ function TerritoryAppendix({ data, guidedView }: { data: ExperienceData; guidedV
   const filterWidth = `${Math.max(...filterLabels.map((label) => Array.from(label).length)) + 5}ch`;
   const chartYears = Array.from({ length: endYear - startYear + 1 }, (_, index) => startYear + index);
   return <section className="territory-appendix" id="territoires">
-    <header className="section-heading"><p className="chapter data-change" key={`chapter-${mode}-${territoryDataset}`}>{mode === "declared" ? "EXPLORER · SOUFFRANCE DÉCLARÉE" : mode === "territories" ? `EXPLORER · ${territoryConfig.shortLabel.toUpperCase()}` : "EXPLORER · PATIENTS"}</p><div className="data-change" key={`heading-${mode}-${territoryDataset}`}>{mode === "declared" ? <><h2>Quand la souffrance<br />devient-elle visible&nbsp;?</h2><p>Les enquêtes documentent une expérience déclarée, y compris sans recours aux soins. La situation financière révèle une dimension des inégalités sociales de santé.</p></> : mode === "territories" ? <><h2>Explorer sans classer<br />les territoires.</h2><p>{territoryConfig.description}. Chaque mesure conserve son propre dénominateur et ne représente ni toute la souffrance psychique ni un classement des territoires.</p></> : <><h2>Une moyenne.<br />Seize trajectoires.</h2><p>La moyenne nationale masque des évolutions très différentes selon l’âge et le sexe. Les seize profils sont comparés sur une même échelle pour rendre visibles les bifurcations.</p></>}</div></header>
-    <div className="territory-lab" id="territory-explorer" data-mode={mode} data-dataset={territoryDataset}>
+    <header className="section-heading"><p className="chapter">EXPLORER · QUATRE REGARDS</p><div><h2>Changer de regard.<br />Explorer les données.</h2><p>Défilez pour passer de l’expérience déclarée aux urgences, à l’hôpital puis aux décès. À chaque étape, les filtres restent disponibles pour approfondir la mesure.</p></div></header>
+    <div className="explorer-scroll-track">
+    <ol className="explorer-scroll-landmarks" aria-label="Étapes du parcours Explorer">{EXPLORER_STEPS.map((item, index) => <li id={`explorer-step-${index + 1}`} key={item.label} ref={(element) => { landmarks.current[index] = element; }}><span className="sr-only">{index + 1}. {item.label}</span></li>)}</ol>
+    <div className="territory-lab" id="territory-explorer" ref={lab} data-mode={mode} data-dataset={territoryDataset} data-step={stepIndex}>
       <div className="explorer-navigation"><div className="explorer-mode data-types" role="group" aria-label="Choisir une mesure de santé mentale"><button type="button" aria-pressed={family === "declared"} onClick={() => chooseMeasureFamily("declared")}>Déclaré <span>Enquête · expérience rapportée</span></button><button type="button" aria-pressed={family === "emergency"} onClick={() => chooseMeasureFamily("emergency")}>Urgences <span>Recours aigu · OSCOUR®</span></button><button type="button" aria-pressed={family === "hospital"} onClick={() => chooseMeasureFamily("hospital")}>Hôpital <span>Patients et séjours · MCO</span></button><button type="button" aria-pressed={family === "deaths"} onClick={() => chooseMeasureFamily("deaths")}>Décès <span>Suicides enregistrés</span></button></div>
       {family === "hospital" && <div className="measure-subnav" role="group" aria-label="Vue hospitalière"><button type="button" aria-pressed={mode === "territories"} onClick={() => switchTerritoryDataset("hospitalisations")}>Séjours · départements</button><button type="button" aria-pressed={mode === "profiles"} onClick={() => switchMode("profiles")}>Patients · âge × sexe</button></div>}</div>
-      {mode === "declared" ? <DeclaredExplorer data={data} /> : <><div className="territory-selector" style={{ "--filter-width": filterWidth } as CSSProperties}><div className="territory-filters">{mode === "territories" && <label htmlFor="department">Département<select id="department" value={selected.department.code} onChange={(event) => setCode(event.target.value)}>{departmentOptions.map((row) => <option key={row.department.code} value={row.department.code}>{row.department.code} · {row.department.name}</option>)}</select></label>}<label htmlFor="territory-age">Tranche d’âge<select id="territory-age" value={mode === "territories" ? age : profileAge} onChange={(event) => mode === "territories" ? setAge(event.target.value) : setProfileAge(event.target.value)}>{(mode === "territories" ? TERRITORY_AGES : ODISSE_AGES).map((item) => <option key={item} value={item}>{item === "Tous" ? "Tous les âges" : item}</option>)}</select></label><label htmlFor="territory-sex">Sexe<select id="territory-sex" value={mode === "territories" ? sex : profileSex} onChange={(event) => mode === "territories" ? setSex(event.target.value) : setProfileSex(event.target.value)}>{(mode === "territories" ? TERRITORY_SEXES : ["Femmes", "Hommes"]).map((item) => <option key={item} value={item}>{item === "Hommes et Femmes" ? "Tous les sexes" : item}</option>)}</select></label></div><div className="territory-summary"><div className="metric-definition"><b>{measureLabel}</b><span>{measureUnit}</span></div>{selected.comparable ? <><span className="metric-period">{changeLabel} · {startYear} → {endYear}</span><strong className="animated-number" aria-hidden="true">{formatEvolution(animatedChange)}{evolutionUnit}</strong><span className="metric-endpoints">{fmt(selectedFirst!.rate)} en {startYear} → {fmt(selectedLast!.rate)} en {endYear}</span></> : <div className="low-sample"><strong>{selected.change == null ? "Comparaison indisponible" : "Effectif faible"}</strong><span>{selected.change == null ? "Deux valeurs comparables sont nécessaires aux dates retenues." : "Moins de 10 décès à l’une des deux dates : évolution non interprétable."} La courbe disponible reste descriptive.</span></div>}{mode === "territories" && selected.comparable && (hasNationalReference ? <p className={`relative-level ${Math.abs(animatedLevelGap) < .05 ? "is-neutral" : animatedLevelGap > 0 ? "is-positive" : "is-negative"}`}>{Math.abs(animatedLevelGap) < .05 ? <>Au niveau de la France en {endYear}</> : <><b>{formatEvolution(animatedLevelGap)}</b> {usesAbsoluteChange ? "point de taux pour 100 000" : ""} par rapport à la France en {endYear}</>}</p> : <p className="relative-level is-neutral">Référence nationale indisponible pour ce regroupement</p>)}<span className="sr-only" aria-live="polite">{title}. {measureLabel}. {selected.comparable ? `${changeLabel} ${formatEvolution(selected.change!)}${evolutionUnit} entre ${startYear} et ${endYear}.` : "Évolution non interprétable."}</span></div></div>
+      {mode === "declared" ? <DeclaredExplorer data={data} step={step} onNavigate={navigateStep} /> : <><div className="territory-selector" style={{ "--filter-width": filterWidth } as CSSProperties}><div className="territory-filters">{mode === "territories" && <label htmlFor="department">Département<select id="department" value={selected.department.code} onChange={(event) => setCode(event.target.value)}>{departmentOptions.map((row) => <option key={row.department.code} value={row.department.code}>{row.department.code} · {row.department.name}</option>)}</select></label>}<label htmlFor="territory-age">Tranche d’âge<select id="territory-age" value={mode === "territories" ? age : profileAge} onChange={(event) => mode === "territories" ? setAge(event.target.value) : setProfileAge(event.target.value)}>{(mode === "territories" ? TERRITORY_AGES : ODISSE_AGES).map((item) => <option key={item} value={item}>{item === "Tous" ? "Tous les âges" : item}</option>)}</select></label><label htmlFor="territory-sex">Sexe<select id="territory-sex" value={mode === "territories" ? sex : profileSex} onChange={(event) => mode === "territories" ? setSex(event.target.value) : setProfileSex(event.target.value)}>{(mode === "territories" ? TERRITORY_SEXES : ["Femmes", "Hommes"]).map((item) => <option key={item} value={item}>{item === "Hommes et Femmes" ? "Tous les sexes" : item}</option>)}</select></label></div><div className="territory-summary"><div className="metric-definition"><b>{measureLabel}</b><span>{measureUnit}</span></div>{selected.comparable ? <><span className="metric-period">{changeLabel} · {startYear} → {endYear}</span><strong className="animated-number" aria-hidden="true">{formatEvolution(animatedChange)}{evolutionUnit}</strong><span className="metric-endpoints">{fmt(selectedFirst!.rate)} en {startYear} → {fmt(selectedLast!.rate)} en {endYear}</span></> : <div className="low-sample"><strong>{selected.change == null ? "Comparaison indisponible" : "Effectif faible"}</strong><span>{selected.change == null ? "Deux valeurs comparables sont nécessaires aux dates retenues." : "Moins de 10 décès à l’une des deux dates : évolution non interprétable."} La courbe disponible reste descriptive.</span></div>}{mode === "territories" && selected.comparable && (hasNationalReference ? <p className={`relative-level ${Math.abs(animatedLevelGap) < .05 ? "is-neutral" : animatedLevelGap > 0 ? "is-positive" : "is-negative"}`}>{Math.abs(animatedLevelGap) < .05 ? <>Au niveau de la France en {endYear}</> : <><b>{formatEvolution(animatedLevelGap)}</b> {usesAbsoluteChange ? "point de taux pour 100 000" : ""} par rapport à la France en {endYear}</>}</p> : <p className="relative-level is-neutral">Référence nationale indisponible pour ce regroupement</p>)}<span className="sr-only" aria-live="polite">{title}. {measureLabel}. {selected.comparable ? `${changeLabel} ${formatEvolution(selected.change!)}${evolutionUnit} entre ${startYear} et ${endYear}.` : "Évolution non interprétable."}</span></div></div>
       <div className="territory-chart"><h3 className="data-change" key={`${mode}-${selected.department.code}`}>{title}</h3><p className="territory-context">{measureLabel} · {context}</p>{!usesAbsoluteChange && <div className="chart-view-toggle" role="group" aria-label="Mesure affichée"><button type="button" aria-pressed={chartView === "level"} onClick={() => setChartView("level")}>Niveau</button><button type="button" aria-pressed={chartView === "change"} onClick={() => setChartView("change")}>Évolution · base 100</button></div>}<svg ref={chartSvgRef} style={{ "--chart-label-size": `${chartLabelSize}px` } as CSSProperties} viewBox={`0 0 ${chartWidth} 260`} role="img" aria-label={`${title}, ${chartView === "level" ? "taux réel" : "évolution en base 100"}, comparé à ${referenceLabel}`}><g className="chart-grid chart-grid-old" opacity={1 - axisScale.progress}>{[axisScale.previousMax / 2, axisScale.previousMax].map((tick, index) => <g key={`old-${index}`}><line x1="4" x2={chartWidth - 4} y1={y({ rate: tick })} y2={y({ rate: tick })} /><text x="4" y={y({ rate: tick }) - 5}>{fmt(tick, 0)}</text></g>)}</g><g className="chart-grid chart-grid-new" opacity={axisScale.progress}>{[targetMaxRate / 2, targetMaxRate].map((tick, index) => <g key={`new-${index}`}><line x1="4" x2={chartWidth - 4} y1={y({ rate: tick })} y2={y({ rate: tick })} /><text x="4" y={y({ rate: tick }) - 5}>{fmt(tick, 0)}</text></g>)}</g><g className="chart-grid chart-grid-zero"><line x1="4" x2={chartWidth - 4} y1={y({ rate: 0 })} y2={y({ rate: 0 })} /><text x="4" y={y({ rate: 0 }) - 5}>0</text></g>{chartView === "change" && <line className="index-baseline" x1="4" x2={chartWidth - 4} y1={y({ rate: 100 })} y2={y({ rate: 100 })} />}<path className="national-line" d={linePath(animatedReference, x, y)} />{chartHoveredSeries && <path key={`${hoveredMetric?.department.code}-${chartView}`} className="hover-line" d={linePath(chartHoveredSeries, x, y)} aria-hidden="true" />}<path className="department-line" d={linePath(animatedSeries, x, y)} />{animatedSeries.map((point) => {
         const targetValue = chartSeries.find((candidate) => candidate.year === point.year)?.rate ?? point.rate;
         const targetPoint = selected.series.find((candidate) => candidate.year === point.year);
@@ -661,7 +732,9 @@ function TerritoryAppendix({ data, guidedView }: { data: ExperienceData; guidedV
         return <g key={row.department.code} className={`distribution-point${isSelected ? " selected" : ""}${hoveredCode === row.department.code ? " is-hovered" : ""}`} role="button" tabIndex={0} aria-label={`${row.department.name}, ${row.department.region}, évolution ${formatEvolution(row.targetChange)}${evolutionUnit}. Sélectionner.`} onFocus={(event) => { const bounds = event.currentTarget.getBoundingClientRect(); setHoveredCode(row.department.code); setTooltip({ x: bounds.left + bounds.width / 2, y: bounds.top, ...tooltipData }); }} onBlur={() => { setHoveredCode(null); setTooltip(null); }} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); selectItem(); } }}><circle className="distribution-dot" cx={distributionX(row.change)} cy={row.y} r={row.radius}><title>{row.department.name} · {row.department.region} : {formatEvolution(row.targetChange)}{evolutionUnit}</title></circle></g>;
       })}</svg>{tooltip && <ViewportTooltip x={tooltip.x} y={tooltip.y}><span>{tooltip.department}</span><small>{tooltip.region}</small><strong>{formatEvolution(tooltip.change)}{evolutionUnit}</strong></ViewportTooltip>}<span>{formatEvolution(distributionMin)}{evolutionUnit}</span><span>{formatEvolution(distributionMax)}{evolutionUnit}</span></div></>}
     </div>
-    <p className="source-note"><b>Lecture.</b> Dans la distribution, chaque point représente un département (ou un profil âge × sexe) avec une évolution calculable aux deux dates. Le trait France est un repère national distinct des départements. Chaque bouton ouvre une mesure distincte. MCO désigne la médecine, la chirurgie et l’obstétrique. Les gestes auto-infligés incluent les tentatives de suicide et les automutilations non suicidaires. Les séjours MCO, les passages aux urgences, les décès par suicide et les patients hospitalisés ne forment pas un entonnoir individuel et n’ont pas tous le même dénominateur. Pour les taux de population, pour les séjours et les décès, « Tous les âges » utilise le taux standardisé et les classes d’âge le taux brut. Les urgences expriment une part pour 100 000 passages, pas un taux dans la population. Pour les décès, l’évolution est exprimée en points de taux pour 100 000, et non en pourcentage relatif. Pour les décès par suicide, un département dont l’effectif est inférieur à 10 à l’une des deux dates reste visible dans la courbe, mais est exclu de la comparaison et de la distribution. Ce seuil est une règle de prudence de cette interface, pas un test statistique. Les références nationales par âges regroupés sont approchées à partir des effectifs et taux diffusés, arrondis par la source. Source : Odissé, Santé publique France.</p>
+    <div className="explorer-scroll-status"><span><b>{String(stepIndex + 1).padStart(2, "0")} / {EXPLORER_STEPS.length}</b> · {step.label}</span><span>Défilez pour {stepIndex === EXPLORER_STEPS.length - 1 ? "continuer" : "changer de regard"} ↓</span></div>
+    </div>
+    <p className="source-note"><b>Lecture.</b> Les vagues déclarées de 2005–2021 ne sont pas raccordées au Baromètre 2024, dont le protocole diffère. Dans la distribution, chaque point représente un département (ou un profil âge × sexe) avec une évolution calculable aux deux dates. Le trait France est un repère national distinct des départements. Chaque bouton ouvre une mesure distincte. MCO désigne la médecine, la chirurgie et l’obstétrique. Les gestes auto-infligés incluent les tentatives de suicide et les automutilations non suicidaires. Les séjours MCO, les passages aux urgences, les décès par suicide et les patients hospitalisés ne forment pas un entonnoir individuel et n’ont pas tous le même dénominateur. Pour les taux de population, pour les séjours et les décès, « Tous les âges » utilise le taux standardisé et les classes d’âge le taux brut. Les urgences expriment une part pour 100 000 passages, pas un taux dans la population. Pour les décès, l’évolution est exprimée en points de taux pour 100 000, et non en pourcentage relatif. Pour les décès par suicide, un département dont l’effectif est inférieur à 10 à l’une des deux dates reste visible dans la courbe, mais est exclu de la comparaison et de la distribution. Ce seuil est une règle de prudence de cette interface, pas un test statistique. Les références nationales par âges regroupés sont approchées à partir des effectifs et taux diffusés, arrondis par la source. Source : Odissé, Santé publique France.</p>
   </section>;
 }
 
@@ -927,7 +1000,7 @@ function ReadingNavigation() {
     let frame = 0;
     const synchronize = () => {
       frame = 0;
-      const readingLine = (header.current?.getBoundingClientRect().bottom ?? 60) + 16;
+      const readingLine = (header.current?.getBoundingClientRect().bottom ?? 60) + 17;
       let active = -1, progress = 0;
       READING_SECTIONS.forEach((section, index) => {
         const element = document.getElementById(section.id);
@@ -967,7 +1040,6 @@ export default function Experience({ initialData: data }: { initialData: Experie
   const [guidedView, setGuidedView] = useState<GuidedView | null>(null);
   const explore = (view: "declared" | "profiles") => {
     setGuidedView((previous) => ({ view, revision: (previous?.revision ?? 0) + 1 }));
-    document.getElementById("territory-explorer")?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "start" });
   };
   return <main>
     <a className="skip-link" href="#constats">Aller aux observations</a>
