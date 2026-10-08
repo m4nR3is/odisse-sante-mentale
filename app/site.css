@@ -248,7 +248,7 @@ a:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid var(
 }
 /* Reading progress follows scroll within each step, including reverse scrolling. */
 .story-progress a,.declared-indicators button,.measure-subnav button,.explorer-mode.data-types button{position:relative}
-.control-scroll-progress{position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--accent);transform-origin:left;pointer-events:none}
+.control-scroll-progress{position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--accent);transform-origin:left;pointer-events:none}
 .explorer-mode.data-types button>.control-scroll-progress{display:block;margin:0;font-size:0}
 .measure-subnav button[aria-pressed="true"]{box-shadow:none}
 .story-progress a:not([aria-current="step"])>.control-scroll-progress,
