@@ -1,7 +1,7 @@
 # Quand la souffrance devient visible
 
 **Équipe :** [À COMPLÉTER — nom complet du ou des membres]
-**Mail(s) de contact:** [À COMPLÉTER — adresse de contact]
+**Mail(s) de contact:** ecrire@m4nu.net
 **Défi :** Défi 1 — Santé mentale
 
 ## Notre question
@@ -12,7 +12,7 @@ Que voit-on de la santé mentale selon qu’on regarde les enquêtes, les urgenc
 
 **Visualisation interactive :** [À COMPLÉTER — URL publique]
 
-**Code source public :** [À COMPLÉTER — URL du dépôt]
+**Code source public :** https://github.com/m4nR3is/odisse-sante-mentale
 
 Un récit au scroll révèle successivement le taux national de patients hospitalisés pour gestes auto-infligés, les trajectoires des filles et des garçons de 11–14 ans, puis les écarts de dépression déclarée selon la situation financière perçue. Entre 2019 et 2024, le taux national standardisé augmente d’environ 4 %, tandis que le taux brut des filles de 11–14 ans augmente d’environ 93 % et celui des garçons du même âge de 7 %. Dans le Baromètre 2024, la prévalence déclarée va de 9,0 % chez les personnes se disant à l’aise financièrement à 28,3 % chez celles en difficulté.
 
