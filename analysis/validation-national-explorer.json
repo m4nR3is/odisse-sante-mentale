@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-08",
+  "checks": {
+    "initial_territory": "FR",
+    "no_department_selected_on_distribution": true,
+    "single_national_curve": true,
+    "national_emergency_evolution_not_calculated": true,
+    "hover_preserves_national_selection": true,
+    "keyboard_selects_department": true,
+    "dropdown_restores_national_view": true,
+    "death_0_17_reference_not_invented": true,
+    "horizontal_overflow": false,
+    "javascript_errors": []
+  },
+  "viewports": [
+    "1440×900",
+    "390×844"
+  ],
+  "build": "passed",
+  "story_views": 5,
+  "explorer_views": 10
+}

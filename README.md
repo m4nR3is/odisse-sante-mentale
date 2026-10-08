@@ -30,7 +30,8 @@ naviguer au clavier. Le changement de taux standardisé national à taux brut
 par âge et sexe, et le changement d’échelle verticale, sont explicités.
 Les chiffres sont calculés depuis les données livrées.
 
-L’explorateur propose ensuite quatre regards dans un module persistant. Le
+L’explorateur propose ensuite quatre regards dans un module persistant.
+Les vues territoriales démarrent sur la référence nationale, sans département présélectionné. Le survol de la distribution révèle un territoire ; un clic ou le menu le sélectionne. Aux urgences, la vue nationale présente le niveau de 2024, sans calculer une évolution sur le périmètre variable. Le
 scroll traverse dix étapes : les trois indicateurs de 2024, les trois
 indicateurs historiques, les urgences, les séjours hospitaliers, les profils
 âge × sexe puis les décès. Les boutons et les listes d’indicateurs rejoignent

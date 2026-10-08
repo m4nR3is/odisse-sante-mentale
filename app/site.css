@@ -370,3 +370,7 @@ a:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid var(
 .reading-takeaway>p{font-size:clamp(19px,2vw,27px);line-height:1.4;margin:0}
 .reading-takeaway>.reading-takeaway-detail{font-size:14px;line-height:1.6;color:var(--muted);margin-top:22px;max-width:720px}
 @media(max-width:980px){.story-mobile-figure .story-figure-heading>.story-scale-notice{display:block;margin:0 0 10px}.reading-takeaway{grid-column:1}}
+
+/* La vue nationale ouvre l’exploration sans sélectionner de département. */
+.territory-chart[data-national="true"] .national-line{stroke:var(--ink)}
+.territory-chart[data-national="true"] .chart-dot{fill:var(--ink)}
