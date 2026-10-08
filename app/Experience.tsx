@@ -1154,6 +1154,48 @@ function GuidedOpening({ data, onExplore }: { data: ExperienceData; onExplore: (
   </section>;
 }
 
+const INTRO_LEAD = "Que montrent les données de santé mentale selon qu’on regarde les enquêtes, les urgences, les hospitalisations ou les décès ? Chaque source éclaire une dimension différente. Aucune ne suffit à en dresser le portrait.";
+
+function IntroLeadLines({ register }: { register: (element: HTMLSpanElement | null) => void }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [lines, setLines] = useState([INTRO_LEAD]);
+  useLayoutEffect(() => {
+    const parent = ref.current?.parentElement;
+    if (!parent) return;
+    let signature = "";
+    const measure = () => {
+      const style = getComputedStyle(parent);
+      const next = `${parent.clientWidth}/${style.fontSize}/${style.lineHeight}`;
+      if (next === signature) return;
+      signature = next;
+      const probe = document.createElement("span");
+      probe.style.cssText = "position:absolute;display:block;visibility:hidden;pointer-events:none;white-space:normal;";
+      probe.style.width = `${parent.clientWidth}px`;
+      probe.textContent = INTRO_LEAD;
+      parent.appendChild(probe);
+      const node = probe.firstChild!;
+      const range = document.createRange();
+      const wrapped: string[] = [];
+      let previousTop = -Infinity;
+      for (const word of INTRO_LEAD.matchAll(/\S+/g)) {
+        range.setStart(node, word.index!);
+        range.setEnd(node, word.index! + word[0].length);
+        const top = range.getBoundingClientRect().top;
+        if (Math.abs(top - previousTop) > 1) wrapped.push(word[0]);
+        else wrapped[wrapped.length - 1] += ` ${word[0]}`;
+        previousTop = top;
+      }
+      probe.remove();
+      setLines(wrapped);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(parent);
+    return () => observer.disconnect();
+  }, []);
+  return <span className="intro-flight intro-lead-flight" ref={(element) => { ref.current = element; register(element); }}><span className="sr-only">{INTRO_LEAD}</span>{lines.map((line, index) => <span className="intro-lead-line" key={`${index}-${line}`} aria-hidden="true">{line}{index < lines.length - 1 ? " " : ""}</span>)}</span>;
+}
+
 function IntroOpening() {
   const track = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
@@ -1206,8 +1248,24 @@ function IntroOpening() {
         }
         const local = Math.max(0, Math.min(1, (progress - starts[index]) / flightDuration));
         const arrival = local * local * (3 - 2 * local);
+        if (index === 5) {
+          element.style.transform = "none";
+          element.style.opacity = "1";
+          element.dataset.arrival = arrival.toFixed(3);
+          const lines = element.querySelectorAll<HTMLElement>(".intro-lead-line");
+          lines.forEach((line, lineIndex) => {
+            const delay = lines.length > 1 ? lineIndex / (lines.length - 1) * .22 : 0;
+            const phase = Math.max(0, Math.min(1, (local - delay) / .78));
+            const eased = phase * phase * (3 - 2 * phase);
+            const side = lineIndex % 2 === 0 ? -1 : 1;
+            const travel = Math.min(stageBounds.width * .45, 520);
+            line.style.transform = eased === 1 ? "none" : `translate(${side * travel * (1 - eased)}px, ${stageBounds.height * .12 * (1 - eased)}px) scale(${1 + .18 * (1 - eased)})`;
+            line.style.opacity = String(Math.min(1, phase * 4));
+          });
+          return;
+        }
         const dx = stageBounds.left + stageBounds.width / 2 - (target.left + element.offsetLeft + element.offsetWidth / 2);
-        const originY = stageBounds.top + stageBounds.height * (index === 5 ? .82 : .5);
+        const originY = stageBounds.top + stageBounds.height / 2;
         const dy = originY - (target.top + element.offsetTop + element.offsetHeight / 2);
         const large = index === 0 || index === 3 || index === 4
           ? Math.max(1, Math.min(stageBounds.width * .9 / Math.max(1, target.width), stageBounds.height * .7 / Math.max(1, target.height)))
@@ -1294,7 +1352,7 @@ function IntroOpening() {
       <div className="hero-copy">
         <p className="overline intro-topics">{flight("Santé mentale", 0)}<span className="intro-topic-divider" aria-hidden="true">·</span>{flight("Recours aux soins", 1)}<span className="intro-topic-divider" aria-hidden="true">·</span>{flight("Inégalités", 2)}</p>
         <h1 id="intro-title">{flight("Quand la souffrance", 3)}{flight("devient visible.", 4)}</h1>
-        <div className="intro-lead-target">{flight("Que montrent les données de santé mentale selon qu’on regarde les enquêtes, les urgences, les hospitalisations ou les décès ? Chaque source éclaire une dimension différente. Aucune ne suffit à en dresser le portrait.", 5)}</div>
+        <div className="intro-lead-target"><IntroLeadLines register={(element) => { flights.current[5] = element; }} /></div>
         <a href="#constats" className="read-data" ref={action}>Comprendre ce que les données révèlent <span>↓</span></a>
       </div>
       <div className="intro-footer"><p ref={caption}>Ce que l’on ressent.</p><a href="#constats">Passer l’introduction ↓</a></div>

@@ -327,3 +327,6 @@ a:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid var(
 @media(max-height:480px) and (min-width:651px){.method-stage{gap:8px}.method-stage-body{grid-template-columns:.7fr 1.3fr;gap:24px}.method-reading .chapter{font-size:8px;margin:0}.method-reading h3{font-size:30px;margin:10px 0}.method-reading h4{font-size:15px;margin-bottom:8px}.method-reading>p:last-child{font-size:11px;line-height:1.4;margin:0}.method-rules{gap:8px}.method-rules article{padding-top:6px}.method-rules small{font-size:7px}.method-rules strong{font-size:14px;margin:4px 0}.method-rules p{font-size:9px;line-height:1.35}.method-steps a{padding:9px 12px}}
 .method-reading>p,.method-reading h4{clip-path:inset(0 calc((1 - var(--method-scene-reveal))*100%) 0 0)}
 @media(prefers-reduced-motion:reduce){.method-reading>p,.method-reading h4{clip-path:none}}
+
+.intro-lead-flight{display:block;width:100%}.intro-lead-line{display:block;white-space:nowrap;transform-origin:center;opacity:0}
+@media(prefers-reduced-motion:reduce){.intro-lead-line{transform:none!important;opacity:1!important}}
