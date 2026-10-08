@@ -10,7 +10,12 @@ Contact : ecrire@m4nu.net · [Visualisation en ligne](https://odisse-sante-menta
 
 ## Parcours
 
-L’accueil se construit au scroll : Santé mentale, Recours aux soins et Inégalités
+Une ouverture automatique de 1,7 seconde part du noir : le contour de Santé
+mentale se trace puis se remplit, pendant que la navigation, les liens et le
+trait horizontal se révèlent en parallèle. Elle cède immédiatement la place
+au scroll ou au clavier et respecte la réduction des mouvements.
+
+L’accueil se construit ensuite au scroll : Santé mentale, Recours aux soins et Inégalités
 arrivent depuis le centre, à très grande taille, puis rejoignent leur place.
 Le titre et la question apparaissent à leur tour. La séquence est réversible,
 peut être passée et affiche immédiatement sa composition finale avec la

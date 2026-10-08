@@ -1084,6 +1084,7 @@ function IntroOpening() {
   const caption = useRef<HTMLParagraphElement>(null);
   const progressLine = useRef<HTMLSpanElement>(null);
   const action = useRef<HTMLAnchorElement>(null);
+  const ink = useRef<SVGSVGElement>(null);
 
   useLayoutEffect(() => {
     const root = track.current, viewport = stage.current;
@@ -1091,6 +1092,7 @@ function IntroOpening() {
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let frame = 0;
     const starts = [0, .17, .34, .49, .64, .79];
+    let inkSize = "";
     const synchronize = () => {
       frame = 0;
       const bounds = root.getBoundingClientRect();
@@ -1103,6 +1105,27 @@ function IntroOpening() {
         if (!element) return;
         // Measure the untransformed wrapper: animation cannot alter its destination.
         const target = element.parentElement!.getBoundingClientRect();
+        if (index === 0 && ink.current) {
+          const style = getComputedStyle(element);
+          const signature = `${target.width}/${target.height}/${style.fontSize}/${style.letterSpacing}`;
+          if (signature !== inkSize) {
+            inkSize = signature;
+            const text = ink.current.querySelector("text")!;
+            const fontSize = parseFloat(style.fontSize);
+            const previousTransform = element.style.transform;
+            element.style.transform = "none";
+            const baseline = element.querySelector<HTMLElement>(".intro-baseline")!;
+            const baselineY = baseline.getBoundingClientRect().top - element.getBoundingClientRect().top;
+            element.style.transform = previousTransform;
+            ink.current.setAttribute("viewBox", `0 0 ${target.width} ${target.height}`);
+            text.setAttribute("y", String(baselineY));
+            text.style.fontFamily = style.fontFamily;
+            text.style.fontSize = style.fontSize;
+            text.style.fontWeight = style.fontWeight;
+            text.style.letterSpacing = style.letterSpacing;
+            text.style.setProperty("--ink-length", String(fontSize * 4));
+          }
+        }
         const local = Math.max(0, Math.min(1, (progress - starts[index]) / .14));
         const arrival = local * local * (3 - 2 * local);
         const dx = stageBounds.left + stageBounds.width / 2 - (target.left + target.width / 2);
@@ -1142,7 +1165,7 @@ function IntroOpening() {
     };
   }, []);
 
-  const flight = (text: string, index: number) => <span className="intro-flight-target"><span className="intro-flight" ref={(element) => { flights.current[index] = element; }}>{text}</span></span>;
+  const flight = (text: string, index: number) => <span className="intro-flight-target"><span className="intro-flight" ref={(element) => { flights.current[index] = element; }}>{index === 0 ? <><span className="intro-word-fill">{text}<span className="intro-baseline" aria-hidden="true" /></span><svg className="intro-ink" ref={ink} aria-hidden="true" focusable="false"><text x="0">SANTÉ MENTALE</text></svg></> : text}</span></span>;
   return <section className="intro-scroll-track" id="top" ref={track} aria-labelledby="intro-title">
     <div className="hero meta-hero intro-stage" ref={stage}>
       <div className="hero-copy">
@@ -1207,11 +1230,33 @@ function ReadingNavigation() {
 }
 
 export default function Experience({ initialData: data }: { initialData: ExperienceData }) {
+  const entrance = useRef<HTMLElement>(null);
+  useLayoutEffect(() => {
+    const root = entrance.current;
+    if (!root) return;
+    root.classList.add("entrance-pending");
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const finish = () => root.classList.remove("entrance-pending");
+    const startScroll = window.scrollY;
+    const onScroll = () => { if (Math.abs(window.scrollY - startScroll) > 4) finish(); };
+    const onMotion = () => { if (motion.matches) finish(); };
+    if (motion.matches || window.scrollY > 4 || (window.location.hash && window.location.hash !== "#top")) finish();
+    const timer = window.setTimeout(finish, 1700);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    root.addEventListener("focusin", finish);
+    motion.addEventListener("change", onMotion);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener("scroll", onScroll);
+      root.removeEventListener("focusin", finish);
+      motion.removeEventListener("change", onMotion);
+    };
+  }, []);
   const [guidedView, setGuidedView] = useState<GuidedView | null>(null);
   const explore = (view: "declared" | "profiles") => {
     setGuidedView((previous) => ({ view, revision: (previous?.revision ?? 0) + 1 }));
   };
-  return <main>
+  return <main ref={entrance} className="experience entrance-pending">
     <a className="skip-link" href="#constats">Aller aux observations</a>
     <ReadingNavigation />
     <IntroOpening />

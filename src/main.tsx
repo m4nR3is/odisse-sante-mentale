@@ -18,7 +18,7 @@ function Application() {
     return () => controller.abort();
   }, []);
   if (data) return <Experience initialData={data} />;
-  return <main className="loading-page"><p className="chapter">ODISSÉ · DATAVIZ 2026</p><h1>Quand la souffrance<br />devient visible.</h1><p role="status">{failed ? "Les données n’ont pas pu être chargées." : "Chargement des observations…"}</p>{failed && <button type="button" onClick={() => window.location.reload()}>Réessayer</button>}<a href="tel:3114">Besoin d’aide ? 3114</a></main>;
+  return <main className={`loading-page${failed ? "" : " is-intro-loading"}`}><p className="chapter">ODISSÉ · DATAVIZ 2026</p><h1>Quand la souffrance<br />devient visible.</h1><p role="status">{failed ? "Les données n’ont pas pu être chargées." : "Chargement des observations…"}</p>{failed && <button type="button" onClick={() => window.location.reload()}>Réessayer</button>}<a href="tel:3114">Besoin d’aide ? 3114</a></main>;
 }
 
 createRoot(document.getElementById("root")!).render(<StrictMode><Application /></StrictMode>);

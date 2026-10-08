@@ -1,0 +1,26 @@
+[
+  {
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "startsBlank": true,
+    "simultaneousDrawing": true,
+    "nativeTextHandoff": true,
+    "scrollHandoff": true,
+    "reducedMotion": true,
+    "errors": []
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 568
+    },
+    "startsBlank": true,
+    "simultaneousDrawing": true,
+    "nativeTextHandoff": true,
+    "scrollHandoff": true,
+    "reducedMotion": true,
+    "errors": []
+  }
+]
