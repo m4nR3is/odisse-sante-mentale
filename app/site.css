@@ -120,3 +120,5 @@ a:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid var(
 
 /* Le SVG du récit reste monté ; son tracé est piloté par la scène active. */
 .story-visual{animation:none}
+
+.story-point{outline:none}.story-point[data-interactive="true"]{cursor:help}.story-point-hit{fill:transparent;stroke:transparent;stroke-width:1.5;pointer-events:all}.story-point[data-interactive="false"] .story-point-hit{pointer-events:none}.story-point[data-interactive="true"]:hover .story-point-hit,.story-point[data-interactive="true"]:focus .story-point-hit{stroke:var(--ink);stroke-dasharray:2 3}.story-tooltip{width:min(280px,calc(100vw - 24px));grid-template-columns:minmax(0,1fr)}.story-tooltip span,.story-tooltip small{white-space:normal;overflow:visible}.story-tooltip strong{grid-column:1;grid-row:auto;font-size:22px}

@@ -110,5 +110,18 @@
       "confidence interval expands from the center only after marker arrival"
     ],
     "build": "TypeScript and Vite passed"
+  },
+  "storyTooltips": {
+    "pointsChecked": 28,
+    "failures": [],
+    "checks": [
+      "hover across all four story scenes",
+      "keyboard focus and Escape",
+      "dismiss on scrolling or scene change",
+      "hospital year, rate, patients and rate definition",
+      "social estimate and 95 percent confidence interval",
+      "viewport containment on desktop and 1024 × 480"
+    ],
+    "build": "TypeScript and Vite passed"
   }
 }

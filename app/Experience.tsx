@@ -1,4 +1,4 @@
-import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type FocusEvent as ReactFocusEvent, type ReactNode } from "react";
 
 type SeriesPoint = { year: number; sex: string; age: string; patients: number; rate: number };
 type NationalPoint = { year: number; sex: string; age: string; rate: number; stays: number };
@@ -675,6 +675,7 @@ function MethodSection({ data }: { data: ExperienceData }) {
 }
 
 type StoryScene = 0 | 1 | 2 | 3;
+type StoryPointInfo = { label: string; context: string; value: string; detail: string };
 
 type StoryDrawing = { scene: StoryScene; main: number; mainStart: number; boys: number; boysStart: number; social: number };
 
@@ -746,6 +747,31 @@ function StoryFigure({ data, scene: requestedScene }: { data: ExperienceData; sc
   }, []);
   const drawing = useStoryDrawing(requestedScene, entered);
   const scene = drawing.scene;
+  const [tooltip, setTooltip] = useState<(StoryPointInfo & { x: number; y: number }) | null>(null);
+  useEffect(() => {
+    const dismiss = () => setTooltip(null);
+    dismiss();
+    window.addEventListener("scroll", dismiss, { passive: true });
+    window.addEventListener("resize", dismiss);
+    return () => { window.removeEventListener("scroll", dismiss); window.removeEventListener("resize", dismiss); };
+  }, [requestedScene]);
+  const pointEvents = (info: StoryPointInfo, enabled: boolean) => ({
+    className: "story-point",
+    role: "img" as const,
+    tabIndex: enabled ? 0 : -1,
+    "aria-label": `${info.label}. ${info.context}. ${info.value}. ${info.detail}`,
+    "data-interactive": enabled,
+    onPointerMove: (event: ReactPointerEvent<SVGGElement>) => { if (enabled) setTooltip({ ...info, x: event.clientX, y: event.clientY }); },
+    onPointerLeave: () => setTooltip(null),
+    onFocus: (event: ReactFocusEvent<SVGGElement>) => {
+      if (!enabled) return;
+      const bounds = event.currentTarget.getBoundingClientRect();
+      setTooltip({ ...info, x: bounds.left + bounds.width / 2, y: bounds.top });
+    },
+    onBlur: () => setTooltip(null),
+    onKeyDown: (event: { key: string }) => { if (event.key === "Escape") setTooltip(null); },
+  });
+  const hospitalInfo = (point: SeriesPoint, label: string): StoryPointInfo => ({ label, context: `${point.year} · Patients hospitalisés`, value: `${fmt(point.rate)} pour 100 000`, detail: `${fmt(point.patients, 0)} patients · ${scene === 0 ? "Taux standardisé" : "Taux brut par âge et sexe"}` });
   const national = data.odissePatients.filter((point) => point.age === "Tous" && point.sex === "Hommes et Femmes").sort((a, b) => a.year - b.year);
   const girls = data.odissePatients.filter((point) => point.age === "11–14 ans" && point.sex === "Femmes").sort((a, b) => a.year - b.year);
   const boys = data.odissePatients.filter((point) => point.age === "11–14 ans" && point.sex === "Hommes").sort((a, b) => a.year - b.year);
@@ -757,7 +783,7 @@ function StoryFigure({ data, scene: requestedScene }: { data: ExperienceData; sc
   return <div className="story-figure" data-scene={scene}>
     <div className="story-figure-heading"><p className="chapter">{scene === 3 ? "ENQUÊTE · BAROMÈTRE 2024" : "HÔPITAL · PATIENTS · 2019–2024"}</p><h3>{["La vue d’ensemble", "Les filles de 11–14 ans", "Deux trajectoires, un même âge", "La situation financière perçue"][scene]}</h3><p>{scene === 3 ? "Épisode dépressif caractérisé dans les 12 derniers mois · prévalence déclarée" : scene === 0 ? "France · tous âges, tous sexes · taux standardisé pour 100 000 habitants" : "France · taux brut pour 100 000 personnes du même âge et sexe"}</p></div>
     <div className="story-visual">
-      <svg ref={svgRef} viewBox="0 0 580 320" role="img" aria-label={scene === 3 ? `Dépression déclarée selon la situation financière : ${social.map((point) => `${FINANCIAL_SHORT[point.financial]}, ${fmt(point.estimate)} %`).join(" ; ")}. Intervalles de confiance à 95 %.` : `${scene === 0 ? "Tous âges et sexes" : "Filles de 11–14 ans"} : ${fmt(values[0].rate)} en 2019, ${fmt(values.at(-1)!.rate)} en 2024, pour 100 000.${scene === 2 ? ` Garçons de 11–14 ans : ${fmt(boys[0].rate)} à ${fmt(boys.at(-1)!.rate)}.` : ""}`}>
+      <svg ref={svgRef} viewBox="0 0 580 320" role="group" aria-label={scene === 3 ? `Dépression déclarée selon la situation financière : ${social.map((point) => `${FINANCIAL_SHORT[point.financial]}, ${fmt(point.estimate)} %`).join(" ; ")}. Intervalles de confiance à 95 %.` : `${scene === 0 ? "Tous âges et sexes" : "Filles de 11–14 ans"} : ${fmt(values[0].rate)} en 2019, ${fmt(values.at(-1)!.rate)} en 2024, pour 100 000.${scene === 2 ? ` Garçons de 11–14 ans : ${fmt(boys[0].rate)} à ${fmt(boys.at(-1)!.rate)}.` : ""}`}>
         <defs>{[{ name: "main", points: values, start: drawing.mainStart, end: drawing.main }, { name: "boys", points: boys, start: drawing.boysStart, end: drawing.boys }].map(({ name, points, start, end }) => <mask key={name} id={`${maskId}-${name}`} maskUnits="userSpaceOnUse" x="0" y="0" width="580" height="320"><path d={linePath(points, (point) => x(point.year), (point) => y(point.rate))} fill="none" stroke="white" strokeWidth="16" strokeLinecap="round" pathLength="1" strokeDasharray={`${Math.max(0, end - start)} 1`} strokeDashoffset={-start} opacity={end <= start ? 0 : 1} /></mask>)}</defs>
         {scene === 3 ? <g>
           {[0, 10, 20, 30].map((tick) => <g className="story-gridline" key={tick} opacity={Math.min(1, drawing.social * 4)}><line x1={136 + tick / 32 * 382} x2={136 + tick / 32 * 382} y1="44" y2="258" /><text x={136 + tick / 32 * 382} y="294" textAnchor="middle">{tick} %</text></g>)}
@@ -775,20 +801,24 @@ function StoryFigure({ data, scene: requestedScene }: { data: ExperienceData; sc
             return <g className="story-social-row" key={point.financial} data-progress={progress} data-estimate={animatedEstimate} opacity={progress > 0 ? 1 : 0}>
               <text className="story-social-label" x="0" y={68 + index * 60} opacity={labelProgress} transform={`translate(0 ${(1 - labelProgress) * 10})`}>{FINANCIAL_SHORT[point.financial]}</text>
               <line className="story-interval" x1={center + (point.low - point.estimate) / 32 * 382 * intervalScale} x2={center + (point.high - point.estimate) / 32 * 382 * intervalScale} y1={63 + index * 60} y2={63 + index * 60} opacity={intervalProgress} />
+              <g {...pointEvents({ label: FINANCIAL_SHORT[point.financial], context: "Dépression déclarée · 2024", value: `${fmt(point.estimate)} %`, detail: `IC à 95 % : ${fmt(point.low)}–${fmt(point.high)} %` }, progress === 1)}>
+                <circle className="story-point-hit" cx={center} cy={63 + index * 60} r="12" />
               <circle className="story-dot story-social-dot" cx={center} cy={63 + index * 60} r={2 + 3 * growth} style={{ fill: growth === 0 ? "var(--ink)" : `color-mix(in srgb, var(--ink) ${(1 - growth) * 100}%, var(--accent))` }} />
+              </g>
               <text className="story-value" x={center + (point.high - point.estimate) / 32 * 382 * intervalScale + 10} y={68 + index * 60} opacity={phase(0, .12)}>{fmt(animatedEstimate)} %</text>
             </g>;
           })}
         </g> : <>
           {(scene === 0 ? [0, 50, 100, 150] : [0, 200, 400]).map((tick) => <g className="story-gridline" key={tick}><line x1="54" x2="534" y1={y(tick)} y2={y(tick)} /><text x="42" y={y(tick) + 5} textAnchor="end">{tick}</text></g>)}
-          <g className="story-main-reveal" mask={`url(#${maskId}-main)`} data-progress={drawing.main - drawing.mainStart}><path className={scene === 0 ? "story-national" : "story-girls"} d={linePath(values, (point) => x(point.year), (point) => y(point.rate))} />{values.map((point) => <circle key={point.year} className={scene === 0 ? "story-dot-muted" : "story-dot"} cx={x(point.year)} cy={y(point.rate)} r="4"><title>{point.year} : {fmt(point.rate)} pour 100 000</title></circle>)}</g>
-          {scene === 2 && <g className="story-boys-reveal" mask={`url(#${maskId}-boys)`} data-progress={drawing.boys - drawing.boysStart}><path className="story-boys" d={linePath(boys, (point) => x(point.year), (point) => y(point.rate))} />{boys.map((point) => <circle key={point.year} className="story-dot-muted" cx={x(point.year)} cy={y(point.rate)} r="4"><title>{point.year} : {fmt(point.rate)} pour 100 000</title></circle>)}</g>}
+          <g className="story-main-reveal" mask={`url(#${maskId}-main)`} data-progress={drawing.main - drawing.mainStart}><path className={scene === 0 ? "story-national" : "story-girls"} d={linePath(values, (point) => x(point.year), (point) => y(point.rate))} />{values.map((point) => <g key={point.year} {...pointEvents(hospitalInfo(point, scene === 0 ? "France · tous âges, tous sexes" : "Filles · 11–14 ans"), drawing.main === 1 && drawing.mainStart === 0)}><circle className="story-point-hit" cx={x(point.year)} cy={y(point.rate)} r="12" /><circle className={scene === 0 ? "story-dot-muted" : "story-dot"} cx={x(point.year)} cy={y(point.rate)} r="4" /></g>)}</g>
+          {scene === 2 && <g className="story-boys-reveal" mask={`url(#${maskId}-boys)`} data-progress={drawing.boys - drawing.boysStart}><path className="story-boys" d={linePath(boys, (point) => x(point.year), (point) => y(point.rate))} />{boys.map((point) => <g key={point.year} {...pointEvents(hospitalInfo(point, "Garçons · 11–14 ans"), drawing.boys === 1 && drawing.boysStart === 0)}><circle className="story-point-hit" cx={x(point.year)} cy={y(point.rate)} r="12" /><circle className="story-dot-muted" cx={x(point.year)} cy={y(point.rate)} r="4" /></g>)}</g>}
           {values.map((point) => <text x={x(point.year)} y="301" textAnchor="middle" key={point.year}>{point.year}</text>)}
         </>}
       </svg>
       {scene === 3 ? <><dl className="story-mobile-values">{social.map((point) => <div key={point.financial}><dt>{FINANCIAL_SHORT[point.financial]}</dt><dd>{fmt(point.estimate)} %<small>IC 95 % : {fmt(point.low)}–{fmt(point.high)} %</small></dd></div>)}</dl><p className="story-chart-note">Le point indique le pourcentage estimé ; le trait montre son intervalle de confiance à 95 %, c’est-à-dire l’incertitude de l’enquête.</p></> : <><div className="story-legend"><span className={scene === 0 ? "is-national" : ""}>{scene === 0 ? "Tous âges, tous sexes" : "Filles · 11–14 ans"} · {fmt(values.at(-1)!.rate)} en 2024</span>{scene === 2 && <span className="is-boys">Garçons · {fmt(boys.at(-1)!.rate)} en 2024</span>}</div><p className="story-chart-note">{scene === 0 ? "Taux standardisé : la structure d’âge est corrigée pour la comparaison nationale." : scene === 1 ? "Nouvelle population : taux brut par âge et sexe. Nouvelle échelle : de 0 à 500 pour 100 000." : "Les deux courbes partagent la même échelle et la même période."}</p></>}
 
     </div>
+    {tooltip && <ViewportTooltip x={tooltip.x} y={tooltip.y} className="story-tooltip"><span>{tooltip.label}</span><small>{tooltip.context}</small><strong>{tooltip.value}</strong><small>{tooltip.detail}</small></ViewportTooltip>}
     <a className="story-source" href={scene === 3 ? "https://odisse.santepubliquefrance.fr/explore/dataset/episodes-depressif-indicateurs-du-barometre-2024/" : "https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-patients-hospitalises-france/"} target="_blank" rel="noreferrer">Source : Odissé · {scene === 3 ? "Baromètre 2024" : "Patients hospitalisés"} ↗</a>
   </div>;
 }
