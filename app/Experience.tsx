@@ -449,8 +449,10 @@ function HistoricalDeclaredView({ data, indicator, onIndicator }: { data: Experi
   const maskId = useId();
   useEffect(() => { setHovered(null); setDistributionTooltip(null); }, [indicator, sex, selectedCode]);
   return <div className="declared-history" ref={reveal.ref} data-reveal={reveal.progress}>
+    <div className="declared-indicators history-indicators" role="group" aria-label="Indicateur déclaré historique">
+      {indicators.map((item) => <button type="button" key={item} aria-pressed={indicator === item} onClick={() => onIndicator(item)}>{item}</button>)}
+    </div>
     <div className="declared-history-controls">
-      <label>Indicateur<select value={indicator} onChange={(event) => onIndicator(event.target.value)}>{indicators.map((item) => <option key={item}>{item}</option>)}</select></label>
       <label>Région<select value={selectedCode} onChange={(event) => setTerritoryCode(event.target.value)}>{territories.map(([code, name]) => <option value={code} key={code}>{name}</option>)}</select></label>
       <label>Sexe<select value={sex} onChange={(event) => setSex(event.target.value)}>{sexes.map((item) => <option key={item}>{item === "Hommes et Femmes" ? "Tous les sexes" : item}</option>)}</select></label>
       <div className="declared-history-kpi"><strong>{change >= 0 ? "+" : "−"}{fmt(Math.abs(change) * reveal.progress, 1)} pt</strong><span>évolution déclarée · 2005 → 2021</span><p className={gap > 0 ? "is-positive" : ""}>{gap >= 0 ? "+" : "−"}{fmt(Math.abs(gap), 1)} pt par rapport à la France en 2021</p></div>
