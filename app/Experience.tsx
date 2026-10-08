@@ -1168,7 +1168,8 @@ function IntroOpening() {
     if (!root || !viewport) return;
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let frame = 0;
-    const starts = [0, .17, .34, .49, .64, .79];
+    const starts = [0, .14, .28, .42, .56, .70];
+    const flightDuration = .24;
     let inkSize = "";
     const synchronize = () => {
       frame = 0;
@@ -1203,7 +1204,7 @@ function IntroOpening() {
             text.style.setProperty("--ink-length", String(fontSize * 4));
           }
         }
-        const local = Math.max(0, Math.min(1, (progress - starts[index]) / .14));
+        const local = Math.max(0, Math.min(1, (progress - starts[index]) / flightDuration));
         const arrival = local * local * (3 - 2 * local);
         const dx = stageBounds.left + stageBounds.width / 2 - (target.left + element.offsetLeft + element.offsetWidth / 2);
         const originY = stageBounds.top + stageBounds.height * (index === 5 ? .82 : .5);
@@ -1216,8 +1217,8 @@ function IntroOpening() {
         element.style.opacity = progress >= starts[index] ? String(Math.min(1, local * 10 + (index === 0 ? 1 : 0))) : "0";
         element.dataset.arrival = arrival.toFixed(3);
       });
-      viewport.querySelectorAll<HTMLElement>(".intro-topic-divider").forEach((divider, index) => { divider.style.opacity = progress >= starts[index + 1] + .14 ? ".6" : "0"; });
-      if (caption.current) caption.current.textContent = progress < .17 ? "Ce que l’on ressent." : progress < .34 ? "Ce que les soins rendent visible." : progress < .49 ? "Ce qui diffère selon les vies." : "Une mesure éclaire. Elle laisse aussi une part hors champ.";
+      viewport.querySelectorAll<HTMLElement>(".intro-topic-divider").forEach((divider, index) => { divider.style.opacity = progress >= starts[index + 1] + flightDuration ? ".6" : "0"; });
+      if (caption.current) caption.current.textContent = progress < starts[1] ? "Ce que l’on ressent." : progress < starts[2] ? "Ce que les soins rendent visible." : progress < starts[3] ? "Ce qui diffère selon les vies." : "Une mesure éclaire. Elle laisse aussi une part hors champ.";
       if (progressLine.current) progressLine.current.style.transform = `scaleX(${progress})`;
       if (action.current) {
         const visible = progress >= .9;
