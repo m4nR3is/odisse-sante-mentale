@@ -676,10 +676,10 @@ function MethodSection({ data }: { data: ExperienceData }) {
 
 type StoryScene = 0 | 1 | 2 | 3;
 
-type StoryDrawing = { scene: StoryScene; main: number; boys: number; social: number };
+type StoryDrawing = { scene: StoryScene; main: number; mainStart: number; boys: number; boysStart: number; social: number };
 
 function useStoryDrawing(scene: StoryScene, entered: boolean) {
-  const [drawing, setDrawing] = useState<StoryDrawing>({ scene, main: 0, boys: 0, social: 0 });
+  const [drawing, setDrawing] = useState<StoryDrawing>({ scene, main: 0, mainStart: 0, boys: 0, boysStart: 0, social: 0 });
   const current = useRef(drawing);
   useEffect(() => {
     if (!entered) return;
@@ -688,12 +688,12 @@ function useStoryDrawing(scene: StoryScene, entered: boolean) {
       current.current = next;
       setDrawing(next);
     };
-    const complete = { scene, main: 1, boys: scene === 2 ? 1 : 0, social: scene === 3 ? 1 : 0 };
+    const complete = { scene, main: 1, mainStart: 0, boys: scene === 2 ? 1 : 0, boysStart: 0, social: scene === 3 ? 1 : 0 };
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const finish = () => { cancelAnimationFrame(frame); publish(complete); };
     if (motion.matches) { finish(); return; }
     const animate = (from: StoryDrawing, to: StoryDrawing, duration: number, done?: () => void) => {
-      if (from.main === to.main && from.boys === to.boys && from.social === to.social) {
+      if (from.main === to.main && from.boys === to.boys && from.social === to.social && from.mainStart === to.mainStart && from.boysStart === to.boysStart) {
         publish(to);
         done?.();
         return;
@@ -702,7 +702,7 @@ function useStoryDrawing(scene: StoryScene, entered: boolean) {
       const tick = (now: number) => {
         const t = Math.min(1, (now - start) / duration);
         const eased = t * t * (3 - 2 * t);
-        publish({ scene: to.scene, main: from.main + (to.main - from.main) * eased, boys: from.boys + (to.boys - from.boys) * eased, social: from.social + (to.social - from.social) * eased });
+        publish({ scene: to.scene, main: from.main + (to.main - from.main) * eased, mainStart: from.mainStart + (to.mainStart - from.mainStart) * eased, boys: from.boys + (to.boys - from.boys) * eased, boysStart: from.boysStart + (to.boysStart - from.boysStart) * eased, social: from.social + (to.social - from.social) * eased });
         if (t < 1) frame = requestAnimationFrame(tick);
         else done?.();
       };
@@ -714,9 +714,10 @@ function useStoryDrawing(scene: StoryScene, entered: boolean) {
     } else {
       // Keep the girls' curve when adding/removing the same-age comparison.
       const keepGirls = (from.scene === 1 || from.scene === 2) && (scene === 1 || scene === 2);
-      const erased = { ...from, main: keepGirls ? from.main : 0, boys: 0, social: 0 };
+      // Advance the disappearing edge from 2019 towards 2024.
+      const erased = { ...from, mainStart: keepGirls ? from.mainStart : from.main, boysStart: from.boys, social: 0 };
       animate(from, erased, 650, () => {
-        const next = { scene, main: keepGirls ? erased.main : 0, boys: 0, social: 0 };
+        const next = { scene, main: keepGirls ? erased.main : 0, mainStart: keepGirls ? erased.mainStart : 0, boys: 0, boysStart: 0, social: 0 };
         publish(next);
         animate(next, complete, 750);
       });
@@ -757,14 +758,14 @@ function StoryFigure({ data, scene: requestedScene }: { data: ExperienceData; sc
     <div className="story-figure-heading"><p className="chapter">{scene === 3 ? "ENQUÊTE · BAROMÈTRE 2024" : "HÔPITAL · PATIENTS · 2019–2024"}</p><h3>{["La vue d’ensemble", "Les filles de 11–14 ans", "Deux trajectoires, un même âge", "La situation financière perçue"][scene]}</h3><p>{scene === 3 ? "Épisode dépressif caractérisé dans les 12 derniers mois · prévalence déclarée" : scene === 0 ? "France · tous âges, tous sexes · taux standardisé pour 100 000 habitants" : "France · taux brut pour 100 000 personnes du même âge et sexe"}</p></div>
     <div className="story-visual">
       <svg ref={svgRef} viewBox="0 0 580 320" role="img" aria-label={scene === 3 ? `Dépression déclarée selon la situation financière : ${social.map((point) => `${FINANCIAL_SHORT[point.financial]}, ${fmt(point.estimate)} %`).join(" ; ")}. Intervalles de confiance à 95 %.` : `${scene === 0 ? "Tous âges et sexes" : "Filles de 11–14 ans"} : ${fmt(values[0].rate)} en 2019, ${fmt(values.at(-1)!.rate)} en 2024, pour 100 000.${scene === 2 ? ` Garçons de 11–14 ans : ${fmt(boys[0].rate)} à ${fmt(boys.at(-1)!.rate)}.` : ""}`}>
-        <defs>{[{ name: "main", points: values, progress: drawing.main }, { name: "boys", points: boys, progress: drawing.boys }].map(({ name, points, progress }) => <mask key={name} id={`${maskId}-${name}`} maskUnits="userSpaceOnUse" x="0" y="0" width="580" height="320"><path d={linePath(points, (point) => x(point.year), (point) => y(point.rate))} fill="none" stroke="white" strokeWidth="16" strokeLinecap="round" pathLength="1" strokeDasharray="1 1" strokeDashoffset={1 - progress} opacity={progress === 0 ? 0 : 1} /></mask>)}</defs>
+        <defs>{[{ name: "main", points: values, start: drawing.mainStart, end: drawing.main }, { name: "boys", points: boys, start: drawing.boysStart, end: drawing.boys }].map(({ name, points, start, end }) => <mask key={name} id={`${maskId}-${name}`} maskUnits="userSpaceOnUse" x="0" y="0" width="580" height="320"><path d={linePath(points, (point) => x(point.year), (point) => y(point.rate))} fill="none" stroke="white" strokeWidth="16" strokeLinecap="round" pathLength="1" strokeDasharray={`${Math.max(0, end - start)} 1`} strokeDashoffset={-start} opacity={end <= start ? 0 : 1} /></mask>)}</defs>
         {scene === 3 ? <g opacity={drawing.social}>
           {[0, 10, 20, 30].map((tick) => <g className="story-gridline" key={tick}><line x1={136 + tick / 32 * 382} x2={136 + tick / 32 * 382} y1="44" y2="258" /><text x={136 + tick / 32 * 382} y="294" textAnchor="middle">{tick} %</text></g>)}
           {social.map((point, index) => <g key={point.financial}><text x="0" y={68 + index * 60}>{FINANCIAL_SHORT[point.financial]}</text><line className="story-interval" x1={136 + point.low / 32 * 382} x2={136 + point.high / 32 * 382} y1={63 + index * 60} y2={63 + index * 60} /><circle className="story-dot" cx={136 + point.estimate / 32 * 382} cy={63 + index * 60} r="5" /><text className="story-value" x={148 + point.estimate / 32 * 382} y={68 + index * 60}>{fmt(point.estimate)} %</text></g>)}
         </g> : <>
           {(scene === 0 ? [0, 50, 100, 150] : [0, 200, 400]).map((tick) => <g className="story-gridline" key={tick}><line x1="54" x2="534" y1={y(tick)} y2={y(tick)} /><text x="42" y={y(tick) + 5} textAnchor="end">{tick}</text></g>)}
-          <g className="story-main-reveal" mask={`url(#${maskId}-main)`} data-progress={drawing.main}><path className={scene === 0 ? "story-national" : "story-girls"} d={linePath(values, (point) => x(point.year), (point) => y(point.rate))} />{values.map((point) => <circle key={point.year} className={scene === 0 ? "story-dot-muted" : "story-dot"} cx={x(point.year)} cy={y(point.rate)} r="4"><title>{point.year} : {fmt(point.rate)} pour 100 000</title></circle>)}</g>
-          {scene === 2 && <g className="story-boys-reveal" mask={`url(#${maskId}-boys)`} data-progress={drawing.boys}><path className="story-boys" d={linePath(boys, (point) => x(point.year), (point) => y(point.rate))} />{boys.map((point) => <circle key={point.year} className="story-dot-muted" cx={x(point.year)} cy={y(point.rate)} r="4"><title>{point.year} : {fmt(point.rate)} pour 100 000</title></circle>)}</g>}
+          <g className="story-main-reveal" mask={`url(#${maskId}-main)`} data-progress={drawing.main - drawing.mainStart}><path className={scene === 0 ? "story-national" : "story-girls"} d={linePath(values, (point) => x(point.year), (point) => y(point.rate))} />{values.map((point) => <circle key={point.year} className={scene === 0 ? "story-dot-muted" : "story-dot"} cx={x(point.year)} cy={y(point.rate)} r="4"><title>{point.year} : {fmt(point.rate)} pour 100 000</title></circle>)}</g>
+          {scene === 2 && <g className="story-boys-reveal" mask={`url(#${maskId}-boys)`} data-progress={drawing.boys - drawing.boysStart}><path className="story-boys" d={linePath(boys, (point) => x(point.year), (point) => y(point.rate))} />{boys.map((point) => <circle key={point.year} className="story-dot-muted" cx={x(point.year)} cy={y(point.rate)} r="4"><title>{point.year} : {fmt(point.rate)} pour 100 000</title></circle>)}</g>}
           {values.map((point) => <text x={x(point.year)} y="301" textAnchor="middle" key={point.year}>{point.year}</text>)}
         </>}
       </svg>
