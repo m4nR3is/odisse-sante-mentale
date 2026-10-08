@@ -1259,7 +1259,7 @@ function IntroOpening() {
             const eased = phase * phase * (3 - 2 * phase);
             const side = lineIndex % 2 === 0 ? -1 : 1;
             const travel = Math.min(stageBounds.width * .45, 520);
-            line.style.transform = eased === 1 ? "none" : `translate(${side * travel * (1 - eased)}px, ${stageBounds.height * .12 * (1 - eased)}px) scale(${1 + .18 * (1 - eased)})`;
+            line.style.transform = eased === 1 ? "none" : `translateX(${side * travel * (1 - eased)}px) scale(${1 + .18 * (1 - eased)})`;
             line.style.opacity = String(Math.min(1, phase * 4));
           });
           return;
