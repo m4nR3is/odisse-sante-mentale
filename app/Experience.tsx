@@ -765,13 +765,13 @@ function StoryFigure({ data, scene: requestedScene }: { data: ExperienceData; sc
             const progress = Math.max(0, Math.min(1, (drawing.social - index * .17) / .49));
             const phase = (start: number, duration: number) => Math.max(0, Math.min(1, (progress - start) / duration));
             const labelProgress = phase(0, .25);
-            const intervalProgress = phase(.15, .55);
             const countProgress = phase(.15, .6);
             const arrival = phase(.75, .25);
             const growth = arrival * arrival * (3 - 2 * arrival);
             const animatedEstimate = point.estimate * countProgress;
             const center = 136 + animatedEstimate / 32 * 382;
-            const intervalScale = intervalProgress * countProgress;
+            const intervalProgress = growth;
+            const intervalScale = intervalProgress;
             return <g className="story-social-row" key={point.financial} data-progress={progress} data-estimate={animatedEstimate} opacity={progress > 0 ? 1 : 0}>
               <text className="story-social-label" x="0" y={68 + index * 60} opacity={labelProgress} transform={`translate(0 ${(1 - labelProgress) * 10})`}>{FINANCIAL_SHORT[point.financial]}</text>
               <line className="story-interval" x1={center + (point.low - point.estimate) / 32 * 382 * intervalScale} x2={center + (point.high - point.estimate) / 32 * 382 * intervalScale} y1={63 + index * 60} y2={63 + index * 60} opacity={intervalProgress} />
