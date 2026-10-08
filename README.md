@@ -110,5 +110,10 @@ de largeur). Les filtres passent sur une ligne puis la distribution se place
 sous le résumé sur les fenêtres basses. Les axes et les points conservent leur
 taille lisible. Sur mobile, le module reste dans le flux vertical.
 
+Le récit conserve le même SVG sur ordinateur : le tracé précédent se retire
+avant le dessin du suivant. À âge égal, la courbe des filles reste en place
+pendant l’ajout ou le retrait de celle des garçons. Les animations sont
+interruptibles et respectent la préférence de réduction des mouvements.
+
 La publication, les URL de remise et le report dans le template officiel restent
 à réaliser. Le dépôt local ne possède pas encore de dépôt distant configuré.

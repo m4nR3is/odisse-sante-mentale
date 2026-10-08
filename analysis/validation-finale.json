@@ -70,5 +70,20 @@
       "low sample"
     ],
     "build": "TypeScript and Vite passed"
+  },
+  "storyAnimation": {
+    "samples": 9,
+    "failures": [],
+    "browserErrors": [],
+    "checks": [
+      "same SVG throughout all four scenes",
+      "outgoing line retracts before population and scale change",
+      "incoming line progressively draws",
+      "girls line retained while boys comparison draws",
+      "rapid direction changes settle on latest scene",
+      "reverse source change",
+      "reduced motion skips animation"
+    ],
+    "build": "TypeScript and Vite passed"
   }
 }
