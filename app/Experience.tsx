@@ -1264,7 +1264,7 @@ function IntroOpening() {
       const started = performance.now();
       const advance = (now: number) => {
         if (stopped) return;
-        const progress = Math.min(1, (now - started) / 10000);
+        const progress = Math.min(1, (now - started) / 6000);
         const eased = progress * progress;
         lastScroll = from + (destination - from) * eased;
         window.scrollTo({ top: lastScroll, behavior: "instant" });
