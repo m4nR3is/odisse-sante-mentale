@@ -449,10 +449,13 @@ function HistoricalDeclaredView({ data, indicator, onIndicator }: { data: Experi
   const maskId = useId();
   useEffect(() => { setHovered(null); setDistributionTooltip(null); }, [indicator, sex, selectedCode]);
   return <div className="declared-history" ref={reveal.ref} data-reveal={reveal.progress}>
-    <div className="declared-indicators history-indicators" role="group" aria-label="Indicateur déclaré historique">
-      {indicators.map((item) => <button type="button" key={item} aria-pressed={indicator === item} onClick={() => onIndicator(item)}>{item}</button>)}
-    </div>
-    <div className="declared-history-controls">
+    <div className="declared-history-controls declared-head">
+      <p className="chapter">DÉCLARÉ · BAROMÈTRES 2005–2021</p>
+      <h3>Ce que l’enquête<br />rend visible.</h3>
+      <p>Prévalence déclarée chez les 18–75 ans selon la région et le sexe. Cette vue suit les vagues historiques de 2005 à 2021 ; le protocole de 2024 ne permet pas de raccorder ses valeurs à ces courbes.</p>
+      <div className="declared-indicators history-indicators" role="group" aria-label="Indicateur déclaré historique">
+        {indicators.map((item) => <button type="button" key={item} aria-pressed={indicator === item} onClick={() => onIndicator(item)}>{item}</button>)}
+      </div>
       <label>Région<select value={selectedCode} onChange={(event) => setTerritoryCode(event.target.value)}>{territories.map(([code, name]) => <option value={code} key={code}>{name}</option>)}</select></label>
       <label>Sexe<select value={sex} onChange={(event) => setSex(event.target.value)}>{sexes.map((item) => <option key={item}>{item === "Hommes et Femmes" ? "Tous les sexes" : item}</option>)}</select></label>
       <div className="declared-history-kpi"><strong>{change >= 0 ? "+" : "−"}{fmt(Math.abs(change) * reveal.progress, 1)} pt</strong><span>évolution déclarée · 2005 → 2021</span><p className={gap > 0 ? "is-positive" : ""}>{gap >= 0 ? "+" : "−"}{fmt(Math.abs(gap), 1)} pt par rapport à la France en 2021</p></div>
