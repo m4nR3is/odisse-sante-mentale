@@ -1265,7 +1265,7 @@ function IntroOpening() {
       const advance = (now: number) => {
         if (stopped) return;
         const progress = Math.min(1, (now - started) / 10000);
-        const eased = progress * progress * (3 - 2 * progress);
+        const eased = progress * progress;
         lastScroll = from + (destination - from) * eased;
         window.scrollTo({ top: lastScroll, behavior: "instant" });
         if (progress < 1) frame = requestAnimationFrame(advance);
