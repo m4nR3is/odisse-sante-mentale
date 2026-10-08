@@ -636,3 +636,11 @@ a,button,input,select,textarea,[tabindex]{-webkit-tap-highlight-color:transparen
 /* Traits du visage : contraste de plume et masses d’encre, plutôt que contours uniformes. */
 .portrait-feature-ink{fill:currentColor;stroke:none;opacity:clamp(0,(var(--portrait-progress) - .12)/.48,1)}
 .portrait-lower-lid{stroke-width:1.25;opacity:.75}
+
+/* Même plume que le portrait : masses sobres, traits imparfaits et accents rouges. */
+.reading-ink{fill:none;stroke:var(--ink);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.reading-ink-heavy{stroke-width:2.6}.reading-ink-light{stroke-width:.85;opacity:.5}.reading-ink-accent{stroke:var(--accent);stroke-width:1.6}
+.story-annotations{pointer-events:none}
+.story-annotations .reading-ink{stroke-width:1.25;stroke-dasharray:1;animation:reading-ink-draw .75s ease both}
+@keyframes reading-ink-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@media(prefers-reduced-motion:reduce){.story-annotations .reading-ink{animation:none!important;stroke-dashoffset:0;stroke-dasharray:none}}

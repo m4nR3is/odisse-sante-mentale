@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-08",
+  "scope": "Portrait de l’accueil et annotations de Comprendre/Explorer",
+  "build": "npm run build : passed",
+  "localBrowserChecks": [
+    {
+      "viewports": [
+        [
+          1440,
+          900
+        ],
+        [
+          1280,
+          500
+        ],
+        [
+          390,
+          844
+        ]
+      ],
+      "explorerSteps": 10,
+      "defaultChartAnnotations": "passed",
+      "distributionAnnotations": "passed",
+      "socialFocusAndTooltip": "passed",
+      "horizontalOverflow": false,
+      "pageErrors": []
+    },
+    {
+      "viewports": [
+        [
+          1440,
+          900
+        ],
+        [
+          390,
+          844
+        ]
+      ],
+      "rightBracket": "outside plot, inside SVG/module : passed"
+    },
+    {
+      "portraitIdle": "one quarter per 500 ms tick : passed",
+      "portraitHover": "hovered quarter only, 140 ms : passed",
+      "offscreenCycle": "paused",
+      "reducedMotionCycle": "paused"
+    }
+  ],
+  "intertitleIllustrations": "removed; portrait on home only",
+  "healthDataChanges": false,
+  "geographicDataChanges": false,
+  "publication": "checks performed locally before publication; remote availability checked separately"
+}

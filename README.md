@@ -27,7 +27,8 @@ Cinquante portraits aux coiffures, contours et traits variés composent une
 combinaison aléatoire à chaque chargement. Leurs yeux et leurs bouches ont des
 formes différentes mais des repères fixes. Au survol, seul le quart concerné
 change toutes les 140 ms, avec un fondu de 60 ms et une légère attraction vers
-le pointeur ; il conserve sa dernière version à la sortie. Le clic ou la touche
+le pointeur. Sans survol, un quart choisi au hasard reçoit un nouveau visage
+toutes les 500 ms, uniquement lorsque l’illustration est visible. Le clic ou la touche
 Entrée rejoint directement la vue correspondante d’Explorer. La réduction des
 mouvements désactive le défilement et l’attraction. Cette illustration est
 symbolique : elle n’encode pas de données et ne représente pas un parcours
@@ -42,6 +43,12 @@ chaque preuve reste dans le flux. Les liens d’étapes permettent aussi de
 naviguer au clavier. Le changement de taux standardisé national à taux brut
 par âge et sexe, et le changement d’échelle verticale, sont explicités.
 Les chiffres sont calculés depuis les données livrées.
+
+Des annotations dessinées soulignent les valeurs du récit et
+sont visibles par défaut sur les graphiques et distributions d’Explorer, puis
+suivent les points survolés ou comparés. Les liaisons portent
+sur des valeurs de la même année et de la même mesure ; elles ne constituent
+pas un test de significativité. Les comparaisons exclues restent sans liaison.
 
 L’explorateur propose ensuite quatre regards dans un module persistant.
 La carte d’Explorer représente en gris les évolutions comparables de la frise. Les bornes, la période et l’unité figurent sous la carte ; l’échelle est recalculée à chaque vue ou filtre. Les évolutions indisponibles ou non interprétables sont hachurées. La sélection orange et le contour noir au survol suivent le code graphique des autres visualisations. Le territoire survolé est dessiné au premier plan. Les encarts ultramarins passent en bas lorsque cela permet d’agrandir la France hexagonale ; leur disposition reste stable pendant le survol.

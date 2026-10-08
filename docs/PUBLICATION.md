@@ -63,6 +63,10 @@ Les champs `[À COMPLÉTER …]` restent explicitement visibles jusqu’à leur 
 Vérifier le chargement des données, les dix étapes de l’explorateur dans les deux
 sens, le survol régional et une lecture mobile. Vérifier également les liens
 sources, les ressources d’aide, les notices de licence et l’accès sans compte.
+Contrôler la présence des annotations dès l’arrivée des dix graphiques et dans
+les distributions, leurs positions hors du tracé pour les accolades, et l’accès
+aux infobulles. Le portrait de l’accueil change un seul quart toutes les 500 ms
+au repos ; il s’arrête hors écran et avec la réduction des mouvements.
 La clarification Slack fixe 23 h 58 le 8 octobre 2026 ; le README officiel indique
 23 h 59. Conserver 23 h 58 comme limite opérationnelle.
 
