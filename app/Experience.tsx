@@ -377,9 +377,35 @@ function usePanelReveal(key: string) {
 function SocialDeclaredView({ data, indicator, onIndicator }: { data: ExperienceData; indicator: string; onIndicator: (indicator: string) => void }) {
   const indicators = ["Dépression", "Anxiété", "Pensées suicidaires"];
   const reveal = usePanelReveal(indicator);
+  const [outgoing, setOutgoing] = useState<{ indicator: string; progress: number } | null>(null);
+  const [exitProgress, setExitProgress] = useState(0);
+  const previousFrame = useRef({ indicator, progress: reveal.progress });
+  const clipId = useId();
+  useLayoutEffect(() => {
+    const previous = previousFrame.current;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (previous.indicator === indicator || previous.progress === 0 || motion.matches) { setOutgoing(null); return; }
+    setOutgoing(previous);
+    setExitProgress(0);
+    let frame = 0;
+    const start = performance.now();
+    const finish = () => { cancelAnimationFrame(frame); setOutgoing(null); };
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / 1000);
+      setExitProgress(t * t * (3 - 2 * t));
+      if (t < 1) frame = requestAnimationFrame(tick);
+      else finish();
+    };
+    frame = requestAnimationFrame(tick);
+    motion.addEventListener("change", finish);
+    return () => { cancelAnimationFrame(frame); motion.removeEventListener("change", finish); };
+  }, [indicator]);
+  useLayoutEffect(() => { previousFrame.current = { indicator, progress: reveal.progress }; });
   const [hovered, setHovered] = useState<{ x: number; y: number; point: SocialPoint } | null>(null);
   useEffect(() => { setHovered(null); }, [indicator]);
   const points = FINANCIAL_ORDER.map((financial) => data.social.find((point) => point.indicator === indicator && point.financial === financial)).filter((point): point is SocialPoint => Boolean(point));
+  const outgoingPoints = outgoing ? FINANCIAL_ORDER.map((financial) => data.social.find((point) => point.indicator === outgoing.indicator && point.financial === financial)).filter((point): point is SocialPoint => Boolean(point)) : [];
+  const outgoingMax = Math.max(32, ...outgoingPoints.map((point) => point.high));
   const max = Math.max(32, ...points.map((point) => point.high));
   const first = points[0], last = points.at(-1);
   const ratio = first && last ? last.estimate / first.estimate : 0;
@@ -397,6 +423,14 @@ function SocialDeclaredView({ data, indicator, onIndicator }: { data: Experience
     <div className="declared-chart">
       <p><b>{indicator}</b><span>estimation et intervalle de confiance à 95 %</span></p>
       <svg viewBox="0 0 720 260" role="img" aria-label={`${indicator} selon la situation financière en 2024`}>
+        <defs><clipPath id={clipId}><rect x="118" y="20" width="602" height="205" /></clipPath></defs>
+        {outgoing && <g className="declared-outgoing" clipPath={`url(#${clipId})`} aria-hidden="true" pointerEvents="none" data-indicator={outgoing.indicator} data-exit={exitProgress}>{outgoingPoints.map((point, index) => {
+          const p = Math.max(0, Math.min(1, (outgoing.progress - index * .15) / .55));
+          const travel = Math.min(1, p / .75), arrival = Math.max(0, (p - .75) / .25);
+          const startX = 118 + point.estimate * travel / outgoingMax * 562;
+          const cx = startX + (760 - startX) * exitProgress, cy = 48 + index * 52;
+          return <g className="declared-row" key={point.financial} opacity={p > 0 ? Math.min(1, (1 - exitProgress) * 4) : 0}><line x1={cx + (point.low - point.estimate) / outgoingMax * 562 * arrival} x2={cx + (point.high - point.estimate) / outgoingMax * 562 * arrival} y1={cy} y2={cy} opacity={arrival} /><circle cx={cx} cy={cy} r={2 + 4 * arrival} /><text className="declared-value" x={cx + (point.high - point.estimate) / outgoingMax * 562 * arrival + 10} y={cy + 4}>{fmt(point.estimate * travel)} %</text></g>;
+        })}</g>}
         {[0, 10, 20, 30].filter((tick) => tick <= max).map((tick) => <g className="declared-grid" key={tick}><line x1={x(tick)} x2={x(tick)} y1="24" y2="220" /><text x={x(tick)} y="244" textAnchor="middle">{tick} %</text></g>)}
         {points.map((point, index) => {
           const p = Math.max(0, Math.min(1, (reveal.progress - index * .15) / .55));
@@ -407,8 +441,12 @@ function SocialDeclaredView({ data, indicator, onIndicator }: { data: Experience
       </svg>
       <dl className="evidence-mobile-values">{points.map((point, index) => {
         const p = Math.max(0, Math.min(1, (reveal.progress - index * .15) / .55));
-        return <div key={point.financial} tabIndex={p > 0 ? 0 : -1} onPointerMove={(event) => setHovered({ x: event.clientX, y: event.clientY, point })} onPointerLeave={() => setHovered(null)} onFocus={(event) => { const bounds = event.currentTarget.getBoundingClientRect(); setHovered({ x: bounds.left + bounds.width / 2, y: bounds.top, point }); }} onBlur={() => setHovered(null)} style={{ opacity: p, transform: `translateY(${(1 - p) * 6}px)` }}><dt>{FINANCIAL_SHORT[point.financial]}</dt><dd>{fmt(point.estimate * Math.min(1, p / .75))} % <small>IC 95 % : {fmt(point.low)}–{fmt(point.high)} %</small></dd></div>;
+        return <div key={point.financial} tabIndex={p > 0 ? 0 : -1} onPointerMove={(event) => setHovered({ x: event.clientX, y: event.clientY, point })} onPointerLeave={() => setHovered(null)} onFocus={(event) => { const bounds = event.currentTarget.getBoundingClientRect(); setHovered({ x: bounds.left + bounds.width / 2, y: bounds.top, point }); }} onBlur={() => setHovered(null)} style={{ opacity: p, transform: `translateX(${(1 - p) * -35}px)` }}><dt>{FINANCIAL_SHORT[point.financial]}</dt><dd>{fmt(point.estimate * Math.min(1, p / .75))} % <small>IC 95 % : {fmt(point.low)}–{fmt(point.high)} %</small></dd></div>;
       })}</dl>
+      {outgoing && <dl className="declared-mobile-outgoing" aria-hidden="true" style={{ opacity: Math.min(1, (1 - exitProgress) * 4), transform: `translateX(${exitProgress * 110}%)` }}>{outgoingPoints.map((point, index) => {
+        const p = Math.max(0, Math.min(1, (outgoing.progress - index * .15) / .55));
+        return <div key={point.financial} style={{ opacity: p }}><dt>{FINANCIAL_SHORT[point.financial]}</dt><dd>{fmt(point.estimate * Math.min(1, p / .75))} % <small>IC 95 % : {fmt(point.low)}–{fmt(point.high)} %</small></dd></div>;
+      })}</dl>}
       {hovered && <ViewportTooltip x={hovered.x} y={hovered.y} className="declared-tooltip"><span>{FINANCIAL_SHORT[hovered.point.financial]}</span><small>{indicator} · France · 2024</small><strong>{fmt(hovered.point.estimate)} %</strong><small>Intervalle de confiance à 95 % : {fmt(hovered.point.low)}–{fmt(hovered.point.high)} %</small></ViewportTooltip>}
       <div className="declared-caution"><b>Pont avec les inégalités sociales</b><span>Une association observée, pas une explication causale des hospitalisations, urgences ou décès.</span></div>
     </div>
