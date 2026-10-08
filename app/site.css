@@ -230,3 +230,4 @@ a:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid var(
 .declared-history-kpi p{grid-column:1/-1;padding:0;margin:0;border:0}
 }
 .declared-history-controls .declared-history-kpi{align-self:stretch}.declared-history-distribution svg text{font-size:10px}
+.declared-history-distribution svg g[tabindex]{outline:none}
