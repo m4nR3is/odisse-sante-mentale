@@ -763,17 +763,19 @@ function StoryFigure({ data, scene: requestedScene }: { data: ExperienceData; sc
           {[0, 10, 20, 30].map((tick) => <g className="story-gridline" key={tick} opacity={Math.min(1, drawing.social * 4)}><line x1={136 + tick / 32 * 382} x2={136 + tick / 32 * 382} y1="44" y2="258" /><text x={136 + tick / 32 * 382} y="294" textAnchor="middle">{tick} %</text></g>)}
           {social.map((point, index) => {
             const progress = Math.max(0, Math.min(1, (drawing.social - index * .17) / .49));
-            const center = 136 + point.estimate / 32 * 382;
             const phase = (start: number, duration: number) => Math.max(0, Math.min(1, (progress - start) / duration));
             const labelProgress = phase(0, .25);
             const intervalProgress = phase(.15, .55);
-            const circleProgress = phase(.2, .6);
+            const circleProgress = phase(0, .6);
             const countProgress = phase(.15, .85);
-            return <g className="story-social-row" key={point.financial} data-progress={progress} opacity={progress > 0 ? 1 : 0}>
+            const animatedEstimate = point.estimate * countProgress;
+            const center = 136 + animatedEstimate / 32 * 382;
+            const intervalScale = intervalProgress * countProgress;
+            return <g className="story-social-row" key={point.financial} data-progress={progress} data-estimate={animatedEstimate} opacity={progress > 0 ? 1 : 0}>
               <text className="story-social-label" x="0" y={68 + index * 60} opacity={labelProgress} transform={`translate(0 ${(1 - labelProgress) * 10})`}>{FINANCIAL_SHORT[point.financial]}</text>
-              <line className="story-interval" x1={center + (point.low - point.estimate) / 32 * 382 * intervalProgress} x2={center + (point.high - point.estimate) / 32 * 382 * intervalProgress} y1={63 + index * 60} y2={63 + index * 60} opacity={intervalProgress} />
+              <line className="story-interval" x1={center + (point.low - point.estimate) / 32 * 382 * intervalScale} x2={center + (point.high - point.estimate) / 32 * 382 * intervalScale} y1={63 + index * 60} y2={63 + index * 60} opacity={intervalProgress} />
               <circle className="story-dot story-social-dot" cx={center} cy={63 + index * 60} r="5" stroke="var(--accent)" strokeWidth="1.5" pathLength="1" strokeDasharray="1 1" strokeDashoffset={1 - circleProgress} strokeOpacity={circleProgress > 0 ? 1 : 0} fillOpacity={phase(.7, .3)} transform={`rotate(-90 ${center} ${63 + index * 60})`} />
-              <text className="story-value" x={136 + point.high / 32 * 382 + 10} y={68 + index * 60} opacity={phase(0, .12)}>{fmt(point.estimate * countProgress)} %</text>
+              <text className="story-value" x={center + (point.high - point.estimate) / 32 * 382 * intervalScale + 10} y={68 + index * 60} opacity={phase(0, .12)}>{fmt(animatedEstimate)} %</text>
             </g>;
           })}
         </g> : <>
