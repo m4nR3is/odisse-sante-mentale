@@ -330,3 +330,5 @@ a:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid var(
 
 .intro-lead-flight{display:block;width:100%}.intro-lead-line{display:block;white-space:nowrap;transform-origin:center;opacity:0}
 @media(prefers-reduced-motion:reduce){.intro-lead-line{transform:none!important;opacity:1!important}}
+
+.territory-chart>.chart-scope-note{grid-row:6;font:9px/1.4 var(--mono);color:var(--muted);margin:6px 0 0}.territory-chart circle.reference-dot{fill:#888c85}

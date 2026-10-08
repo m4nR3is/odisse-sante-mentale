@@ -110,6 +110,7 @@ def build_suicides() -> dict:
         department["series"].append({"year": int(row["annee"]), "sex": row["sexe"], "age": row["classe_d_age"].replace("-", "–"), "rate": round(rate, 1), "count": num(row["nombre_de_deces"])})
     national = []
     grouped: dict[tuple[int, str, str], dict[str, float]] = defaultdict(lambda: {"deaths": 0, "population": 0})
+    parts: dict[tuple[int, str, str], set[str]] = defaultdict(set)
     age_groups = {
         "00-10 ans": "00–17 ans", "11-14 ans": "00–17 ans", "15-17 ans": "00–17 ans",
         "18-24 ans": "18–24 ans", "25-44 ans": "25–44 ans", "45-64 ans": "45–64 ans",
@@ -126,10 +127,16 @@ def build_suicides() -> dict:
         if rate is None or deaths is None or rate <= 0:
             continue
         key = (int(row["annee"]), row["sexe"], age_groups[row["classe_d_age"]])
+        parts[key].add(row["classe_d_age"])
         grouped[key]["deaths"] += deaths
         grouped[key]["population"] += deaths / rate * 100000
     for (year, sex, age), values in grouped.items():
-        if values["population"] > 0:
+        expected_parts = sum(label == age for label in age_groups.values())
+        # Near-zero rounded rates for ages 0–10 cannot provide a reliable
+        # population denominator for a national 0–17 reference.
+        if age == "00–17 ans":
+            continue
+        if values["population"] > 0 and len(parts[(year, sex, age)]) == expected_parts:
             national.append({"year": year, "sex": sex, "age": age, "rate": round(100000 * values["deaths"] / values["population"], 1), "count": round(values["deaths"], 1)})
     return {"suicideDepartments": sorted(departments.values(), key=lambda item: item["name"]), "suicideNational": sorted(national, key=lambda point: (point["age"], point["sex"], point["year"]))}
 
@@ -138,6 +145,7 @@ def build_national() -> list[dict]:
     source = rows(ODISSE / "gestes-auto-infliges-hospitalisations-france.csv")
     result = []
     grouped: dict[tuple[int, str, str], dict[str, float]] = defaultdict(lambda: {"stays": 0, "population": 0})
+    parts: dict[tuple[int, str, str], set[str]] = defaultdict(set)
     age_groups = {
         "00-10 ans": "00–17 ans",
         "11-14 ans": "00–17 ans",
@@ -168,10 +176,14 @@ def build_national() -> list[dict]:
         if rate is None or stays is None or rate == 0:
             continue
         key = (int(row["annee"]), row["sexe"], age_groups[row["classe_d_age"]])
+        parts[key].add(row["classe_d_age"])
         grouped[key]["stays"] += stays
         grouped[key]["population"] += stays / rate * 100000
 
     for (year, sex, age), values in grouped.items():
+        expected_parts = sum(label == age for label in age_groups.values())
+        if len(parts[(year, sex, age)]) != expected_parts:
+            continue
         result.append(
             {
                 "year": year,

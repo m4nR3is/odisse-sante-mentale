@@ -1,0 +1,137 @@
+{
+  "date": "2026-10-08",
+  "scope": "Expérience publiée : Comprendre, Explorer et Méthode ; modules DREES archivés exclus",
+  "checks": [
+    {
+      "check": "Source vers web : odissePatients",
+      "status": "pass",
+      "records": 162
+    },
+    {
+      "check": "Source vers web : national",
+      "status": "pass",
+      "records": 108
+    },
+    {
+      "check": "Source vers web : social",
+      "status": "pass",
+      "records": 12
+    },
+    {
+      "check": "Source vers web : declaredHistory",
+      "status": "pass",
+      "records": 462
+    },
+    {
+      "check": "Source vers web : departments",
+      "status": "pass",
+      "records": 103
+    },
+    {
+      "check": "Source vers web : emergencyDepartments",
+      "status": "pass",
+      "records": 103
+    },
+    {
+      "check": "Source vers web : emergencyNational",
+      "status": "pass",
+      "records": 135
+    },
+    {
+      "check": "Source vers web : suicideDepartments",
+      "status": "pass",
+      "records": 101
+    },
+    {
+      "check": "Source vers web : suicideNational",
+      "status": "pass",
+      "records": 75
+    },
+    {
+      "check": "Export actuel Odissé : gestes-auto-infliges-patients-hospitalises-france",
+      "status": "pass",
+      "records": 162,
+      "source": "https://odisse.santepubliquefrance.fr/api/explore/v2.1/catalog/datasets/gestes-auto-infliges-patients-hospitalises-france"
+    },
+    {
+      "check": "Export actuel Odissé : gestes-auto-infliges-hospitalisations-france",
+      "status": "pass",
+      "records": 162,
+      "source": "https://odisse.santepubliquefrance.fr/api/explore/v2.1/catalog/datasets/gestes-auto-infliges-hospitalisations-france"
+    },
+    {
+      "check": "Export actuel Odissé : gestes-auto-infliges-passages-aux-urgences-france",
+      "status": "pass",
+      "records": 135,
+      "source": "https://odisse.santepubliquefrance.fr/api/explore/v2.1/catalog/datasets/gestes-auto-infliges-passages-aux-urgences-france"
+    },
+    {
+      "check": "Export actuel Odissé : suicides-deces-france",
+      "status": "pass",
+      "records": 135,
+      "source": "https://odisse.santepubliquefrance.fr/api/explore/v2.1/catalog/datasets/suicides-deces-france"
+    }
+  ],
+  "headline_figures": [
+    {
+      "population": "Tous · Hommes et Femmes",
+      "2019": 112.6,
+      "2024": 117.2,
+      "relative_change_percent": 4.085257548845478
+    },
+    {
+      "population": "11–14 ans · Femmes",
+      "2019": 208.3,
+      "2024": 401.9,
+      "relative_change_percent": 92.94287085933748
+    },
+    {
+      "population": "11–14 ans · Hommes",
+      "2019": 39.5,
+      "2024": 42.4,
+      "relative_change_percent": 7.341772151898729
+    }
+  ],
+  "financial_depression_percent": [
+    9.0,
+    11.5,
+    16.4,
+    28.3
+  ],
+  "financial_depression_ratio": 3.1444444444444444,
+  "social_intervals_valid": 12,
+  "historical_source_intervals_invalid": 12,
+  "corrections": [
+    "Retrait des 15 références nationales de décès 0–17 ans reconstruites avec un dénominateur incomplet ou instable (taux arrondi des 0–10 ans).",
+    "Agrégations nationales acceptées seulement si toutes les classes constitutives ont un effectif et un taux permettant de reconstituer la population.",
+    "Urgences : exclusion de PACA et Corse des comparaisons 2020–2024 ; suppression de l’évolution nationale sur un périmètre variable ; courbe nationale segmentée aux ruptures 2022 et 2023.",
+    "Urgences : dénominateur limité aux passages avec au moins un diagnostic médical renseigné.",
+    "Textes : indicateurs nommés précisément, adultes 18–79 ans hors Mayotte en 2024, 18–75 ans en France hexagonale historiquement, hospitalisations psychiatriques hors MCO.",
+    "Absence de valeurs annuelles : les courbes de l’explorateur ne relient plus deux années séparées par une donnée manquante."
+  ],
+  "limits": [
+    "Les références nationales hospitalières et de décès par âges regroupés restent des approximations à partir des effectifs et taux arrondis diffusés.",
+    "Une évolution départementale calculable n’est pas une différence statistiquement significative ni une mesure de toute la souffrance psychique.",
+    "Les intervalles incohérents historiques restent signalés plutôt que corrigés artificiellement."
+  ],
+  "browser_checks": [
+    {
+      "viewport": "1440×900",
+      "coverage_breaks_respected": true,
+      "unreliable_references_removed": true,
+      "module_fits": true
+    },
+    {
+      "viewport": "1280×600",
+      "coverage_breaks_respected": true,
+      "unreliable_references_removed": true,
+      "module_fits": true
+    },
+    {
+      "viewport": "390×844",
+      "coverage_breaks_respected": true,
+      "unreliable_references_removed": true,
+      "module_fits": true
+    }
+  ]
+}
