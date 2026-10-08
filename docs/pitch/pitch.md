@@ -2,15 +2,15 @@
 
 Manuel Reismann · Défi 1 - Santé mentale · Odissé Dataviz Challenge 2026
 
-Support : [support-presentation.pdf](support-presentation.pdf). Cinq diapositives, trois minutes visées, environ 390 mots. Les repères de temps guident la répétition et ne sont pas à lire.
+Support : [support-presentation.pdf](support-presentation.pdf). Cinq diapositives, trois minutes visées, environ 390 mots.
 
-## 1. La question · 0:00-0:25
+## 1. La question
 
 Quand on parle de santé mentale, un chiffre national semble parfois résumer toute la situation. Mais que masque-t-il ? Et que voit-on quand on change de source ?
 
 J’ai construit « Quand la souffrance devient visible » autour de ces deux questions. Le projet explore certaines manifestations de la souffrance psychique, à travers les enquêtes, les urgences, les hospitalisations et les décès par suicide.
 
-## 2. Une hausse nationale, deux directions · 0:25-1:05
+## 2. Une hausse nationale, deux directions
 
 Prenons les patients hospitalisés pour gestes auto-infligés, en médecine, chirurgie et obstétrique, hors psychiatrie.
 
@@ -18,7 +18,7 @@ Entre 2019 et 2024, en France, le taux standardisé augmente d’environ 4 %. Po
 
 Une même hausse nationale rassemble donc deux directions opposées. Le récit commence par cette vue d’ensemble, puis change de sexe et d’âge pour révéler ce que l’agrégat laisse hors champ. L’enjeu est de comprendre qui est mesuré avant d’interpréter une évolution.
 
-## 3. Changer de source · 1:05-1:40
+## 3. Changer de source
 
 Les enquêtes rendent visible une autre dimension : la souffrance déclarée, même sans passage dans un service de soins.
 
@@ -26,7 +26,7 @@ Dans le Baromètre 2024, 9 % des adultes se disant à l’aise financièrement d
 
 Le graphique conserve les intervalles de confiance. Il montre une association avec la situation financière perçue ; il ne prouve pas une causalité.
 
-## 4. Du récit à l’exploration · 1:40-2:20
+## 4. Du récit à l’exploration
 
 Après ce récit guidé, le lecteur peut explorer les quatre sources. Une carte reste visible pour choisir un territoire. Le survol permet un aperçu ; le clic conserve la sélection. Les filtres permettent, selon la vue, de changer d’âge, de sexe ou d’indicateur.
 
@@ -34,7 +34,7 @@ Les graphiques donnent les valeurs et les incertitudes disponibles. Les distribu
 
 Le lecteur peut ainsi passer d’une observation racontée à sa propre vérification.
 
-## 5. La promesse et ses limites · 2:20-3:00
+## 5. La promesse et ses limites
 
 Ces sources ne décrivent pas les étapes d’un même parcours individuel. Une prévalence déclarée, un passage aux urgences et un décès ne mesurent pas la même réalité.
 
