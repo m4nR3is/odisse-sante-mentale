@@ -84,7 +84,9 @@
       "reverse source change",
       "reduced motion skips animation",
       "initial curve stays undrawn offscreen",
-      "initial curve progressively draws on viewport entry"
+      "initial curve progressively draws on viewport entry",
+      "reverse retraction follows the exact curve from 2024 to 2019",
+      "points follow the same path mask as the curve"
     ],
     "build": "TypeScript and Vite passed"
   }
