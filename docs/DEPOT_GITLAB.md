@@ -62,6 +62,10 @@ Le registre `production/data/sources.json` relie les 14 jeux aux exports sources
 
 Les contours de la carte permanente proviennent de [France GeoJSON / Grégoire David](https://github.com/gregoiredavid/france-geojson) : IGN / Admin Express COG et codes INSEE 2018, Licence Ouverte. Les deux exports, leur version source et leurs empreintes sont conservés dans le dépôt GitHub ; la transformation en tracés SVG est reproductible. La carte sert à choisir les territoires et représente en gris leur évolution comparable, avec la même période et le même calcul que la frise. Une légende précise l’unité et les bornes de l’échelle, recalculées pour chaque vue ; les valeurs non interprétables sont hachurées. Les encarts ultramarins sont hors échelle et placés en bas lorsque cette disposition agrandit la carte, sinon sur le côté ; les collectivités sans contour sont proposées par boutons. Les territoires sans données pour la vue active sont désactivés.
 
+## Support de présentation
+
+Le dossier facultatif `pitch/` contient un [texte oral de trois minutes](pitch/pitch.md) et un [support PDF de cinq diapositives](pitch/support-presentation.pdf). Les deux exemples chiffrés sont sourcés ; les intervalles de confiance et le champ MCO sont conservés. Le support présente la question, deux observations, l’explorateur et les limites de lecture.
+
 ## Les outils employés
 
 React 19, TypeScript, SVG et CSS pour l’interface et les visualisations ; Vite 8 pour la compilation ; Python pour préparer les données et reproduire les analyses ; Git pour le suivi du code. Chrome et Playwright ont servi aux contrôles des interactions, du responsive et de la version compilée. Codex a été utilisé comme assistant d’analyse, de développement et de rédaction ; les résultats ont été contrôlés à partir des sources et dans le navigateur.

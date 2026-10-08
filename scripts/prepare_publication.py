@@ -26,6 +26,13 @@ def main():
     (production / "LIENS.md").write_text("# Accès au projet\n\n" + links + "\n\nCe dossier contient directement le site compilé : index.html, assets/, data/, favicon.svg et les notices de licence. Conserver toute sa structure et le servir par HTTP(S). Le code source complet, les exports sources et les scripts de préparation sont accessibles dans le dépôt GitHub public ci-dessus.\n")
     for name in ["LICENSE", "LICENSES.md"]:
         shutil.copy2(ROOT / name, OUTPUT / name)
+    pitch_source = ROOT / "docs" / "pitch"
+    pitch_files = ["pitch.md", "support-presentation.pdf"]
+    if all((pitch_source / name).is_file() for name in pitch_files):
+        pitch_output = OUTPUT / "pitch"
+        pitch_output.mkdir(exist_ok=True)
+        for name in pitch_files:
+            shutil.copy2(pitch_source / name, pitch_output / name)
     print(f"Dossier préparé : {OUTPUT}")
     print("Site compilé copié directement dans production/, sans ZIP. Code source : dépôt GitHub public.")
     if "[À COMPLÉTER" in doc:

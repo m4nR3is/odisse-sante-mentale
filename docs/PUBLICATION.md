@@ -38,6 +38,9 @@ Le dossier est généré dans `../tmp/publication/defi-1_Manuel_Reismann/` :
 README.md
 LICENSE
 LICENSES.md
+pitch/
+  pitch.md
+  support-presentation.pdf
 production/
   index.html
   favicon.svg
@@ -76,5 +79,6 @@ La clarification Slack fixe 23 h 58 le 8 octobre 2026 ; le README officiel indiq
 23 h 59. Conserver 23 h 58 comme limite opérationnelle.
 
 Le PDF annonce un pitch de trois minutes pour les projets présélectionnés.
-La trame existante se trouve dans `analysis/PROPOSITION_FINALE.md` ; le support
-de pitch est optionnel pour le dépôt.
+Le texte oral final et son support de cinq diapositives se trouvent dans
+`docs/pitch/` et sont copiés dans le dossier facultatif `pitch/` de la remise.
+La trame initiale se trouve dans `analysis/PROPOSITION_FINALE.md`.

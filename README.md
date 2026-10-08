@@ -147,7 +147,10 @@ conservées comme archives, distinctes de la proposition actuelle.
   `app/FacialFeatures.tsx` : illustration SVG, 50 portraits et interactions.
 - `public/data/experience-data.json` : données préparées et livrées localement.
 - `src/main.tsx` : entrée React.
-- `analysis/PROPOSITION_FINALE.md` : proposition et trame du pitch.
+- `docs/pitch/pitch.md` : texte oral de trois minutes, repères de temps et sources.
+- `docs/pitch/support-presentation.pdf` : support final de cinq diapositives, inclus dans la remise GitLab.
+- `scripts/build_pitch.py` : génération du support depuis les données livrées (dépendance facultative : ReportLab).
+- `analysis/PROPOSITION_FINALE.md` : proposition et trame initiale du pitch.
 
 ## Point de sauvegarde
 
