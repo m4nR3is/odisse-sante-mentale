@@ -1191,9 +1191,16 @@ function ReadingNavigation() {
   const [reading, setReading] = useState({ active: -1, progress: 0 });
   useEffect(() => {
     let frame = 0;
+    let previousScroll = window.scrollY;
     const synchronize = () => {
       frame = 0;
       const readingLine = (header.current?.getBoundingClientRect().bottom ?? 60) + 17;
+      const scrollingUp = window.scrollY < previousScroll;
+      previousScroll = window.scrollY;
+      const observations = document.getElementById("constats");
+      if (scrollingUp && observations && observations.getBoundingClientRect().top > readingLine && window.location.hash && window.location.hash !== "#top") {
+        window.history.replaceState(window.history.state, "", window.location.pathname + window.location.search);
+      }
       let active = -1, progress = 0;
       READING_SECTIONS.forEach((section, index) => {
         const element = document.getElementById(section.id);
