@@ -985,7 +985,7 @@ function MethodSection({ data }: { data: ExperienceData }) {
     <section className="reading-conclusion" id="conclusion" aria-labelledby="conclusion-heading">
       <p className="chapter method-reveal">CE QUE L’ON RETIENT</p>
       <h2 id="conclusion-heading" className="method-reveal">Un chiffre national<br />Des réalités différentes</h2>
-      <p className="conclusion-copy method-reveal">Les évolutions diffèrent selon les populations et les territoires. Changer de source, c’est aussi changer ce que l’on mesure.</p>
+      <p className="conclusion-copy method-reveal">Les évolutions diffèrent selon les populations et les territoires. Ces données montrent une souffrance déclarée, un recours aux soins ou une mortalité enregistrée : elles ne mesurent pas la même réalité.</p>
       <p className="conclusion-takeaway method-reveal">Rendre visible, c’est aussi montrer<br />ce qu’un chiffre laisse hors champ</p>
       <nav className="conclusion-links method-reveal" aria-label="Poursuivre après la conclusion"><a href="#territoires">Revenir aux données <span aria-hidden="true">↑</span></a><a href="#sources">Consulter les sources <span aria-hidden="true">↓</span></a></nav>
     </section>
@@ -1243,7 +1243,7 @@ function GuidedOpening({ data, onExplore }: { data: ExperienceData; onExplore: (
   </section>;
 }
 
-const INTRO_LEAD = "Enquêtes sur les troubles déclarés, prises en charge pour gestes auto-infligés, décès par suicide : que montrent ces données de la santé mentale ? Chaque source éclaire une dimension différente. Aucune ne suffit à en dresser le portrait.";
+const INTRO_LEAD = "Enquêtes sur les troubles déclarés, urgences et hospitalisations pour gestes auto-infligés, décès par suicide : quatre regards sur certaines manifestations de la souffrance psychique. Chaque source éclaire une dimension différente. Aucune ne suffit à décrire toute la santé mentale.";
 
 function IntroLeadLines({ register }: { register: (element: HTMLSpanElement | null) => void }) {
   const ref = useRef<HTMLSpanElement>(null);
