@@ -710,7 +710,7 @@ function useStoryDrawing(scene: StoryScene, entered: boolean) {
     };
     const from = current.current;
     if (from.scene === scene) {
-      animate(from, complete, 650);
+      animate(from, complete, scene === 3 ? 1600 : 650);
     } else {
       // Keep the girls' curve when adding/removing the same-age comparison.
       const keepGirls = (from.scene === 1 || from.scene === 2) && (scene === 1 || scene === 2);
@@ -719,7 +719,7 @@ function useStoryDrawing(scene: StoryScene, entered: boolean) {
       animate(from, erased, 650, () => {
         const next = { scene, main: keepGirls ? erased.main : 0, mainStart: keepGirls ? erased.mainStart : 0, boys: 0, boysStart: 0, social: 0 };
         publish(next);
-        animate(next, complete, scene === 3 ? 1100 : 750);
+        animate(next, complete, scene === 3 ? 1600 : 750);
       });
     }
     motion.addEventListener("change", finish);
@@ -764,11 +764,16 @@ function StoryFigure({ data, scene: requestedScene }: { data: ExperienceData; sc
           {social.map((point, index) => {
             const progress = Math.max(0, Math.min(1, (drawing.social - index * .17) / .49));
             const center = 136 + point.estimate / 32 * 382;
-            return <g className="story-social-row" key={point.financial} data-progress={progress} opacity={progress} transform={`translate(0 ${(1 - progress) * 10})`}>
-              <text x="0" y={68 + index * 60}>{FINANCIAL_SHORT[point.financial]}</text>
-              <line className="story-interval" x1={center + (point.low - point.estimate) / 32 * 382 * progress} x2={center + (point.high - point.estimate) / 32 * 382 * progress} y1={63 + index * 60} y2={63 + index * 60} />
-              <circle className="story-dot" cx={center} cy={63 + index * 60} r={3 + 2 * progress} />
-              <text className="story-value" x={center + 12} y={68 + index * 60} opacity={Math.max(0, (progress - .3) / .7)}>{fmt(point.estimate)} %</text>
+            const phase = (start: number, duration: number) => Math.max(0, Math.min(1, (progress - start) / duration));
+            const labelProgress = phase(0, .25);
+            const intervalProgress = phase(.15, .55);
+            const circleProgress = phase(.2, .6);
+            const countProgress = phase(.15, .85);
+            return <g className="story-social-row" key={point.financial} data-progress={progress} opacity={progress > 0 ? 1 : 0}>
+              <text className="story-social-label" x="0" y={68 + index * 60} opacity={labelProgress} transform={`translate(0 ${(1 - labelProgress) * 10})`}>{FINANCIAL_SHORT[point.financial]}</text>
+              <line className="story-interval" x1={center + (point.low - point.estimate) / 32 * 382 * intervalProgress} x2={center + (point.high - point.estimate) / 32 * 382 * intervalProgress} y1={63 + index * 60} y2={63 + index * 60} opacity={intervalProgress} />
+              <circle className="story-dot story-social-dot" cx={center} cy={63 + index * 60} r="5" stroke="var(--accent)" strokeWidth="1.5" pathLength="1" strokeDasharray="1 1" strokeDashoffset={1 - circleProgress} strokeOpacity={circleProgress > 0 ? 1 : 0} fillOpacity={phase(.7, .3)} transform={`rotate(-90 ${center} ${63 + index * 60})`} />
+              <text className="story-value" x={136 + point.high / 32 * 382 + 10} y={68 + index * 60} opacity={phase(0, .12)}>{fmt(point.estimate * countProgress)} %</text>
             </g>;
           })}
         </g> : <>
@@ -778,7 +783,7 @@ function StoryFigure({ data, scene: requestedScene }: { data: ExperienceData; sc
           {values.map((point) => <text x={x(point.year)} y="301" textAnchor="middle" key={point.year}>{point.year}</text>)}
         </>}
       </svg>
-      {scene === 3 ? <><dl className="story-mobile-values">{social.map((point) => <div key={point.financial}><dt>{FINANCIAL_SHORT[point.financial]}</dt><dd>{fmt(point.estimate)} %<small>IC 95 % : {fmt(point.low)}–{fmt(point.high)} %</small></dd></div>)}</dl><p className="story-chart-note">Les traits montrent les intervalles de confiance à 95 %.</p></> : <><div className="story-legend"><span className={scene === 0 ? "is-national" : ""}>{scene === 0 ? "Tous âges, tous sexes" : "Filles · 11–14 ans"} · {fmt(values.at(-1)!.rate)} en 2024</span>{scene === 2 && <span className="is-boys">Garçons · {fmt(boys.at(-1)!.rate)} en 2024</span>}</div><p className="story-chart-note">{scene === 0 ? "Taux standardisé : la structure d’âge est corrigée pour la comparaison nationale." : scene === 1 ? "Nouvelle population : taux brut par âge et sexe. Nouvelle échelle : de 0 à 500 pour 100 000." : "Les deux courbes partagent la même échelle et la même période."}</p></>}
+      {scene === 3 ? <><dl className="story-mobile-values">{social.map((point) => <div key={point.financial}><dt>{FINANCIAL_SHORT[point.financial]}</dt><dd>{fmt(point.estimate)} %<small>IC 95 % : {fmt(point.low)}–{fmt(point.high)} %</small></dd></div>)}</dl><p className="story-chart-note">Le point indique le pourcentage estimé ; le trait montre son intervalle de confiance à 95 %, c’est-à-dire l’incertitude de l’enquête.</p></> : <><div className="story-legend"><span className={scene === 0 ? "is-national" : ""}>{scene === 0 ? "Tous âges, tous sexes" : "Filles · 11–14 ans"} · {fmt(values.at(-1)!.rate)} en 2024</span>{scene === 2 && <span className="is-boys">Garçons · {fmt(boys.at(-1)!.rate)} en 2024</span>}</div><p className="story-chart-note">{scene === 0 ? "Taux standardisé : la structure d’âge est corrigée pour la comparaison nationale." : scene === 1 ? "Nouvelle population : taux brut par âge et sexe. Nouvelle échelle : de 0 à 500 pour 100 000." : "Les deux courbes partagent la même échelle et la même période."}</p></>}
 
     </div>
     <a className="story-source" href={scene === 3 ? "https://odisse.santepubliquefrance.fr/explore/dataset/episodes-depressif-indicateurs-du-barometre-2024/" : "https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-patients-hospitalises-france/"} target="_blank" rel="noreferrer">Source : Odissé · {scene === 3 ? "Baromètre 2024" : "Patients hospitalisés"} ↗</a>

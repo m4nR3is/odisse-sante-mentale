@@ -97,7 +97,11 @@
       "confidence intervals grow from the estimate to their final bounds",
       "final points and percentages remain at their actual values",
       "appearance replays on return to scene",
-      "reduced motion completes immediately"
+      "reduced motion completes immediately",
+      "labels reveal independently",
+      "circle outline draws before filling",
+      "percentage starts at zero and counts to actual estimate",
+      "on-chart explanation distinguishes estimate from confidence interval"
     ],
     "build": "TypeScript and Vite passed"
   }
