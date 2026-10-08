@@ -12,7 +12,8 @@
     "selection_orange_hover_black_outline_preserves_fill": true,
     "source_registry_and_fourteen_health_links": true,
     "build_typescript_vite": true,
-    "no_browser_errors": true
+    "no_browser_errors": true,
+    "indicator_buttons_consistent_32px_all_four_viewports": true
   },
   "viewports": [
     {
