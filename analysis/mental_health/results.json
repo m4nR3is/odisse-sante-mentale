@@ -1,0 +1,1070 @@
+{
+  "verdict": "Le signal est robuste comme rupture descriptive et spécifique aux adolescentes et jeunes femmes. L’année exacte de rupture varie légèrement selon l’âge et le modèle ; il faut donc raconter une bifurcation située autour de 2020–2021, pas un effet causal ponctuel attribué à 2021.",
+  "groups": {
+    "Femmes · 11–14 ans": {
+      "series": [
+        {
+          "year": 2012,
+          "rate": 185.3,
+          "patients": 2919.0,
+          "population": 1575276.0
+        },
+        {
+          "year": 2013,
+          "rate": 169.84,
+          "patients": 2719.0,
+          "population": 1600949.0
+        },
+        {
+          "year": 2014,
+          "rate": 209.81,
+          "patients": 3410.0,
+          "population": 1625313.0
+        },
+        {
+          "year": 2015,
+          "rate": 204.16,
+          "patients": 3338.0,
+          "population": 1635027.0
+        },
+        {
+          "year": 2016,
+          "rate": 192.04,
+          "patients": 3118.0,
+          "population": 1623618.0
+        },
+        {
+          "year": 2017,
+          "rate": 203.88,
+          "patients": 3302.0,
+          "population": 1619615.0
+        },
+        {
+          "year": 2018,
+          "rate": 220.75,
+          "patients": 3607.0,
+          "population": 1633951.0
+        },
+        {
+          "year": 2019,
+          "rate": 215.27,
+          "patients": 3536.0,
+          "population": 1642601.0
+        },
+        {
+          "year": 2020,
+          "rate": 186.97,
+          "patients": 3088.0,
+          "population": 1651646.0
+        },
+        {
+          "year": 2021,
+          "rate": 332.58,
+          "patients": 5533.0,
+          "population": 1663663.0
+        },
+        {
+          "year": 2022,
+          "rate": 327.12,
+          "patients": 5474.0,
+          "population": 1673371.0
+        },
+        {
+          "year": 2023,
+          "rate": 343.97,
+          "patients": 5758.0,
+          "population": 1673985.0
+        },
+        {
+          "year": 2024,
+          "rate": 420.36,
+          "patients": 7033.0,
+          "population": 1673073.0
+        },
+        {
+          "year": 2025,
+          "rate": 428.02,
+          "patients": 7135.0,
+          "population": 1666960.0
+        }
+      ],
+      "break_audit": {
+        "best_breakpoint": 2021,
+        "delta_aicc_vs_linear": 20.45,
+        "best_model": {
+          "breakpoint": 2021,
+          "aicc": 89.46,
+          "level_change": 101.21,
+          "level_change_se": 19.67,
+          "pre_slope": 2.74,
+          "post_slope": 28.41
+        },
+        "candidate_models": [
+          {
+            "breakpoint": 2017,
+            "aicc": 105.88,
+            "level_change": -35.11,
+            "level_change_se": 40.47,
+            "pre_slope": 4.78,
+            "post_slope": 31.55
+          },
+          {
+            "breakpoint": 2018,
+            "aicc": 103.57,
+            "level_change": -22.75,
+            "level_change_se": 34.73,
+            "pre_slope": 4.4,
+            "post_slope": 35.02
+          },
+          {
+            "breakpoint": 2019,
+            "aicc": 100.4,
+            "level_change": -17.93,
+            "level_change_se": 29.71,
+            "pre_slope": 5.6,
+            "post_slope": 39.87
+          },
+          {
+            "breakpoint": 2020,
+            "aicc": 99.84,
+            "level_change": 10.33,
+            "level_change_se": 28.53,
+            "pre_slope": 5.17,
+            "post_slope": 42.44
+          },
+          {
+            "breakpoint": 2021,
+            "aicc": 89.46,
+            "level_change": 101.21,
+            "level_change_se": 19.67,
+            "pre_slope": 2.74,
+            "post_slope": 28.41
+          },
+          {
+            "breakpoint": 2022,
+            "aicc": 106.98,
+            "level_change": 59.8,
+            "level_change_se": 37.39,
+            "pre_slope": 9.3,
+            "post_slope": 37.91
+          },
+          {
+            "breakpoint": 2023,
+            "aicc": 109.85,
+            "level_change": 59.68,
+            "level_change_se": 42.91,
+            "pre_slope": 12.2,
+            "post_slope": 42.03
+          }
+        ],
+        "leave_one_year_out": {
+          "2020": 1,
+          "2021": 13
+        }
+      },
+      "counterfactual": {
+        "pre_period": "2012–2019",
+        "target_year": 2025,
+        "pre_slope_per_year": 5.17,
+        "expected_rate": 249.3,
+        "forecast_interval_95_approx": [
+          206.9,
+          291.7
+        ],
+        "observed_rate": 428.0,
+        "excess_rate": 178.8,
+        "observed_over_expected": 1.72,
+        "excess_patients_approx": 2980
+      }
+    },
+    "Femmes · 15–17 ans": {
+      "series": [
+        {
+          "year": 2012,
+          "rate": 408.2,
+          "patients": 4710.0,
+          "population": 1153859.0
+        },
+        {
+          "year": 2013,
+          "rate": 382.88,
+          "patients": 4450.0,
+          "population": 1162232.0
+        },
+        {
+          "year": 2014,
+          "rate": 392.84,
+          "patients": 4627.0,
+          "population": 1177831.0
+        },
+        {
+          "year": 2015,
+          "rate": 389.89,
+          "patients": 4627.0,
+          "population": 1186739.0
+        },
+        {
+          "year": 2016,
+          "rate": 401.29,
+          "patients": 4885.0,
+          "population": 1217332.0
+        },
+        {
+          "year": 2017,
+          "rate": 409.67,
+          "patients": 5022.0,
+          "population": 1225854.0
+        },
+        {
+          "year": 2018,
+          "rate": 431.98,
+          "patients": 5338.0,
+          "population": 1235713.0
+        },
+        {
+          "year": 2019,
+          "rate": 419.0,
+          "patients": 5140.0,
+          "population": 1226722.0
+        },
+        {
+          "year": 2020,
+          "rate": 363.35,
+          "patients": 4423.0,
+          "population": 1217282.0
+        },
+        {
+          "year": 2021,
+          "rate": 558.86,
+          "patients": 6820.0,
+          "population": 1220346.0
+        },
+        {
+          "year": 2022,
+          "rate": 618.72,
+          "patients": 7657.0,
+          "population": 1237557.0
+        },
+        {
+          "year": 2023,
+          "rate": 599.12,
+          "patients": 7454.0,
+          "population": 1244166.0
+        },
+        {
+          "year": 2024,
+          "rate": 696.98,
+          "patients": 8748.0,
+          "population": 1255127.0
+        },
+        {
+          "year": 2025,
+          "rate": 725.14,
+          "patients": 9124.0,
+          "population": 1258243.0
+        }
+      ],
+      "break_audit": {
+        "best_breakpoint": 2021,
+        "delta_aicc_vs_linear": 25.21,
+        "best_model": {
+          "breakpoint": 2021,
+          "aicc": 96.45,
+          "level_change": 155.44,
+          "level_change_se": 25.24,
+          "pre_slope": 0.45,
+          "post_slope": 41.08
+        },
+        "candidate_models": [
+          {
+            "breakpoint": 2017,
+            "aicc": 117.08,
+            "level_change": -35.27,
+            "level_change_se": 60.37,
+            "pre_slope": -0.68,
+            "post_slope": 44.54
+          },
+          {
+            "breakpoint": 2018,
+            "aicc": 114.46,
+            "level_change": -27.17,
+            "level_change_se": 51.24,
+            "pre_slope": 1.7,
+            "post_slope": 50.11
+          },
+          {
+            "breakpoint": 2019,
+            "aicc": 110.64,
+            "level_change": -26.91,
+            "level_change_se": 42.84,
+            "pre_slope": 4.76,
+            "post_slope": 58.07
+          },
+          {
+            "breakpoint": 2020,
+            "aicc": 109.6,
+            "level_change": 11.3,
+            "level_change_se": 40.43,
+            "pre_slope": 4.56,
+            "post_slope": 62.96
+          },
+          {
+            "breakpoint": 2021,
+            "aicc": 96.45,
+            "level_change": 155.44,
+            "level_change_se": 25.24,
+            "pre_slope": 0.45,
+            "post_slope": 41.08
+          },
+          {
+            "breakpoint": 2022,
+            "aicc": 115.3,
+            "level_change": 132.13,
+            "level_change_se": 50.34,
+            "pre_slope": 9.0,
+            "post_slope": 41.71
+          },
+          {
+            "breakpoint": 2023,
+            "aicc": 122.48,
+            "level_change": 80.66,
+            "level_change_se": 67.36,
+            "pre_slope": 15.97,
+            "post_slope": 63.01
+          }
+        ],
+        "leave_one_year_out": {
+          "2020": 1,
+          "2021": 13
+        }
+      },
+      "counterfactual": {
+        "pre_period": "2012–2019",
+        "target_year": 2025,
+        "pre_slope_per_year": 4.56,
+        "expected_rate": 447.8,
+        "forecast_interval_95_approx": [
+          402.9,
+          492.6
+        ],
+        "observed_rate": 725.1,
+        "excess_rate": 277.4,
+        "observed_over_expected": 1.62,
+        "excess_patients_approx": 3490
+      }
+    },
+    "Femmes · 18–24 ans": {
+      "series": [
+        {
+          "year": 2012,
+          "rate": 235.84,
+          "patients": 6464.0,
+          "population": 2740809.0
+        },
+        {
+          "year": 2013,
+          "rate": 214.48,
+          "patients": 5807.0,
+          "population": 2707473.0
+        },
+        {
+          "year": 2014,
+          "rate": 200.34,
+          "patients": 5398.0,
+          "population": 2694426.0
+        },
+        {
+          "year": 2015,
+          "rate": 200.56,
+          "patients": 5360.0,
+          "population": 2672468.0
+        },
+        {
+          "year": 2016,
+          "rate": 201.9,
+          "patients": 5334.0,
+          "population": 2641857.0
+        },
+        {
+          "year": 2017,
+          "rate": 206.7,
+          "patients": 5429.0,
+          "population": 2626530.0
+        },
+        {
+          "year": 2018,
+          "rate": 224.6,
+          "patients": 5886.0,
+          "population": 2620716.0
+        },
+        {
+          "year": 2019,
+          "rate": 234.46,
+          "patients": 6245.0,
+          "population": 2663530.0
+        },
+        {
+          "year": 2020,
+          "rate": 214.31,
+          "patients": 5749.0,
+          "population": 2682529.0
+        },
+        {
+          "year": 2021,
+          "rate": 262.17,
+          "patients": 7072.0,
+          "population": 2697436.0
+        },
+        {
+          "year": 2022,
+          "rate": 295.44,
+          "patients": 8017.0,
+          "population": 2713603.0
+        },
+        {
+          "year": 2023,
+          "rate": 318.84,
+          "patients": 8699.0,
+          "population": 2728294.0
+        },
+        {
+          "year": 2024,
+          "rate": 333.05,
+          "patients": 9091.0,
+          "population": 2729622.0
+        },
+        {
+          "year": 2025,
+          "rate": 359.72,
+          "patients": 9852.0,
+          "population": 2738808.0
+        }
+      ],
+      "break_audit": {
+        "best_breakpoint": 2021,
+        "delta_aicc_vs_linear": 19.68,
+        "best_model": {
+          "breakpoint": 2021,
+          "aicc": 79.2,
+          "level_change": 50.13,
+          "level_change_se": 13.63,
+          "pre_slope": 0.47,
+          "post_slope": 23.27
+        },
+        "candidate_models": [
+          {
+            "breakpoint": 2017,
+            "aicc": 83.74,
+            "level_change": 6.9,
+            "level_change_se": 18.35,
+            "pre_slope": -8.18,
+            "post_slope": 19.79
+          },
+          {
+            "breakpoint": 2018,
+            "aicc": 83.11,
+            "level_change": 14.27,
+            "level_change_se": 16.72,
+            "pre_slope": -5.24,
+            "post_slope": 21.26
+          },
+          {
+            "breakpoint": 2019,
+            "aicc": 83.01,
+            "level_change": 11.27,
+            "level_change_se": 15.97,
+            "pre_slope": -1.71,
+            "post_slope": 23.93
+          },
+          {
+            "breakpoint": 2020,
+            "aicc": 82.32,
+            "level_change": 10.32,
+            "level_change_se": 15.26,
+            "pre_slope": 0.73,
+            "post_slope": 27.52
+          },
+          {
+            "breakpoint": 2021,
+            "aicc": 79.2,
+            "level_change": 50.13,
+            "level_change_se": 13.63,
+            "pre_slope": 0.47,
+            "post_slope": 23.27
+          },
+          {
+            "breakpoint": 2022,
+            "aicc": 87.15,
+            "level_change": 60.06,
+            "level_change_se": 18.42,
+            "pre_slope": 2.93,
+            "post_slope": 20.7
+          },
+          {
+            "breakpoint": 2023,
+            "aicc": 95.67,
+            "level_change": 56.45,
+            "level_change_se": 25.86,
+            "pre_slope": 5.65,
+            "post_slope": 20.44
+          }
+        ],
+        "leave_one_year_out": {
+          "2017": 1,
+          "2021": 13
+        }
+      },
+      "counterfactual": {
+        "pre_period": "2012–2019",
+        "target_year": 2025,
+        "pre_slope_per_year": 0.73,
+        "expected_rate": 221.8,
+        "forecast_interval_95_approx": [
+          164.9,
+          278.7
+        ],
+        "observed_rate": 359.7,
+        "excess_rate": 137.9,
+        "observed_over_expected": 1.62,
+        "excess_patients_approx": 3777
+      }
+    }
+  },
+  "sex_specificity": [
+    {
+      "age": "11–14 ans",
+      "female_change_percent": 98.8,
+      "male_change_percent": 26.9,
+      "ratio_of_rate_ratios": 1.57,
+      "female_male_rate_ratio_2019": 5.27,
+      "female_male_rate_ratio_2025": 8.27
+    },
+    {
+      "age": "15–17 ans",
+      "female_change_percent": 73.1,
+      "male_change_percent": 17.6,
+      "ratio_of_rate_ratios": 1.47,
+      "female_male_rate_ratio_2019": 3.48,
+      "female_male_rate_ratio_2025": 5.12
+    },
+    {
+      "age": "18–24 ans",
+      "female_change_percent": 53.4,
+      "male_change_percent": 14.8,
+      "ratio_of_rate_ratios": 1.34,
+      "female_male_rate_ratio_2019": 1.8,
+      "female_male_rate_ratio_2025": 2.41
+    }
+  ],
+  "rehospitalisation": [
+    {
+      "sex": "Femmes",
+      "age": "11–14 ans",
+      "mean_2012_2019": 1.235,
+      "mean_2021_2025": 1.342,
+      "change_percent": 8.7,
+      "value_2025": 1.376,
+      "series": [
+        {
+          "year": 2012,
+          "stays_per_patient": 1.15
+        },
+        {
+          "year": 2013,
+          "stays_per_patient": 1.175
+        },
+        {
+          "year": 2014,
+          "stays_per_patient": 1.205
+        },
+        {
+          "year": 2015,
+          "stays_per_patient": 1.232
+        },
+        {
+          "year": 2016,
+          "stays_per_patient": 1.272
+        },
+        {
+          "year": 2017,
+          "stays_per_patient": 1.259
+        },
+        {
+          "year": 2018,
+          "stays_per_patient": 1.274
+        },
+        {
+          "year": 2019,
+          "stays_per_patient": 1.309
+        },
+        {
+          "year": 2020,
+          "stays_per_patient": 1.28
+        },
+        {
+          "year": 2021,
+          "stays_per_patient": 1.321
+        },
+        {
+          "year": 2022,
+          "stays_per_patient": 1.326
+        },
+        {
+          "year": 2023,
+          "stays_per_patient": 1.329
+        },
+        {
+          "year": 2024,
+          "stays_per_patient": 1.357
+        },
+        {
+          "year": 2025,
+          "stays_per_patient": 1.376
+        }
+      ]
+    },
+    {
+      "sex": "Femmes",
+      "age": "15–17 ans",
+      "mean_2012_2019": 1.187,
+      "mean_2021_2025": 1.278,
+      "change_percent": 7.7,
+      "value_2025": 1.322,
+      "series": [
+        {
+          "year": 2012,
+          "stays_per_patient": 1.142
+        },
+        {
+          "year": 2013,
+          "stays_per_patient": 1.166
+        },
+        {
+          "year": 2014,
+          "stays_per_patient": 1.183
+        },
+        {
+          "year": 2015,
+          "stays_per_patient": 1.175
+        },
+        {
+          "year": 2016,
+          "stays_per_patient": 1.196
+        },
+        {
+          "year": 2017,
+          "stays_per_patient": 1.194
+        },
+        {
+          "year": 2018,
+          "stays_per_patient": 1.23
+        },
+        {
+          "year": 2019,
+          "stays_per_patient": 1.206
+        },
+        {
+          "year": 2020,
+          "stays_per_patient": 1.253
+        },
+        {
+          "year": 2021,
+          "stays_per_patient": 1.259
+        },
+        {
+          "year": 2022,
+          "stays_per_patient": 1.251
+        },
+        {
+          "year": 2023,
+          "stays_per_patient": 1.267
+        },
+        {
+          "year": 2024,
+          "stays_per_patient": 1.294
+        },
+        {
+          "year": 2025,
+          "stays_per_patient": 1.322
+        }
+      ]
+    },
+    {
+      "sex": "Femmes",
+      "age": "18–24 ans",
+      "mean_2012_2019": 1.166,
+      "mean_2021_2025": 1.288,
+      "change_percent": 10.5,
+      "value_2025": 1.324,
+      "series": [
+        {
+          "year": 2012,
+          "stays_per_patient": 1.144
+        },
+        {
+          "year": 2013,
+          "stays_per_patient": 1.154
+        },
+        {
+          "year": 2014,
+          "stays_per_patient": 1.167
+        },
+        {
+          "year": 2015,
+          "stays_per_patient": 1.162
+        },
+        {
+          "year": 2016,
+          "stays_per_patient": 1.177
+        },
+        {
+          "year": 2017,
+          "stays_per_patient": 1.164
+        },
+        {
+          "year": 2018,
+          "stays_per_patient": 1.174
+        },
+        {
+          "year": 2019,
+          "stays_per_patient": 1.183
+        },
+        {
+          "year": 2020,
+          "stays_per_patient": 1.218
+        },
+        {
+          "year": 2021,
+          "stays_per_patient": 1.252
+        },
+        {
+          "year": 2022,
+          "stays_per_patient": 1.256
+        },
+        {
+          "year": 2023,
+          "stays_per_patient": 1.298
+        },
+        {
+          "year": 2024,
+          "stays_per_patient": 1.312
+        },
+        {
+          "year": 2025,
+          "stays_per_patient": 1.324
+        }
+      ]
+    }
+  ],
+  "social_gradient": [
+    {
+      "indicator": "Dépression",
+      "monotonic": true,
+      "absolute_gap_points": 19.3,
+      "prevalence_ratio": 3.14,
+      "extreme_intervals_overlap": false,
+      "points": [
+        {
+          "category": "Vous êtes à l’aise",
+          "estimate": 9.0,
+          "low": 8.1,
+          "high": 10.0
+        },
+        {
+          "category": "Ça va",
+          "estimate": 11.5,
+          "low": 10.8,
+          "high": 12.1
+        },
+        {
+          "category": "C’est juste, il faut faire attention",
+          "estimate": 16.4,
+          "low": 15.6,
+          "high": 17.2
+        },
+        {
+          "category": "Vous y arrivez difficilement ou vous ne pouvez pas y arriver sans faire de dette",
+          "estimate": 28.3,
+          "low": 26.7,
+          "high": 29.9
+        }
+      ]
+    },
+    {
+      "indicator": "Anxiété",
+      "monotonic": true,
+      "absolute_gap_points": 9.3,
+      "prevalence_ratio": 3.58,
+      "extreme_intervals_overlap": false,
+      "points": [
+        {
+          "category": "Vous êtes à l’aise",
+          "estimate": 3.6,
+          "low": 3.1,
+          "high": 4.2
+        },
+        {
+          "category": "Ça va",
+          "estimate": 4.4,
+          "low": 4.0,
+          "high": 4.8
+        },
+        {
+          "category": "C’est juste, il faut faire attention",
+          "estimate": 6.2,
+          "low": 5.7,
+          "high": 6.7
+        },
+        {
+          "category": "Vous y arrivez difficilement ou vous ne pouvez pas y arriver sans faire de dette",
+          "estimate": 12.9,
+          "low": 11.8,
+          "high": 14.1
+        }
+      ]
+    },
+    {
+      "indicator": "Pensées suicidaires",
+      "monotonic": true,
+      "absolute_gap_points": 7.3,
+      "prevalence_ratio": 3.15,
+      "extreme_intervals_overlap": false,
+      "points": [
+        {
+          "category": "Vous êtes à l’aise",
+          "estimate": 3.4,
+          "low": 2.8,
+          "high": 4.0
+        },
+        {
+          "category": "Ça va",
+          "estimate": 3.9,
+          "low": 3.5,
+          "high": 4.3
+        },
+        {
+          "category": "C’est juste, il faut faire attention",
+          "estimate": 4.9,
+          "low": 4.4,
+          "high": 5.3
+        },
+        {
+          "category": "Vous y arrivez difficilement ou vous ne pouvez pas y arriver sans faire de dette",
+          "estimate": 10.7,
+          "low": 9.7,
+          "high": 11.7
+        }
+      ]
+    }
+  ],
+  "territory": {
+    "n_departments": 101,
+    "increase_share_percent": 77.2,
+    "persistent_increase_share_percent": 23.8,
+    "top_increases": [
+      {
+        "code": "72",
+        "name": "Sarthe",
+        "region": "Pays de la Loire",
+        "early_mean": 82.2,
+        "late_mean": 165.9,
+        "change": 83.8,
+        "positive_years": 3
+      },
+      {
+        "code": "52",
+        "name": "Haute-Marne",
+        "region": "Grand Est",
+        "early_mean": 152.5,
+        "late_mean": 231.2,
+        "change": 78.8,
+        "positive_years": 4
+      },
+      {
+        "code": "53",
+        "name": "Mayenne",
+        "region": "Pays de la Loire",
+        "early_mean": 137.8,
+        "late_mean": 208.9,
+        "change": 71.1,
+        "positive_years": 4
+      },
+      {
+        "code": "85",
+        "name": "Vendée",
+        "region": "Pays de la Loire",
+        "early_mean": 135.8,
+        "late_mean": 206.2,
+        "change": 70.3,
+        "positive_years": 4
+      },
+      {
+        "code": "24",
+        "name": "Dordogne",
+        "region": "Nouvelle Aquitaine",
+        "early_mean": 149.2,
+        "late_mean": 213.1,
+        "change": 64.0,
+        "positive_years": 3
+      },
+      {
+        "code": "46",
+        "name": "Lot",
+        "region": "Occitanie",
+        "early_mean": 149.0,
+        "late_mean": 209.2,
+        "change": 60.2,
+        "positive_years": 3
+      },
+      {
+        "code": "05",
+        "name": "Hautes-Alpes",
+        "region": "Provence-Alpes-Côte d'Azur",
+        "early_mean": 156.6,
+        "late_mean": 213.9,
+        "change": 57.2,
+        "positive_years": 4
+      },
+      {
+        "code": "58",
+        "name": "Nièvre",
+        "region": "Bourgogne et Franche-Comté",
+        "early_mean": 156.6,
+        "late_mean": 211.2,
+        "change": 54.6,
+        "positive_years": 3
+      },
+      {
+        "code": "73",
+        "name": "Savoie",
+        "region": "Auvergne et Rhône-Alpes",
+        "early_mean": 104.5,
+        "late_mean": 158.2,
+        "change": 53.7,
+        "positive_years": 3
+      },
+      {
+        "code": "79",
+        "name": "Deux-Sèvres",
+        "region": "Nouvelle Aquitaine",
+        "early_mean": 140.6,
+        "late_mean": 190.2,
+        "change": 49.6,
+        "positive_years": 3
+      }
+    ],
+    "top_decreases": [
+      {
+        "code": "2B",
+        "name": "Haute-Corse",
+        "region": "Corse",
+        "early_mean": 62.0,
+        "late_mean": 46.8,
+        "change": -15.3,
+        "positive_years": 2
+      },
+      {
+        "code": "36",
+        "name": "Indre",
+        "region": "Centre-Val de Loire",
+        "early_mean": 138.9,
+        "late_mean": 122.4,
+        "change": -16.5,
+        "positive_years": 3
+      },
+      {
+        "code": "16",
+        "name": "Charente",
+        "region": "Nouvelle Aquitaine",
+        "early_mean": 172.8,
+        "late_mean": 152.3,
+        "change": -20.5,
+        "positive_years": 2
+      },
+      {
+        "code": "51",
+        "name": "Marne",
+        "region": "Grand Est",
+        "early_mean": 168.2,
+        "late_mean": 145.8,
+        "change": -22.4,
+        "positive_years": 1
+      },
+      {
+        "code": "78",
+        "name": "Yvelines",
+        "region": "Île-de-France",
+        "early_mean": 91.5,
+        "late_mean": 64.3,
+        "change": -27.2,
+        "positive_years": 1
+      },
+      {
+        "code": "18",
+        "name": "Cher",
+        "region": "Centre-Val de Loire",
+        "early_mean": 118.6,
+        "late_mean": 90.8,
+        "change": -27.8,
+        "positive_years": 3
+      },
+      {
+        "code": "972",
+        "name": "Martinique",
+        "region": "Martinique",
+        "early_mean": 83.2,
+        "late_mean": 46.0,
+        "change": -37.3,
+        "positive_years": 1
+      },
+      {
+        "code": "70",
+        "name": "Haute-Saône",
+        "region": "Bourgogne et Franche-Comté",
+        "early_mean": 194.7,
+        "late_mean": 156.2,
+        "change": -38.5,
+        "positive_years": 1
+      },
+      {
+        "code": "09",
+        "name": "Ariège",
+        "region": "Occitanie",
+        "early_mean": 156.9,
+        "late_mean": 117.0,
+        "change": -39.9,
+        "positive_years": 2
+      },
+      {
+        "code": "10",
+        "name": "Aube",
+        "region": "Grand Est",
+        "early_mean": 161.7,
+        "late_mean": 103.7,
+        "change": -58.0,
+        "positive_years": 1
+      }
+    ]
+  },
+  "claims_allowed": [
+    "Une bifurcation majeure des hospitalisations pour gestes auto-infligés apparaît autour de 2020–2021 chez les adolescentes et jeunes femmes.",
+    "La hausse concerne davantage de patientes, et ne s’explique donc pas uniquement par une répétition accrue des séjours.",
+    "Entre 2019 et 2025, l’augmentation est nettement plus forte chez les femmes de 11 à 24 ans que chez les hommes du même âge.",
+    "En 2024, les indicateurs déclarés de santé mentale suivent un gradient régulier selon la situation financière perçue.",
+    "Les trajectoires départementales diffèrent fortement et peuvent refléter à la fois morbidité, recours, offre de soins et codage."
+  ],
+  "claims_forbidden": [
+    "La pandémie a causé à elle seule la hausse observée.",
+    "Les difficultés financières causent directement les hospitalisations observées chez les adolescentes.",
+    "Un département affichant un taux élevé possède nécessairement une santé mentale plus dégradée.",
+    "Les gestes auto-infligés sont tous des tentatives de suicide.",
+    "Les passages aux urgences, hospitalisations, pensées suicidaires et décès constituent les étapes d’un même entonnoir individuel.",
+    "La projection de tendance pré-2020 représente le nombre de cas qui aurait réellement été observé sans pandémie."
+  ],
+  "editorial_decision": "Conserver l’âge et le genre comme colonne vertébrale. Utiliser le gradient financier comme second acte autonome, sans prétendre expliquer le premier. Réduire le territoire à un mode d’exploration et à une leçon de prudence sur les indicateurs de recours aux soins.",
+  "official_sources": [
+    "https://data.drees.solidarites-sante.gouv.fr/explore/dataset/patients_hospitalises_pour_gestes_auto_infliges_depuis_2012/",
+    "https://drees.solidarites-sante.gouv.fr/communique-de-presse-jeux-de-donnees/jeux-de-donnees/250511_hospitalisations-pour-tentatives-de-suicide",
+    "https://www.santepubliquefrance.fr/sante-mentale/suicides-et-tentatives-de-suicide/bulletin-national/conduites-suicidaires-en-france-bilan-2024"
+  ]
+}

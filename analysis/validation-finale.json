@@ -1,0 +1,41 @@
+{
+  "selections": 54,
+  "errors": [],
+  "mobileOverflow": false,
+  "checks": [
+    "guided actions",
+    "same-age comparison",
+    "Allier low sample",
+    "keyboard tooltip",
+    "distribution keyboard selection",
+    "mobile layout",
+    "missing data retry",
+    "animated filter transitions",
+    "DOM and small departments"
+  ],
+  "screenshots": [
+    "checks.json",
+    "data-audit.json",
+    "desktop-deaths.png",
+    "desktop-declared.png",
+    "desktop-emergency.png",
+    "desktop-history.png",
+    "desktop-hospital.png",
+    "desktop-low-sample.png",
+    "desktop-observations.png",
+    "desktop-profiles.png",
+    "mobile-declared.png",
+    "mobile-hero.png",
+    "mobile-history.png",
+    "mobile-indexed.png",
+    "mobile-observations.png",
+    "mobile-profiles.png"
+  ],
+  "testedBuild": "Vite production, served as static files",
+  "dataReproduction": "Byte-identical; SHA-256 59337c6d41b8cd1fe4a2100302a3123a07749091e6d03888f8e328addbde3fbc",
+  "browser": "Google Chrome, headless",
+  "viewports": [
+    "1440 × 1000",
+    "390 × 844"
+  ]
+}

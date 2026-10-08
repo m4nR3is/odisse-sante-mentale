@@ -1,0 +1,105 @@
+﻿indicateur;sexe;classe_d_age;nouvelles_regions;pcs;diplome;type_de_menage;situation_professionnelle;situation_financiere_percue;estimation;ic;effectif_brut;classification;annee;ic_inf;ic_sup;chapitre
+Episode dépressif caractérisé;Tous;40-49 ans;Tous;Tous;Tous;Tous;Tous;Tous;17.3;[ 16,1 - 18,4 ];6213.0;;2024;16.1;18.4;Episodes dépressifs
+Episode dépressif caractérisé;Tous;50-59 ans;Tous;Tous;Tous;Tous;Tous;Tous;16.6;[ 15,6 - 17,8 ];6534.0;;2024;15.6;17.8;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Tous;Tous;Tous;Tous;Tous;12.8;[ 12,2 - 13,4 ];15977.0;;2024;12.2;13.4;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;30-39 ans;Tous;Tous;Tous;Tous;Tous;Tous;14.5;[ 12,9 - 16,2 ];2537.0;;2024;12.9;16.2;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;40-49 ans;Tous;Tous;Tous;Tous;Tous;Tous;14.3;[ 12,7 - 16,0 ];2855.0;;2024;12.7;16.0;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;60-69 ans;Tous;Tous;Tous;Tous;Tous;Tous;8.7;[ 7,4 - 10,1 ];2792.0;;2024;7.4;10.1;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Tous;Tous;Tous;Tous;Tous;18.2;[ 17,5 - 18,9 ];18818.0;;2024;17.5;18.9;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;60-69 ans;Tous;Tous;Tous;Tous;Tous;Tous;11.9;[ 10,6 - 13,3 ];3297.0;;2024;10.6;13.3;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Tous;Aucun diplôme ou inférieur au Bac;Tous;Tous;Tous;13.4;[ 12,7 - 14,2 ];11819.0;;2024;12.7;14.2;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Tous;Bac;Tous;Tous;Tous;18.4;[ 17,4 - 19,5 ];8295.0;;2024;17.4;19.5;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Agriculteurs, artisans, commerçants, chefs d’entreprise;Tous;Tous;Tous;Tous;11.5;[ 10,0 - 13,0 ];2537.0;;2024;10.0;13.0;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Ouvriers;Tous;Tous;Tous;Tous;12.9;[ 11,9 - 14,0 ];5323.0;;2024;11.9;14.0;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Professions intermédiaires;Tous;Tous;Tous;Tous;17.1;[ 16,1 - 18,1 ];9024.0;;2024;16.1;18.1;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Cadres et professions intellectuelles supérieures;Tous;Tous;Tous;Tous;11.1;[ 9,9 - 12,3 ];3844.0;;2024;9.9;12.3;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Employés;Tous;Tous;Tous;Tous;16.3;[ 14,3 - 18,6 ];1764.0;;2024;14.3;18.6;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Cadres et professions intellectuelles supérieures;Tous;Tous;Tous;Tous;16.1;[ 14,6 - 17,7 ];2997.0;;2024;14.6;17.7;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Employés;Tous;Tous;Tous;Tous;18.8;[ 17,7 - 19,9 ];6973.0;;2024;17.7;19.9;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Tous;Tous;Tous;Tous;Vous êtes à l’aise;9.0;[ 8,1 - 10,0 ];4849.0;;2024;8.1;10.0;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Tous;Tous;Tous;Tous;C’est juste, il faut faire attention;13.5;[ 12,4 - 14,6 ];5382.0;;2024;12.4;14.6;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Tous;Tous;Tous;Tous;Vous êtes à l’aise;10.2;[ 8,9 - 11,7 ];2452.0;;2024;8.9;11.7;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Tous;Tous;Tous;Chômage;Tous;25.0;[ 22,9 - 27,2 ];2730.0;;2024;22.9;27.2;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Tous;Tous;Tous;Autres inactifs;Tous;21.5;[ 18,6 - 24,6 ];1106.0;;2024;18.6;24.6;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Tous;Tous;Tous;Etudes;Tous;16.3;[ 13,8 - 19,1 ];1090.0;;2024;13.8;19.1;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Tous;Tous;Tous;Chômage;Tous;29.6;[ 26,5 - 32,8 ];1521.0;;2024;26.5;32.8;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Tous;Tous;Autres;Tous;Tous;18.3;[ 16,8 - 20,0 ];3692.0;;2024;16.8;20.0;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Tous;Tous;Couple sans enfant;Tous;Tous;11.5;[ 10,8 - 12,3 ];9992.0;;2024;10.8;12.3;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Tous;Tous;Ménage d'une seule personne;Tous;Tous;18.9;[ 17,8 - 20,0 ];7657.0;;2024;17.8;20.0;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Tous;Tous;Autres;Tous;Tous;14.2;[ 12,2 - 16,5 ];1800.0;;2024;12.2;16.5;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Tous;Tous;Famille monoparentale;Tous;Tous;16.2;[ 13,9 - 18,6 ];1499.0;;2024;13.9;18.6;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Tous;Tous;Ménage d'une seule personne;Tous;Tous;16.5;[ 15,0 - 18,1 ];3533.0;;2024;15.0;18.1;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Tous;Tous;Couple avec enfant(s);Tous;Tous;16.1;[ 14,9 - 17,4 ];4914.0;;2024;14.9;17.4;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Bourgogne-Franche-Comté;Tous;Tous;Tous;Tous;Tous;14.4;[ 12,5 - 16,4 ];1549.0;Pas de différence significative;2024;12.5;16.4;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Bretagne;Tous;Tous;Tous;Tous;Tous;14.5;[ 12,8 - 16,3 ];1852.0;Pas de différence significative;2024;12.8;16.3;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Centre-Val de Loire;Tous;Tous;Tous;Tous;Tous;13.7;[ 11,9 - 15,7 ];1477.0;Pas de différence significative;2024;11.9;15.7;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Grand Est;Tous;Tous;Tous;Tous;Tous;15.8;[ 14,3 - 17,5 ];2389.0;Pas de différence significative;2024;14.3;17.5;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Guadeloupe;Tous;Tous;Tous;Tous;Tous;16.5;[ 13,9 - 19,3 ];1479.0;Pas de différence significative;2024;13.9;19.3;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Pays de la Loire;Tous;Tous;Tous;Tous;Tous;13.8;[ 12,2 - 15,5 ];2019.0;Pas de différence significative;2024;12.2;15.5;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Réunion;Tous;Tous;Tous;Tous;Tous;18.3;[ 15,8 - 21,0 ];1559.0;Supérieure;2024;15.8;21.0;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Tous;Tous;Tous;Tous;Tous;15.6;[ 15,1 - 16,0 ];34795.0;;2024;15.1;16.0;Episodes dépressifs
+Episode dépressif caractérisé;Tous;18-29 ans;Tous;Tous;Tous;Tous;Tous;Tous;21.5;[ 20,3 - 22,8 ];6126.0;;2024;20.3;22.8;Episodes dépressifs
+Episode dépressif caractérisé;Tous;30-39 ans;Tous;Tous;Tous;Tous;Tous;Tous;16.9;[ 15,7 - 18,1 ];5776.0;;2024;15.7;18.1;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;18-29 ans;Tous;Tous;Tous;Tous;Tous;Tous;16.4;[ 14,8 - 18,1 ];2833.0;;2024;14.8;18.1;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;70-79 ans;Tous;Tous;Tous;Tous;Tous;Tous;7.1;[ 5,6 - 8,8 ];1922.0;;2024;5.6;8.8;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;30-39 ans;Tous;Tous;Tous;Tous;Tous;Tous;19.2;[ 17,5 - 20,9 ];3239.0;;2024;17.5;20.9;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;50-59 ans;Tous;Tous;Tous;Tous;Tous;Tous;19.6;[ 18,0 - 21,2 ];3496.0;;2024;18.0;21.2;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Tous;Bac;Tous;Tous;Tous;15.0;[ 13,6 - 16,4 ];3794.0;;2024;13.6;16.4;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Tous;Aucun diplôme ou inférieur au Bac;Tous;Tous;Tous;15.3;[ 14,2 - 16,5 ];5997.0;;2024;14.2;16.5;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Tous;Supérieur au Bac;Tous;Tous;Tous;19.3;[ 18,3 - 20,3 ];8320.0;;2024;18.3;20.3;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Cadres et professions intellectuelles supérieures;Tous;Tous;Tous;Tous;13.2;[ 12,3 - 14,2 ];6841.0;;2024;12.3;14.2;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Agriculteurs, artisans, commerçants, chefs d’entreprise;Tous;Tous;Tous;Tous;10.1;[ 8,4 - 12,0 ];1633.0;;2024;8.4;12.0;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Professions intermédiaires;Tous;Tous;Tous;Tous;14.3;[ 12,9 - 15,7 ];3780.0;;2024;12.9;15.7;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Agriculteurs, artisans, commerçants, chefs d’entreprise;Tous;Tous;Tous;Tous;14.1;[ 11,4 - 17,1 ];904.0;;2024;11.4;17.1;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Ouvriers;Tous;Tous;Tous;Tous;16.4;[ 14,1 - 19,0 ];1249.0;;2024;14.1;19.0;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Professions intermédiaires;Tous;Tous;Tous;Tous;19.4;[ 18,1 - 20,7 ];5244.0;;2024;18.1;20.7;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Tous;Tous;Tous;Tous;Vous y arrivez difficilement ou vous ne pouvez pas y arriver sans faire de dette;28.3;[ 26,7 - 29,9 ];5550.0;;2024;26.7;29.9;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Tous;Tous;Tous;Tous;Ça va;11.5;[ 10,8 - 12,1 ];12445.0;;2024;10.8;12.1;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Tous;Tous;Tous;Tous;Vous êtes à l’aise;7.8;[ 6,6 - 9,2 ];2397.0;;2024;6.6;9.2;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Tous;Tous;Tous;Tous;Vous y arrivez difficilement ou vous ne pouvez pas y arriver sans faire de dette;31.2;[ 29,0 - 33,4 ];3182.0;;2024;29.0;33.4;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Tous;Tous;Tous;Autres inactifs;Tous;23.9;[ 22,0 - 25,8 ];2984.0;;2024;22.0;25.8;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Tous;Tous;Tous;Etudes;Tous;21.7;[ 19,7 - 23,7 ];2519.0;;2024;19.7;23.7;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Tous;Tous;Tous;Chômage;Tous;20.6;[ 17,7 - 23,7 ];1209.0;;2024;17.7;23.7;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Tous;Tous;Tous;Autres inactifs;Tous;25.4;[ 22,9 - 28,0 ];1878.0;;2024;22.9;28.0;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Tous;Tous;Tous;Etudes;Tous;26.1;[ 23,3 - 29,1 ];1429.0;;2024;23.3;29.1;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Tous;Tous;Tous;Retraite;Tous;10.4;[ 9,3 - 11,6 ];4383.0;;2024;9.3;11.6;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Tous;Tous;Tous;Travail;Tous;17.9;[ 17,0 - 18,9 ];9607.0;;2024;17.0;18.9;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Tous;Tous;Famille monoparentale;Tous;Tous;20.8;[ 19,2 - 22,4 ];4199.0;;2024;19.2;22.4;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Tous;Tous;Couple sans enfant;Tous;Tous;13.7;[ 12,6 - 14,8 ];5188.0;;2024;12.6;14.8;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Tous;Tous;Famille monoparentale;Tous;Tous;23.8;[ 21,7 - 26,0 ];2700.0;;2024;21.7;26.0;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Auvergne-Rhône-Alpes;Tous;Tous;Tous;Tous;Tous;16.7;[ 15,2 - 18,3 ];3030.0;Pas de différence significative;2024;15.2;18.3;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Occitanie;Tous;Tous;Tous;Tous;Tous;17.7;[ 16,1 - 19,4 ];2565.0;Supérieure;2024;16.1;19.4;Episodes dépressifs
+Episode dépressif caractérisé;Tous;60-69 ans;Tous;Tous;Tous;Tous;Tous;Tous;10.4;[ 9,4 - 11,3 ];6089.0;;2024;9.4;11.3;Episodes dépressifs
+Episode dépressif caractérisé;Tous;70-79 ans;Tous;Tous;Tous;Tous;Tous;Tous;8.6;[ 7,5 - 9,8 ];4057.0;;2024;7.5;9.8;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;50-59 ans;Tous;Tous;Tous;Tous;Tous;Tous;13.6;[ 12,2 - 15,1 ];3038.0;;2024;12.2;15.1;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;18-29 ans;Tous;Tous;Tous;Tous;Tous;Tous;26.7;[ 24,9 - 28,6 ];3293.0;;2024;24.9;28.6;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;40-49 ans;Tous;Tous;Tous;Tous;Tous;Tous;20.1;[ 18,5 - 21,8 ];3358.0;;2024;18.5;21.8;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;70-79 ans;Tous;Tous;Tous;Tous;Tous;Tous;9.8;[ 8,3 - 11,5 ];2135.0;;2024;8.3;11.5;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Tous;Supérieur au Bac;Tous;Tous;Tous;16.4;[ 15,7 - 17,2 ];14681.0;;2024;15.7;17.2;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Tous;Aucun diplôme ou inférieur au Bac;Tous;Tous;Tous;11.6;[ 10,6 - 12,6 ];5822.0;;2024;10.6;12.6;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Tous;Supérieur au Bac;Tous;Tous;Tous;13.0;[ 12,0 - 14,0 ];6361.0;;2024;12.0;14.0;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Tous;Bac;Tous;Tous;Tous;21.6;[ 20,2 - 23,1 ];4501.0;;2024;20.2;23.1;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Employés;Tous;Tous;Tous;Tous;18.3;[ 17,3 - 19,3 ];8737.0;;2024;17.3;19.3;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Ouvriers;Tous;Tous;Tous;Tous;11.9;[ 10,7 - 13,1 ];4074.0;;2024;10.7;13.1;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Tous;Tous;Tous;Tous;C’est juste, il faut faire attention;16.4;[ 15,6 - 17,2 ];11951.0;;2024;15.6;17.2;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Tous;Tous;Tous;Tous;Vous y arrivez difficilement ou vous ne pouvez pas y arriver sans faire de dette;25.1;[ 22,9 - 27,4 ];2368.0;;2024;22.9;27.4;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Tous;Tous;Tous;Tous;Ça va;8.6;[ 7,7 - 9,5 ];5830.0;;2024;7.7;9.5;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Tous;Tous;Tous;Tous;C’est juste, il faut faire attention;19.0;[ 17,9 - 20,2 ];6569.0;;2024;17.9;20.2;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Tous;Tous;Tous;Tous;Ça va;14.2;[ 13,2 - 15,2 ];6615.0;;2024;13.2;15.2;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Tous;Tous;Tous;Retraite;Tous;8.9;[ 8,2 - 9,7 ];8374.0;;2024;8.2;9.7;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Tous;Tous;Tous;Travail;Tous;15.3;[ 14,7 - 15,9 ];18188.0;;2024;14.7;15.9;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Tous;Tous;Tous;Retraite;Tous;7.3;[ 6,3 - 8,4 ];3991.0;;2024;6.3;8.4;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Tous;Tous;Tous;Travail;Tous;12.6;[ 11,8 - 13,5 ];8581.0;;2024;11.8;13.5;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Tous;Tous;Tous;Couple avec enfant(s);Tous;Tous;14.0;[ 13,2 - 14,9 ];9255.0;;2024;13.2;14.9;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Tous;Tous;Couple avec enfant(s);Tous;Tous;11.8;[ 10,7 - 13,1 ];4341.0;;2024;10.7;13.1;Episodes dépressifs
+Episode dépressif caractérisé;Hommes;Tous;Tous;Tous;Tous;Couple sans enfant;Tous;Tous;9.3;[ 8,4 - 10,4 ];4804.0;;2024;8.4;10.4;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Tous;Tous;Autres;Tous;Tous;22.9;[ 20,5 - 25,4 ];1892.0;;2024;20.5;25.4;Episodes dépressifs
+Episode dépressif caractérisé;Femmes;Tous;Tous;Tous;Tous;Ménage d'une seule personne;Tous;Tous;21.1;[ 19,5 - 22,6 ];4124.0;;2024;19.5;22.6;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Corse;Tous;Tous;Tous;Tous;Tous;15.5;[ 13,4 - 17,8 ];1457.0;Pas de différence significative;2024;13.4;17.8;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Guyane;Tous;Tous;Tous;Tous;Tous;14.0;[ 11,4 - 17,1 ];1291.0;Pas de différence significative;2024;11.4;17.1;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Hauts-de-France;Tous;Tous;Tous;Tous;Tous;16.3;[ 14,8 - 17,9 ];2526.0;Pas de différence significative;2024;14.8;17.9;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Ile-de-France;Tous;Tous;Tous;Tous;Tous;14.7;[ 13,5 - 15,9 ];3869.0;Inférieure;2024;13.5;15.9;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Martinique;Tous;Tous;Tous;Tous;Tous;12.4;[ 10,3 - 14,8 ];1352.0;Pas de différence significative;2024;10.3;14.8;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Normandie;Tous;Tous;Tous;Tous;Tous;14.4;[ 12,7 - 16,4 ];1668.0;Pas de différence significative;2024;12.7;16.4;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Nouvelle-Aquitaine;Tous;Tous;Tous;Tous;Tous;16.1;[ 14,6 - 17,7 ];2568.0;Pas de différence significative;2024;14.6;17.7;Episodes dépressifs
+Episode dépressif caractérisé;Tous;Tous;Provence-Alpes-Côte d'Azur;Tous;Tous;Tous;Tous;Tous;15.8;[ 14,2 - 17,5 ];2145.0;Pas de différence significative;2024;14.2;17.5;Episodes dépressifs

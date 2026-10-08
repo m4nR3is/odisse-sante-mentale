@@ -1,0 +1,232 @@
+﻿indicateur;sexe;classe_d_age;nouvelles_regions;pcs;diplome;type_de_menage;situation_professionnelle;situation_financiere_percue;estimation;ic;effectif_brut;classification;annee;ic_inf;ic_sup;chapitre
+Pensées suicidaires au cours des 12 derniers mois;Tous;30-39 ans;Tous;Tous;Tous;Tous;Tous;Tous;5.4;[ 4,8 - 6,1 ];5794.0;;2024;4.8;6.1;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;50-59 ans;Tous;Tous;Tous;Tous;Tous;Tous;5.7;[ 5,0 - 6,4 ];6559.0;;2024;5.0;6.4;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Tous;Tous;Tous;Tous;Tous;4.8;[ 4,4 - 5,2 ];16046.0;;2024;4.4;5.2;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;50-59 ans;Tous;Tous;Tous;Tous;Tous;Tous;5.0;[ 4,1 - 6,0 ];3050.0;;2024;4.1;6.0;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Tous;Tous;Tous;Tous;Tous;5.6;[ 5,2 - 6,0 ];18894.0;;2024;5.2;6.0;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;18-29 ans;Tous;Tous;Tous;Tous;Tous;Tous;10.8;[ 9,6 - 12,1 ];3308.0;;2024;9.6;12.1;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;30-39 ans;Tous;Tous;Tous;Tous;Tous;Tous;5.3;[ 4,4 - 6,2 ];3250.0;;2024;4.4;6.2;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;40-49 ans;Tous;Tous;Tous;Tous;Tous;Tous;5.5;[ 4,6 - 6,6 ];3367.0;;2024;4.6;6.6;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;60-69 ans;Tous;Tous;Tous;Tous;Tous;Tous;2.4;[ 1,8 - 3,0 ];3313.0;;2024;1.8;3.0;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Tous;Aucun diplôme ou inférieur au Bac;Tous;Tous;Tous;3.9;[ 3,5 - 4,4 ];11885.0;;2024;3.5;4.4;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Tous;Bac;Tous;Tous;Tous;7.0;[ 6,4 - 7,7 ];8332.0;;2024;6.4;7.7;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Tous;Supérieur au Bac;Tous;Tous;Tous;5.8;[ 5,3 - 6,3 ];14723.0;;2024;5.3;6.3;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Tous;Bac;Tous;Tous;Tous;5.9;[ 5,1 - 6,9 ];3810.0;;2024;5.1;6.9;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Tous;Bac;Tous;Tous;Tous;8.0;[ 7,0 - 9,0 ];4522.0;;2024;7.0;9.0;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Agriculteurs, artisans, commerçants, chefs d’entreprise;Tous;Tous;Tous;Tous;4.0;[ 3,1 - 5,0 ];2545.0;;2024;3.1;5.0;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Cadres et professions intellectuelles supérieures;Tous;Tous;Tous;Tous;5.0;[ 4,3 - 5,6 ];6858.0;;2024;4.3;5.6;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Professions intermédiaires;Tous;Tous;Tous;Tous;5.7;[ 5,1 - 6,3 ];9057.0;;2024;5.1;6.3;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Agriculteurs, artisans, commerçants, chefs d’entreprise;Tous;Tous;Tous;Tous;3.7;[ 2,6 - 5,0 ];1638.0;;2024;2.6;5.0;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Cadres et professions intellectuelles supérieures;Tous;Tous;Tous;Tous;4.5;[ 3,8 - 5,4 ];3854.0;;2024;3.8;5.4;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Agriculteurs, artisans, commerçants, chefs d’entreprise;Tous;Tous;Tous;Tous;4.5;[ 3,0 - 6,4 ];907.0;;2024;3.0;6.4;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Tous;Tous;Tous;Tous;C’est juste, il faut faire attention;4.9;[ 4,4 - 5,3 ];12007.0;;2024;4.4;5.3;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Tous;Tous;Tous;Tous;Vous y arrivez difficilement ou vous ne pouvez pas y arriver sans faire de dette;10.5;[ 9,0 - 12,1 ];2388.0;;2024;9.0;12.1;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Tous;Tous;Tous;Tous;Vous êtes à l’aise;3.3;[ 2,5 - 4,2 ];2400.0;;2024;2.5;4.2;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Tous;Tous;Tous;Tous;Ça va;3.4;[ 2,9 - 4,0 ];5853.0;;2024;2.9;4.0;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Tous;Tous;Tous;Tous;Vous êtes à l’aise;3.4;[ 2,6 - 4,4 ];2454.0;;2024;2.6;4.4;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Tous;Tous;Tous;Autres inactifs;Tous;8.4;[ 7,2 - 9,7 ];3003.0;;2024;7.2;9.7;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Tous;Tous;Tous;Travail;Tous;4.2;[ 3,7 - 4,7 ];8604.0;;2024;3.7;4.7;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Tous;Tous;Tous;Chômage;Tous;8.8;[ 7,0 - 10,9 ];1532.0;;2024;7.0;10.9;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Tous;Tous;Autres;Tous;Tous;6.5;[ 5,6 - 7,5 ];3705.0;;2024;5.6;7.5;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Tous;Tous;Autres;Tous;Tous;4.7;[ 3,7 - 5,9 ];1805.0;;2024;3.7;5.9;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Tous;Tous;Couple sans enfant;Tous;Tous;3.3;[ 2,8 - 4,0 ];4824.0;;2024;2.8;4.0;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Tous;Tous;Famille monoparentale;Tous;Tous;7.7;[ 6,1 - 9,5 ];1508.0;;2024;6.1;9.5;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Tous;Tous;Autres;Tous;Tous;8.5;[ 7,1 - 10,2 ];1900.0;;2024;7.1;10.2;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Tous;Tous;Couple sans enfant;Tous;Tous;4.4;[ 3,8 - 5,2 ];5214.0;;2024;3.8;5.2;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Tous;Tous;Famille monoparentale;Tous;Tous;7.6;[ 6,4 - 8,9 ];2710.0;;2024;6.4;8.9;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Auvergne-Rhône-Alpes;Tous;Tous;Tous;Tous;Tous;4.8;[ 4,0 - 5,7 ];3044.0;Pas de différence significative;2024;4.0;5.7;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Bourgogne-Franche-Comté;Tous;Tous;Tous;Tous;Tous;5.1;[ 4,0 - 6,4 ];1554.0;Pas de différence significative;2024;4.0;6.4;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Bretagne;Tous;Tous;Tous;Tous;Tous;5.0;[ 4,0 - 6,1 ];1856.0;Pas de différence significative;2024;4.0;6.1;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Tous;Tous;Tous;Tous;Tous;5.2;[ 5,0 - 5,5 ];34940.0;;2024;5.0;5.5;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;18-29 ans;Tous;Tous;Tous;Tous;Tous;Tous;8.6;[ 7,8 - 9,5 ];6152.0;;2024;7.8;9.5;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;40-49 ans;Tous;Tous;Tous;Tous;Tous;Tous;5.3;[ 4,7 - 6,0 ];6234.0;;2024;4.7;6.0;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;60-69 ans;Tous;Tous;Tous;Tous;Tous;Tous;2.6;[ 2,1 - 3,0 ];6116.0;;2024;2.1;3.0;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;70-79 ans;Tous;Tous;Tous;Tous;Tous;Tous;2.9;[ 2,3 - 3,7 ];4085.0;;2024;2.3;3.7;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;30-39 ans;Tous;Tous;Tous;Tous;Tous;Tous;5.6;[ 4,6 - 6,7 ];2544.0;;2024;4.6;6.7;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;70-79 ans;Tous;Tous;Tous;Tous;Tous;Tous;2.7;[ 1,8 - 3,8 ];2147.0;;2024;1.8;3.8;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Tous;Supérieur au Bac;Tous;Tous;Tous;5.4;[ 4,8 - 6,1 ];6377.0;;2024;4.8;6.1;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Tous;Supérieur au Bac;Tous;Tous;Tous;6.1;[ 5,5 - 6,8 ];8346.0;;2024;5.5;6.8;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Ouvriers;Tous;Tous;Tous;Tous;4.2;[ 3,5 - 4,9 ];4102.0;;2024;3.5;4.9;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Professions intermédiaires;Tous;Tous;Tous;Tous;4.9;[ 4,1 - 5,8 ];3797.0;;2024;4.1;5.8;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Cadres et professions intellectuelles supérieures;Tous;Tous;Tous;Tous;5.5;[ 4,5 - 6,6 ];3004.0;;2024;4.5;6.6;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Ouvriers;Tous;Tous;Tous;Tous;4.9;[ 3,6 - 6,5 ];1255.0;;2024;3.6;6.5;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Tous;Tous;Tous;Tous;Vous y arrivez difficilement ou vous ne pouvez pas y arriver sans faire de dette;10.7;[ 9,7 - 11,7 ];5589.0;;2024;9.7;11.7;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Tous;Tous;Tous;Tous;Vous êtes à l’aise;3.4;[ 2,8 - 4,0 ];4854.0;;2024;2.8;4.0;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Tous;Tous;Tous;Tous;Ça va;3.9;[ 3,5 - 4,3 ];12490.0;;2024;3.5;4.3;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Tous;Tous;Tous;Tous;C’est juste, il faut faire attention;5.3;[ 4,7 - 6,0 ];6602.0;;2024;4.7;6.0;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Tous;Tous;Tous;Tous;Vous y arrivez difficilement ou vous ne pouvez pas y arriver sans faire de dette;10.8;[ 9,5 - 12,3 ];3201.0;;2024;9.5;12.3;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Tous;Tous;Tous;Retraite;Tous;2.7;[ 2,3 - 3,2 ];8422.0;;2024;2.3;3.2;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Tous;Tous;Tous;Autres inactifs;Tous;9.6;[ 7,6 - 11,9 ];1117.0;;2024;7.6;11.9;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Tous;Tous;Tous;Etudes;Tous;7.6;[ 5,9 - 9,6 ];1093.0;;2024;5.9;9.6;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Tous;Tous;Tous;Retraite;Tous;3.0;[ 2,4 - 3,6 ];4017.0;;2024;2.4;3.6;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Tous;Tous;Tous;Autres inactifs;Tous;7.6;[ 6,2 - 9,2 ];1886.0;;2024;6.2;9.2;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Tous;Tous;Tous;Etudes;Tous;12.4;[ 10,4 - 14,6 ];1435.0;;2024;10.4;14.6;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Tous;Tous;Tous;Retraite;Tous;2.5;[ 1,9 - 3,2 ];4405.0;;2024;1.9;3.2;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Tous;Tous;Couple avec enfant(s);Tous;Tous;3.6;[ 3,2 - 4,1 ];9289.0;;2024;3.2;4.1;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Tous;Tous;Couple sans enfant;Tous;Tous;3.9;[ 3,5 - 4,4 ];10038.0;;2024;3.5;4.4;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Tous;Tous;Ménage d'une seule personne;Tous;Tous;7.3;[ 6,6 - 8,1 ];7690.0;;2024;6.6;8.1;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Tous;Tous;Ménage d'une seule personne;Tous;Tous;7.9;[ 6,9 - 9,1 ];3551.0;;2024;6.9;9.1;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Tous;Tous;Couple avec enfant(s);Tous;Tous;4.0;[ 3,4 - 4,7 ];4931.0;;2024;3.4;4.7;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Tous;Tous;Ménage d'une seule personne;Tous;Tous;6.7;[ 5,8 - 7,7 ];4139.0;;2024;5.8;7.7;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Hauts-de-France;Tous;Tous;Tous;Tous;Tous;6.5;[ 5,4 - 7,6 ];2538.0;Supérieure;2024;5.4;7.6;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Normandie;Tous;Tous;Tous;Tous;Tous;5.6;[ 4,5 - 6,9 ];1672.0;Pas de différence significative;2024;4.5;6.9;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;18-29 ans;Tous;Tous;Tous;Tous;Tous;Tous;6.5;[ 5,4 - 7,6 ];2844.0;;2024;5.4;7.6;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;40-49 ans;Tous;Tous;Tous;Tous;Tous;Tous;5.1;[ 4,2 - 6,2 ];2867.0;;2024;4.2;6.2;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;60-69 ans;Tous;Tous;Tous;Tous;Tous;Tous;2.8;[ 2,1 - 3,5 ];2803.0;;2024;2.1;3.5;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;70-79 ans;Tous;Tous;Tous;Tous;Tous;Tous;3.2;[ 2,3 - 4,4 ];1938.0;;2024;2.3;4.4;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;50-59 ans;Tous;Tous;Tous;Tous;Tous;Tous;6.4;[ 5,4 - 7,4 ];3509.0;;2024;5.4;7.4;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Tous;Aucun diplôme ou inférieur au Bac;Tous;Tous;Tous;3.9;[ 3,3 - 4,5 ];5859.0;;2024;3.3;4.5;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Tous;Aucun diplôme ou inférieur au Bac;Tous;Tous;Tous;4.0;[ 3,4 - 4,6 ];6026.0;;2024;3.4;4.6;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Employés;Tous;Tous;Tous;Tous;5.5;[ 5,0 - 6,1 ];8779.0;;2024;5.0;6.1;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Ouvriers;Tous;Tous;Tous;Tous;4.3;[ 3,8 - 5,0 ];5357.0;;2024;3.8;5.0;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Employés;Tous;Tous;Tous;Tous;6.6;[ 5,3 - 8,1 ];1770.0;;2024;5.3;8.1;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Employés;Tous;Tous;Tous;Tous;5.3;[ 4,7 - 5,9 ];7009.0;;2024;4.7;5.9;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Professions intermédiaires;Tous;Tous;Tous;Tous;6.3;[ 5,5 - 7,2 ];5260.0;;2024;5.5;7.2;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Tous;Tous;Tous;Tous;C’est juste, il faut faire attention;4.3;[ 3,7 - 5,0 ];5405.0;;2024;3.7;5.0;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Tous;Tous;Tous;Tous;Ça va;4.3;[ 3,8 - 4,9 ];6637.0;;2024;3.8;4.9;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Tous;Tous;Tous;Chômage;Tous;8.7;[ 7,4 - 10,2 ];2747.0;;2024;7.4;10.2;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Tous;Tous;Tous;Etudes;Tous;10.2;[ 8,8 - 11,7 ];2528.0;;2024;8.8;11.7;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Tous;Tous;Tous;Travail;Tous;4.8;[ 4,5 - 5,2 ];18240.0;;2024;4.5;5.2;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Tous;Tous;Tous;Chômage;Tous;8.7;[ 6,8 - 10,8 ];1215.0;;2024;6.8;10.8;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Femmes;Tous;Tous;Tous;Tous;Tous;Travail;Tous;5.5;[ 4,9 - 6,0 ];9636.0;;2024;4.9;6.0;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Tous;Tous;Tous;Famille monoparentale;Tous;Tous;7.6;[ 6,6 - 8,7 ];4218.0;;2024;6.6;8.7;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Hommes;Tous;Tous;Tous;Tous;Couple avec enfant(s);Tous;Tous;3.2;[ 2,6 - 3,9 ];4358.0;;2024;2.6;3.9;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Centre-Val de Loire;Tous;Tous;Tous;Tous;Tous;4.5;[ 3,5 - 5,8 ];1482.0;Pas de différence significative;2024;3.5;5.8;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Corse;Tous;Tous;Tous;Tous;Tous;4.3;[ 3,3 - 5,6 ];1460.0;Pas de différence significative;2024;3.3;5.6;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Grand Est;Tous;Tous;Tous;Tous;Tous;6.2;[ 5,2 - 7,3 ];2401.0;Supérieure;2024;5.2;7.3;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Guadeloupe;Tous;Tous;Tous;Tous;Tous;6.3;[ 4,7 - 8,2 ];1491.0;Pas de différence significative;2024;4.7;8.2;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Guyane;Tous;Tous;Tous;Tous;Tous;6.9;[ 4,7 - 9,7 ];1298.0;Pas de différence significative;2024;4.7;9.7;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Ile-de-France;Tous;Tous;Tous;Tous;Tous;5.0;[ 4,3 - 5,8 ];3884.0;Pas de différence significative;2024;4.3;5.8;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Martinique;Tous;Tous;Tous;Tous;Tous;4.6;[ 3,3 - 6,3 ];1364.0;Pas de différence significative;2024;3.3;6.3;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Nouvelle-Aquitaine;Tous;Tous;Tous;Tous;Tous;4.9;[ 4,0 - 5,8 ];2577.0;Pas de différence significative;2024;4.0;5.8;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Occitanie;Tous;Tous;Tous;Tous;Tous;4.9;[ 4,1 - 5,9 ];2575.0;Pas de différence significative;2024;4.1;5.9;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Pays de la Loire;Tous;Tous;Tous;Tous;Tous;5.5;[ 4,4 - 6,6 ];2027.0;Pas de différence significative;2024;4.4;6.6;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Provence-Alpes-Côte d'Azur;Tous;Tous;Tous;Tous;Tous;5.1;[ 4,2 - 6,2 ];2149.0;Pas de différence significative;2024;4.2;6.2;Conduites suicidaires
+Pensées suicidaires au cours des 12 derniers mois;Tous;Tous;Réunion;Tous;Tous;Tous;Tous;Tous;4.9;[ 3,7 - 6,5 ];1568.0;Pas de différence significative;2024;3.7;6.5;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;40-49 ans;Tous;Tous;Tous;Tous;Tous;Tous;5.2;[ 4,6 - 5,9 ];6234.0;;2024;4.6;5.9;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;18-29 ans;Tous;Tous;Tous;Tous;Tous;Tous;4.0;[ 3,1 - 5,1 ];2844.0;;2024;3.1;5.1;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;50-59 ans;Tous;Tous;Tous;Tous;Tous;Tous;3.6;[ 2,8 - 4,4 ];3050.0;;2024;2.8;4.4;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Tous;Supérieur au Bac;Tous;Tous;Tous;4.2;[ 3,8 - 4,6 ];14723.0;;2024;3.8;4.6;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Tous;Aucun diplôme ou inférieur au Bac;Tous;Tous;Tous;4.2;[ 3,6 - 4,9 ];5859.0;;2024;3.6;4.9;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Tous;Bac;Tous;Tous;Tous;3.9;[ 3,2 - 4,8 ];3810.0;;2024;3.2;4.8;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Tous;Supérieur au Bac;Tous;Tous;Tous;2.5;[ 2,1 - 3,0 ];6377.0;;2024;2.1;3.0;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Tous;Aucun diplôme ou inférieur au Bac;Tous;Tous;Tous;7.6;[ 6,8 - 8,5 ];6026.0;;2024;6.8;8.5;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Tous;Bac;Tous;Tous;Tous;8.8;[ 7,9 - 9,9 ];4522.0;;2024;7.9;9.9;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Cadres et professions intellectuelles supérieures;Tous;Tous;Tous;Tous;3.4;[ 2,9 - 4,0 ];6858.0;;2024;2.9;4.0;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Professions intermédiaires;Tous;Tous;Tous;Tous;4.8;[ 4,3 - 5,4 ];9057.0;;2024;4.3;5.4;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Agriculteurs, artisans, commerçants, chefs d’entreprise;Tous;Tous;Tous;Tous;2.2;[ 1,5 - 3,3 ];1638.0;;2024;1.5;3.3;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Cadres et professions intellectuelles supérieures;Tous;Tous;Tous;Tous;2.4;[ 1,8 - 3,0 ];3854.0;;2024;1.8;3.0;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Agriculteurs, artisans, commerçants, chefs d’entreprise;Tous;Tous;Tous;Tous;7.1;[ 5,1 - 9,5 ];907.0;;2024;5.1;9.5;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Cadres et professions intellectuelles supérieures;Tous;Tous;Tous;Tous;4.8;[ 3,9 - 5,9 ];3004.0;;2024;3.9;5.9;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Employés;Tous;Tous;Tous;Tous;8.3;[ 7,5 - 9,1 ];7009.0;;2024;7.5;9.1;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Ouvriers;Tous;Tous;Tous;Tous;7.6;[ 6,0 - 9,5 ];1255.0;;2024;6.0;9.5;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Professions intermédiaires;Tous;Tous;Tous;Tous;6.4;[ 5,6 - 7,3 ];5260.0;;2024;5.6;7.3;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Tous;Tous;Tous;Tous;C’est juste, il faut faire attention;5.5;[ 5,1 - 6,1 ];12007.0;;2024;5.1;6.1;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Tous;Tous;Tous;Tous;Vous êtes à l’aise;2.0;[ 1,4 - 2,9 ];2400.0;;2024;1.4;2.9;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Tous;Tous;Tous;Autres inactifs;Tous;6.5;[ 4,8 - 8,6 ];1117.0;;2024;4.8;8.6;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Tous;Tous;Tous;Etudes;Tous;4.0;[ 2,7 - 5,5 ];1093.0;;2024;2.7;5.5;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Tous;Tous;Tous;Retraite;Tous;3.1;[ 2,4 - 3,9 ];4017.0;;2024;2.4;3.9;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Tous;Tous;Tous;Retraite;Tous;6.5;[ 5,6 - 7,5 ];4405.0;;2024;5.6;7.5;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Tous;Tous;Couple avec enfant(s);Tous;Tous;4.0;[ 3,5 - 4,5 ];9289.0;;2024;3.5;4.5;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Tous;Tous;Ménage d'une seule personne;Tous;Tous;7.9;[ 7,2 - 8,7 ];7690.0;;2024;7.2;8.7;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Tous;Tous;Ménage d'une seule personne;Tous;Tous;5.8;[ 4,8 - 6,8 ];3551.0;;2024;4.8;6.8;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Tous;Tous;Couple sans enfant;Tous;Tous;5.6;[ 4,8 - 6,3 ];5214.0;;2024;4.8;6.3;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Auvergne-Rhône-Alpes;Tous;Tous;Tous;Tous;Tous;4.8;[ 4,0 - 5,8 ];3044.0;Pas de différence significative;2024;4.0;5.8;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Bourgogne-Franche-Comté;Tous;Tous;Tous;Tous;Tous;6.0;[ 4,8 - 7,4 ];1554.0;Pas de différence significative;2024;4.8;7.4;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Centre-Val de Loire;Tous;Tous;Tous;Tous;Tous;6.4;[ 5,1 - 8,0 ];1482.0;Pas de différence significative;2024;5.1;8.0;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Grand Est;Tous;Tous;Tous;Tous;Tous;5.2;[ 4,3 - 6,3 ];2401.0;Pas de différence significative;2024;4.3;6.3;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Guyane;Tous;Tous;Tous;Tous;Tous;6.1;[ 4,6 - 7,9 ];1298.0;Pas de différence significative;2024;4.6;7.9;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Martinique;Tous;Tous;Tous;Tous;Tous;4.5;[ 3,2 - 6,2 ];1364.0;Pas de différence significative;2024;3.2;6.2;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Occitanie;Tous;Tous;Tous;Tous;Tous;5.7;[ 4,7 - 6,8 ];2575.0;Pas de différence significative;2024;4.7;6.8;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Provence-Alpes-Côte d'Azur;Tous;Tous;Tous;Tous;Tous;5.5;[ 4,5 - 6,7 ];2149.0;Pas de différence significative;2024;4.5;6.7;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;30-39 ans;Tous;Tous;Tous;Tous;Tous;Tous;5.3;[ 4,6 - 6,0 ];5794.0;;2024;4.6;6.0;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;50-59 ans;Tous;Tous;Tous;Tous;Tous;Tous;5.3;[ 4,7 - 6,0 ];6559.0;;2024;4.7;6.0;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;60-69 ans;Tous;Tous;Tous;Tous;Tous;Tous;5.4;[ 4,8 - 6,2 ];6116.0;;2024;4.8;6.2;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;70-79 ans;Tous;Tous;Tous;Tous;Tous;Tous;2.2;[ 1,4 - 3,3 ];1938.0;;2024;1.4;3.3;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Tous;Tous;Tous;Tous;Tous;7.1;[ 6,7 - 7,6 ];18894.0;;2024;6.7;7.6;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;18-29 ans;Tous;Tous;Tous;Tous;Tous;Tous;9.3;[ 8,1 - 10,7 ];3308.0;;2024;8.1;10.7;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;50-59 ans;Tous;Tous;Tous;Tous;Tous;Tous;7.0;[ 6,1 - 8,1 ];3509.0;;2024;6.1;8.1;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;60-69 ans;Tous;Tous;Tous;Tous;Tous;Tous;6.9;[ 5,9 - 8,1 ];3313.0;;2024;5.9;8.1;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;70-79 ans;Tous;Tous;Tous;Tous;Tous;Tous;5.8;[ 4,6 - 7,2 ];2147.0;;2024;4.6;7.2;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Tous;Aucun diplôme ou inférieur au Bac;Tous;Tous;Tous;5.9;[ 5,4 - 6,4 ];11885.0;;2024;5.4;6.4;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Tous;Bac;Tous;Tous;Tous;6.5;[ 5,9 - 7,2 ];8332.0;;2024;5.9;7.2;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Tous;Supérieur au Bac;Tous;Tous;Tous;5.6;[ 5,0 - 6,2 ];8346.0;;2024;5.0;6.2;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Agriculteurs, artisans, commerçants, chefs d’entreprise;Tous;Tous;Tous;Tous;3.9;[ 3,0 - 4,9 ];2545.0;;2024;3.0;4.9;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Ouvriers;Tous;Tous;Tous;Tous;4.5;[ 3,8 - 5,4 ];4102.0;;2024;3.8;5.4;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Tous;Tous;Tous;Tous;Ça va;4.1;[ 3,7 - 4,6 ];12490.0;;2024;3.7;4.6;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Tous;Tous;Tous;Tous;C’est juste, il faut faire attention;3.5;[ 2,9 - 4,1 ];5405.0;;2024;2.9;4.1;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Tous;Tous;Tous;Tous;Vous y arrivez difficilement ou vous ne pouvez pas y arriver sans faire de dette;6.7;[ 5,5 - 8,2 ];2388.0;;2024;5.5;8.2;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Tous;Tous;Tous;Tous;Vous êtes à l’aise;4.3;[ 3,4 - 5,4 ];2454.0;;2024;3.4;5.4;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Tous;Tous;Tous;Tous;Ça va;5.2;[ 4,6 - 5,9 ];6637.0;;2024;4.6;5.9;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Tous;Tous;Tous;Chômage;Tous;7.5;[ 6,2 - 8,9 ];2747.0;;2024;6.2;8.9;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Tous;Tous;Tous;Retraite;Tous;4.9;[ 4,3 - 5,5 ];8422.0;;2024;4.3;5.5;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Tous;Tous;Tous;Chômage;Tous;6.9;[ 5,1 - 9,1 ];1215.0;;2024;5.1;9.1;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Tous;Tous;Tous;Travail;Tous;2.9;[ 2,5 - 3,4 ];8604.0;;2024;2.5;3.4;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Tous;Tous;Tous;Etudes;Tous;10.1;[ 8,3 - 12,2 ];1435.0;;2024;8.3;12.2;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Tous;Tous;Tous;Travail;Tous;6.3;[ 5,8 - 7,0 ];9636.0;;2024;5.8;7.0;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Tous;Tous;Couple sans enfant;Tous;Tous;4.2;[ 3,7 - 4,7 ];10038.0;;2024;3.7;4.7;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Tous;Tous;Famille monoparentale;Tous;Tous;7.2;[ 6,2 - 8,2 ];4218.0;;2024;6.2;8.2;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Tous;Tous;Autres;Tous;Tous;3.8;[ 2,6 - 5,3 ];1805.0;;2024;2.6;5.3;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Tous;Tous;Couple avec enfant(s);Tous;Tous;2.6;[ 2,0 - 3,2 ];4358.0;;2024;2.0;3.2;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Tous;Tous;Couple sans enfant;Tous;Tous;2.8;[ 2,2 - 3,4 ];4824.0;;2024;2.2;3.4;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Tous;Tous;Famille monoparentale;Tous;Tous;4.1;[ 3,0 - 5,5 ];1508.0;;2024;3.0;5.5;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Tous;Tous;Famille monoparentale;Tous;Tous;9.2;[ 7,8 - 10,7 ];2710.0;;2024;7.8;10.7;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Hauts-de-France;Tous;Tous;Tous;Tous;Tous;6.7;[ 5,7 - 7,9 ];2538.0;Supérieure;2024;5.7;7.9;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Pays de la Loire;Tous;Tous;Tous;Tous;Tous;6.2;[ 5,1 - 7,4 ];2027.0;Supérieure;2024;5.1;7.4;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Tous;Tous;Tous;Tous;Tous;5.4;[ 5,1 - 5,7 ];34940.0;;2024;5.1;5.7;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;18-29 ans;Tous;Tous;Tous;Tous;Tous;Tous;6.7;[ 5,9 - 7,5 ];6152.0;;2024;5.9;7.5;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;70-79 ans;Tous;Tous;Tous;Tous;Tous;Tous;4.2;[ 3,4 - 5,1 ];4085.0;;2024;3.4;5.1;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Tous;Tous;Tous;Tous;Tous;3.6;[ 3,2 - 4,0 ];16046.0;;2024;3.2;4.0;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;30-39 ans;Tous;Tous;Tous;Tous;Tous;Tous;3.8;[ 2,9 - 4,9 ];2544.0;;2024;2.9;4.9;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;40-49 ans;Tous;Tous;Tous;Tous;Tous;Tous;3.8;[ 3,0 - 4,8 ];2867.0;;2024;3.0;4.8;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;60-69 ans;Tous;Tous;Tous;Tous;Tous;Tous;3.8;[ 3,0 - 4,7 ];2803.0;;2024;3.0;4.7;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;30-39 ans;Tous;Tous;Tous;Tous;Tous;Tous;6.6;[ 5,6 - 7,7 ];3250.0;;2024;5.6;7.7;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;40-49 ans;Tous;Tous;Tous;Tous;Tous;Tous;6.6;[ 5,6 - 7,7 ];3367.0;;2024;5.6;7.7;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Employés;Tous;Tous;Tous;Tous;7.6;[ 7,0 - 8,4 ];8779.0;;2024;7.0;8.4;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Ouvriers;Tous;Tous;Tous;Tous;5.2;[ 4,5 - 6,0 ];5357.0;;2024;4.5;6.0;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Employés;Tous;Tous;Tous;Tous;5.4;[ 4,1 - 6,8 ];1770.0;;2024;4.1;6.8;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Professions intermédiaires;Tous;Tous;Tous;Tous;3.0;[ 2,4 - 3,7 ];3797.0;;2024;2.4;3.7;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Tous;Tous;Tous;Tous;Vous y arrivez difficilement ou vous ne pouvez pas y arriver sans faire de dette;9.8;[ 8,8 - 10,9 ];5589.0;;2024;8.8;10.9;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Tous;Tous;Tous;Tous;Vous êtes à l’aise;3.2;[ 2,6 - 3,8 ];4854.0;;2024;2.6;3.8;Conduites suicidaires
+Tentative de suicide au cours de la vie;Hommes;Tous;Tous;Tous;Tous;Tous;Tous;Ça va;3.0;[ 2,4 - 3,6 ];5853.0;;2024;2.4;3.6;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Tous;Tous;Tous;Tous;C’est juste, il faut faire attention;7.5;[ 6,7 - 8,3 ];6602.0;;2024;6.7;8.3;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Tous;Tous;Tous;Tous;Vous y arrivez difficilement ou vous ne pouvez pas y arriver sans faire de dette;12.6;[ 11,1 - 14,2 ];3201.0;;2024;11.1;14.2;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Tous;Tous;Tous;Autres inactifs;Tous;8.6;[ 7,4 - 10,0 ];3003.0;;2024;7.4;10.0;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Tous;Tous;Tous;Etudes;Tous;7.3;[ 6,2 - 8,6 ];2528.0;;2024;6.2;8.6;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Tous;Tous;Tous;Travail;Tous;4.6;[ 4,3 - 5,0 ];18240.0;;2024;4.3;5.0;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Tous;Tous;Tous;Autres inactifs;Tous;10.0;[ 8,3 - 11,9 ];1886.0;;2024;8.3;11.9;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Tous;Tous;Tous;Chômage;Tous;8.0;[ 6,2 - 10,1 ];1532.0;;2024;6.2;10.1;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Tous;Tous;Tous;Autres;Tous;Tous;5.6;[ 4,7 - 6,7 ];3705.0;;2024;4.7;6.7;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Tous;Tous;Autres;Tous;Tous;7.6;[ 6,1 - 9,2 ];1900.0;;2024;6.1;9.2;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Tous;Tous;Couple avec enfant(s);Tous;Tous;5.3;[ 4,6 - 6,1 ];4931.0;;2024;4.6;6.1;Conduites suicidaires
+Tentative de suicide au cours de la vie;Femmes;Tous;Tous;Tous;Tous;Ménage d'une seule personne;Tous;Tous;9.9;[ 8,8 - 11,2 ];4139.0;;2024;8.8;11.2;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Bretagne;Tous;Tous;Tous;Tous;Tous;4.9;[ 3,9 - 6,0 ];1856.0;Pas de différence significative;2024;3.9;6.0;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Corse;Tous;Tous;Tous;Tous;Tous;4.7;[ 3,6 - 6,1 ];1460.0;Pas de différence significative;2024;3.6;6.1;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Guadeloupe;Tous;Tous;Tous;Tous;Tous;4.4;[ 3,3 - 5,9 ];1491.0;Pas de différence significative;2024;3.3;5.9;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Ile-de-France;Tous;Tous;Tous;Tous;Tous;4.6;[ 3,8 - 5,4 ];3884.0;Inférieure;2024;3.8;5.4;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Normandie;Tous;Tous;Tous;Tous;Tous;5.3;[ 4,2 - 6,7 ];1672.0;Pas de différence significative;2024;4.2;6.7;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Nouvelle-Aquitaine;Tous;Tous;Tous;Tous;Tous;5.5;[ 4,6 - 6,6 ];2577.0;Pas de différence significative;2024;4.6;6.6;Conduites suicidaires
+Tentative de suicide au cours de la vie;Tous;Tous;Réunion;Tous;Tous;Tous;Tous;Tous;6.5;[ 5,0 - 8,3 ];1568.0;Pas de différence significative;2024;5.0;8.3;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Tous;Tous;Tous;Tous;Tous;0.4;[ 0,3 - 0,5 ];34940.0;;2024;0.3;0.5;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Tous;Aucun diplôme ou inférieur au Bac;Tous;Tous;Tous;0.3;[ 0,2 - 0,5 ];11885.0;;2024;0.2;0.5;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Cadres et professions intellectuelles supérieures;Tous;Tous;Tous;Tous;-30.0;[  -  ];6858.0;;2024;;;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Employés;Tous;Tous;Tous;Tous;0.5;[ 0,4 - 0,7 ];8779.0;;2024;0.4;0.7;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Ouvriers;Tous;Tous;Tous;Tous;0.4;[ 0,3 - 0,7 ];5357.0;;2024;0.3;0.7;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Tous;Tous;Tous;Tous;Ça va;0.3;[ 0,2 - 0,4 ];12490.0;;2024;0.2;0.4;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Tous;Tous;Tous;Travail;Tous;0.3;[ 0,2 - 0,4 ];18240.0;;2024;0.2;0.4;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Tous;Tous;Couple sans enfant;Tous;Tous;-30.0;[  -  ];10038.0;;2024;;;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Tous;Tous;Famille monoparentale;Tous;Tous;0.8;[ 0,5 - 1,1 ];4218.0;;2024;0.5;1.1;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Tous;Tous;Ménage d'une seule personne;Tous;Tous;0.5;[ 0,3 - 0,7 ];7690.0;;2024;0.3;0.7;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Professions intermédiaires;Tous;Tous;Tous;Tous;0.4;[ 0,2 - 0,6 ];9057.0;;2024;0.2;0.6;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Tous;Tous;Tous;Tous;C’est juste, il faut faire attention;0.4;[ 0,3 - 0,5 ];12007.0;;2024;0.3;0.5;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Tous;Tous;Tous;Tous;Vous y arrivez difficilement ou vous ne pouvez pas y arriver sans faire de dette;1.0;[ 0,7 - 1,4 ];5589.0;;2024;0.7;1.4;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Tous;Tous;Tous;Autres inactifs;Tous;-30.0;[  -  ];3003.0;;2024;;;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Tous;Tous;Autres;Tous;Tous;0.7;[ 0,4 - 1,0 ];3705.0;;2024;0.4;1.0;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Tous;Tous;Couple avec enfant(s);Tous;Tous;-30.0;[  -  ];9289.0;;2024;;;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Tous;Bac;Tous;Tous;Tous;0.6;[ 0,4 - 0,8 ];8332.0;;2024;0.4;0.8;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Tous;Supérieur au Bac;Tous;Tous;Tous;0.4;[ 0,3 - 0,5 ];14723.0;;2024;0.3;0.5;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Agriculteurs, artisans, commerçants, chefs d’entreprise;Tous;Tous;Tous;Tous;-30.0;[  -  ];2545.0;;2024;;;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Tous;Tous;Tous;Tous;Vous êtes à l’aise;-30.0;[  -  ];4854.0;;2024;;;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Tous;Tous;Tous;Chômage;Tous;-30.0;[  -  ];2747.0;;2024;;;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Tous;Tous;Tous;Etudes;Tous;1.3;[ 0,8 - 1,8 ];2528.0;;2024;0.8;1.8;Conduites suicidaires
+Tentative de suicide au cours des 12 derniers mois;Tous;;;Tous;Tous;Tous;Retraite;Tous;-30.0;[  -  ];8422.0;;2024;;;Conduites suicidaires

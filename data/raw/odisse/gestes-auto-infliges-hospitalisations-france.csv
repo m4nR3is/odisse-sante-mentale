@@ -1,0 +1,163 @@
+﻿annee;classe_d_age;sexe;nombre_de_sejours;taux_brut;taux_standardise
+2019;18-24 ans;Hommes;4006.0;144.7;
+2019;45-64 ans;Hommes;11285.5;132.5;
+2019;65-84 ans;Hommes;2772.0;54.4;
+2019;Tous;Hommes;34265.0;105.3;105.6
+2019;15-17 ans;Femmes;5994.0;488.6;
+2019;18-24 ans;Femmes;7214.0;270.8;
+2019;45-64 ans;Femmes;15743.0;175.7;
+2019;85 ans et plus;Femmes;1008.25;66.8;
+2019;15-17 ans;Hommes et Femmes;7691.0;305.3;
+2019;25-44 ans;Hommes et Femmes;26666.0;164.0;
+2019;85 ans et plus;Hommes et Femmes;1699.25;76.9;
+2020;11-14 ans;Hommes;663.0;38.3;
+2020;45-64 ans;Hommes;10135.5;118.9;
+2020;15-17 ans;Femmes;5238.0;430.3;
+2020;65-84 ans;Femmes;4691.25;74.7;
+2020;85 ans et plus;Femmes;1089.25;71.0;
+2020;00-10 ans;Hommes et Femmes;367.0;4.2;
+2020;15-17 ans;Hommes et Femmes;6678.0;267.1;
+2020;25-44 ans;Hommes et Femmes;23691.0;146.2;
+2020;65-84 ans;Hommes et Femmes;7464.25;65.0;
+2020;85 ans et plus;Hommes et Femmes;1776.25;78.8;
+2021;15-17 ans;Hommes;1850.0;143.2;
+2021;18-24 ans;Hommes;4093.0;145.3;
+2021;85 ans et plus;Hommes;642.0;88.8;
+2021;Tous;Hommes;31772.5;97.0;97.3
+2021;00-10 ans;Femmes;166.0;4.0;
+2021;00-10 ans;Hommes et Femmes;351.0;4.1;
+2021;11-14 ans;Hommes et Femmes;7585.0;222.3;
+2021;45-64 ans;Hommes et Femmes;23211.5;132.9;
+2021;65-84 ans;Hommes et Femmes;7595.0;64.9;
+2022;11-14 ans;Hommes;754.0;42.9;
+2022;18-24 ans;Hommes;4186.0;147.5;
+2022;25-44 ans;Hommes;11171.5;138.5;
+2022;15-17 ans;Femmes;9346.0;755.2;
+2022;00-10 ans;Hommes et Femmes;373.0;4.4;
+2022;18-24 ans;Hommes et Femmes;13991.0;252.0;
+2022;65-84 ans;Hommes et Femmes;7804.25;65.4;
+2022;Tous;Hommes et Femmes;88193.0;129.6;129.8
+2023;11-14 ans;Hommes;836.0;47.5;
+2023;15-17 ans;Hommes;1662.0;125.2;
+2023;18-24 ans;Hommes;4281.0;149.8;
+2023;25-44 ans;Hommes;11816.5;145.9;
+2023;15-17 ans;Femmes;9255.0;740.2;
+2023;25-44 ans;Femmes;12856.0;153.1;
+2023;45-64 ans;Femmes;12801.5;144.0;
+2023;65-84 ans;Femmes;4928.0;74.2;
+2023;85 ans et plus;Femmes;1096.0;71.7;
+2023;25-44 ans;Hommes et Femmes;24672.5;149.6;
+2023;45-64 ans;Hommes et Femmes;22514.0;129.3;
+2023;85 ans et plus;Hommes et Femmes;1793.0;79.0;
+2023;Tous;Hommes et Femmes;91162.5;133.6;133.6
+2024;25-44 ans;Hommes;12413.5;152.5;
+2024;65-84 ans;Hommes;2923.0;52.0;
+2024;11-14 ans;Femmes;8721.0;520.2;
+2024;25-44 ans;Femmes;13288.5;157.7;
+2024;85 ans et plus;Femmes;1102.25;72.0;
+2024;Tous;Femmes;63548.5;180.3;180.0
+2024;18-24 ans;Hommes et Femmes;16346.5;291.7;
+2024;45-64 ans;Hommes et Femmes;22353.5;128.6;
+2024;Tous;Hommes et Femmes;97304.5;142.2;142.0
+2019;15-17 ans;Hommes;1697.0;131.3;
+2019;85 ans et plus;Hommes;691.0;98.6;
+2019;65-84 ans;Femmes;4881.25;79.3;
+2019;11-14 ans;Hommes et Femmes;4943.0;147.0;
+2019;18-24 ans;Hommes et Femmes;11220.0;206.6;
+2019;65-84 ans;Hommes et Femmes;7653.25;68.0;
+2020;15-17 ans;Hommes;1440.0;112.2;
+2020;18-24 ans;Hommes;3730.0;133.3;
+2020;11-14 ans;Femmes;3620.0;219.2;
+2020;18-24 ans;Femmes;6773.0;252.5;
+2020;25-44 ans;Femmes;11833.0;143.3;
+2020;11-14 ans;Hommes et Femmes;4283.0;126.6;
+2020;18-24 ans;Hommes et Femmes;10503.0;191.6;
+2020;45-64 ans;Hommes et Femmes;24336.5;139.2;
+2020;Tous;Hommes et Femmes;79099.0;117.3;117.7
+2021;25-44 ans;Hommes;11461.5;143.6;
+2021;11-14 ans;Femmes;6710.0;403.3;
+2021;65-84 ans;Femmes;4771.0;74.5;
+2021;85 ans et plus;Femmes;1056.0;68.8;
+2021;Tous;Femmes;54735.0;156.7;157.3
+2021;18-24 ans;Hommes et Femmes;12580.0;228.2;
+2021;85 ans et plus;Hommes et Femmes;1698.0;75.2;
+2022;15-17 ans;Hommes;1780.0;135.4;
+2022;65-84 ans;Hommes;2875.25;53.1;
+2022;00-10 ans;Femmes;157.0;3.8;
+2022;11-14 ans;Femmes;6686.0;399.6;
+2022;18-24 ans;Femmes;9805.0;361.3;
+2022;85 ans et plus;Femmes;1101.0;71.6;
+2022;11-14 ans;Hommes et Femmes;7440.0;216.9;
+2022;45-64 ans;Hommes et Femmes;22673.0;129.9;
+2022;85 ans et plus;Hommes et Femmes;1813.25;79.8;
+2023;65-84 ans;Hommes;2818.0;51.1;
+2023;00-10 ans;Femmes;175.0;4.3;
+2023;Tous;Femmes;59148.5;168.2;168.2
+2023;18-24 ans;Hommes et Femmes;15228.0;272.6;
+2023;65-84 ans;Hommes et Femmes;7746.0;63.7;
+2024;00-10 ans;Hommes;203.0;4.9;
+2024;11-14 ans;Hommes;875.0;49.8;
+2024;15-17 ans;Hommes;2116.0;157.5;
+2024;85 ans et plus;Hommes;647.0;85.5;
+2024;00-10 ans;Femmes;133.0;3.3;
+2024;18-24 ans;Femmes;11579.5;423.7;
+2024;11-14 ans;Hommes et Femmes;9596.0;279.4;
+2024;25-44 ans;Hommes et Femmes;25702.0;155.1;
+2024;65-84 ans;Hommes et Femmes;8025.25;64.8;
+2019;00-10 ans;Hommes;217.0;4.9;
+2019;11-14 ans;Hommes;773.0;44.9;
+2019;25-44 ans;Hommes;12824.5;160.8;
+2019;00-10 ans;Femmes;173.0;4.0;
+2019;11-14 ans;Femmes;4170.0;253.9;
+2019;25-44 ans;Femmes;13841.5;167.1;
+2019;Tous;Femmes;53022.0;152.7;153.1
+2019;00-10 ans;Hommes et Femmes;390.0;4.5;
+2019;45-64 ans;Hommes et Femmes;27028.5;154.6;
+2019;Tous;Hommes et Femmes;87287.0;129.8;130.1
+2020;00-10 ans;Hommes;222.0;5.0;
+2020;25-44 ans;Hommes;11858.0;149.3;
+2020;65-84 ans;Hommes;2773.0;53.2;
+2020;85 ans et plus;Hommes;687.0;95.5;
+2020;Tous;Hommes;31508.5;96.6;96.9
+2020;00-10 ans;Femmes;145.0;3.4;
+2020;45-64 ans;Femmes;14201.0;158.5;
+2020;Tous;Femmes;47588.0;136.7;137.2
+2021;00-10 ans;Hommes;185.0;4.2;
+2021;11-14 ans;Hommes;875.0;50.0;
+2021;45-64 ans;Hommes;9842.0;115.4;
+2021;65-84 ans;Hommes;2824.0;53.2;
+2021;15-17 ans;Femmes;8314.0;681.3;
+2021;18-24 ans;Femmes;8487.0;314.6;
+2021;25-44 ans;Femmes;11861.5;143.1;
+2021;45-64 ans;Femmes;13369.5;149.5;
+2021;15-17 ans;Hommes et Femmes;10164.0;404.6;
+2021;25-44 ans;Hommes et Femmes;23323.0;143.3;
+2021;Tous;Hommes et Femmes;86507.5;127.8;128.2
+2022;00-10 ans;Hommes;216.0;5.0;
+2022;45-64 ans;Hommes;9677.5;113.4;
+2022;85 ans et plus;Hommes;712.25;96.8;
+2022;Tous;Hommes;31368.0;95.1;95.3
+2022;25-44 ans;Femmes;11801.0;141.0;
+2022;45-64 ans;Femmes;12994.5;145.7;
+2022;65-84 ans;Femmes;4929.0;75.6;
+2022;Tous;Femmes;56819.5;161.9;162.3
+2022;15-17 ans;Hommes et Femmes;11126.0;436.0;
+2022;25-44 ans;Hommes et Femmes;22972.5;139.8;
+2023;00-10 ans;Hommes;190.0;4.5;
+2023;45-64 ans;Hommes;9712.5;114.0;
+2023;85 ans et plus;Hommes;697.0;94.0;
+2023;Tous;Hommes;32014.0;96.8;96.8
+2023;11-14 ans;Femmes;7090.0;422.8;
+2023;18-24 ans;Femmes;10947.0;401.3;
+2023;00-10 ans;Hommes et Femmes;365.0;4.4;
+2023;11-14 ans;Hommes et Femmes;7926.0;230.6;
+2023;15-17 ans;Hommes et Femmes;10917.0;423.4;
+2024;18-24 ans;Hommes;4767.0;166.0;
+2024;45-64 ans;Hommes;9808.5;115.2;
+2024;Tous;Hommes;33753.0;101.7;101.6
+2024;15-17 ans;Femmes;11080.0;878.2;
+2024;45-64 ans;Femmes;12545.0;141.4;
+2024;65-84 ans;Femmes;5102.25;75.4;
+2024;00-10 ans;Hommes et Femmes;336.0;4.1;
+2024;15-17 ans;Hommes et Femmes;13196.0;506.5;
+2024;85 ans et plus;Hommes et Femmes;1749.25;76.5;
