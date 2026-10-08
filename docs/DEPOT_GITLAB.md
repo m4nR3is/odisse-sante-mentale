@@ -10,7 +10,7 @@ Que voit-on de la santé mentale selon qu’on regarde les enquêtes, les urgenc
 
 ## Notre visualisation
 
-**Visualisation interactive :** [À COMPLÉTER — URL publique]
+**Visualisation interactive :** https://odisse-sante-mentale.vercel.app
 
 **Code source public :** https://github.com/m4nR3is/odisse-sante-mentale
 

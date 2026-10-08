@@ -1,0 +1,25 @@
+{
+  "url": "https://odisse-sante-mentale.vercel.app",
+  "checks": [
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "status": 200,
+      "publicWithoutLogin": true,
+      "dataStatus": 200,
+      "errors": []
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 568
+      },
+      "status": 200,
+      "publicWithoutLogin": true,
+      "dataStatus": 200,
+      "errors": []
+    }
+  ]
+}

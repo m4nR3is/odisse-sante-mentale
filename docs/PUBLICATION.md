@@ -1,6 +1,14 @@
 # Publication et remise
 
-## Chemin recommandé
+## État de publication
+
+- Code public : https://github.com/m4nR3is/odisse-sante-mentale
+- Site public : https://odisse-sante-mentale.vercel.app
+- Auteur : Manuel Reismann ; contact : ecrire@m4nu.net.
+- GitHub est connecté au projet Vercel pour les prochains déploiements.
+- Sous-domaine personnalisé non configuré ; remise GitLab encore à effectuer.
+
+## Procédure
 
 1. Publier le dépôt source sur le compte GitHub personnel, par exemple sous le nom `odisse-sante-mentale`. Le répertoire Git est `web/` : son contenu doit être à la racine du dépôt distant.
 2. Importer ce dépôt dans Vercel. Framework : Vite ; Root Directory : `.` ; Node.js : 22.x. `vercel.json` fournit les commandes et le dossier de sortie. Vérifier d’abord l’URL HTTPS fournie par Vercel.
