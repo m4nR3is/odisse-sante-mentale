@@ -147,3 +147,12 @@ a:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid var(
 
 @media(min-width:981px){.declared-chart svg text,.declared-history-chart svg text,.declared-history-distribution svg text{font-size:11px}}
 @media(max-width:650px){.declared-history-chart svg text,.declared-history-distribution svg text{font-size:22px}}
+
+/* Shared rollover for declared estimates; the hit area stays fixed. */
+.declared-social-point{outline:none;cursor:default}
+.declared-row .declared-point-hit{fill:transparent;stroke:none}
+.declared-row .declared-point-dot{pointer-events:none;transform-box:fill-box;transform-origin:center;transition:transform .18s cubic-bezier(.22,1,.36,1),stroke .18s ease}
+.declared-social-point:hover .declared-point-dot,.declared-social-point:focus .declared-point-dot{transform:scale(1.65);stroke:var(--ink)}
+.declared-chart .evidence-mobile-values>div:focus{outline:1px solid var(--ink);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){.declared-row .declared-point-dot{transition:none}}
+.declared-tooltip{width:min(280px,calc(100vw - 24px))}.declared-tooltip small{white-space:normal;overflow:visible;line-height:1.5}.declared-tooltip small:last-child{grid-column:1/-1}
