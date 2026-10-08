@@ -1195,12 +1195,9 @@ function ReadingNavigation() {
     const synchronize = () => {
       frame = 0;
       const readingLine = (header.current?.getBoundingClientRect().bottom ?? 60) + 17;
-      const scrollingUp = window.scrollY < previousScroll;
+      const scrolled = window.scrollY !== previousScroll;
       previousScroll = window.scrollY;
       const observations = document.getElementById("constats");
-      if (scrollingUp && observations && observations.getBoundingClientRect().top > readingLine && window.location.hash && window.location.hash !== "#top") {
-        window.history.replaceState(window.history.state, "", window.location.pathname + window.location.search);
-      }
       let active = -1, progress = 0;
       READING_SECTIONS.forEach((section, index) => {
         const element = document.getElementById(section.id);
@@ -1213,6 +1210,13 @@ function ReadingNavigation() {
           progress = Math.round(Math.max(0, Math.min(1, (readingLine - bounds.top) / Math.max(1, end - bounds.top))) * 1000) / 1000;
         }
       });
+      if (scrolled && observations) {
+        const inIntro = observations.getBoundingClientRect().top > readingLine;
+        const hash = inIntro ? "" : `#${READING_SECTIONS[active >= 0 ? active : READING_SECTIONS.length - 1].id}`;
+        if (window.location.hash !== hash) {
+          window.history.replaceState(window.history.state, "", window.location.pathname + window.location.search + hash);
+        }
+      }
       setReading((current) => current.active === active && current.progress === progress ? current : { active, progress });
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(synchronize); };
