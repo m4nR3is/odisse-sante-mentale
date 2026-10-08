@@ -1,0 +1,1 @@
+Ancien fichier de contours départementaux, sans provenance documentée dans le projet. Conservé uniquement comme archive ; exclu du site publié et non utilisé par les graphiques. Ne pas réutiliser sans retrouver et vérifier sa source et sa licence.

@@ -1,0 +1,129 @@
+{
+  "date": "2026-10-08",
+  "active_fields_unchanged": {
+    "odissePatients": true,
+    "national": true,
+    "social": true,
+    "declaredHistory": true,
+    "departments": true,
+    "emergencyDepartments": true,
+    "emergencyNational": true,
+    "suicideDepartments": true,
+    "suicideNational": true
+  },
+  "registered_datasets": 14,
+  "raw_exports_sha256_verified": 16,
+  "published_data_sha256_verified": true,
+  "official_catalogue_checks": [
+    {
+      "dataset": "episodes-depressif-indicateurs-du-barometre-2024",
+      "verified": true,
+      "title": "Épisodes dépressifs : Indicateurs du Baromètre de Santé publique France 2024",
+      "license": "Licence ouverte 2.0",
+      "modified": "2025-12-11T09:30:00+00:00"
+    },
+    {
+      "dataset": "gestes-auto-infliges-passages-aux-urgences-departement",
+      "verified": true,
+      "title": "Gestes auto-infligés : Passages aux urgences (Département)",
+      "license": "Licence ouverte 2.0",
+      "modified": "2025-12-09T09:31:42+00:00"
+    },
+    {
+      "dataset": "gestes-auto-infliges-patients-hospitalises-france",
+      "verified": true,
+      "title": "Gestes auto-infligés : Patients hospitalisés (France)",
+      "license": "Licence ouverte 2.0",
+      "modified": "2026-09-09T07:34:02+00:00"
+    },
+    {
+      "dataset": "suicides-deces-departement",
+      "verified": true,
+      "title": "Suicides : Décès (Département)",
+      "license": "Licence ouverte 2.0",
+      "modified": "2026-01-09T09:55:06+00:00"
+    },
+    {
+      "dataset": "trouble-anxieux-generalise-indicateurs-du-barometre-2024",
+      "verified": true,
+      "title": "Trouble anxieux généralisé : Indicateurs du Baromètre de Santé publique France 2024",
+      "license": "Licence ouverte 2.0",
+      "modified": "2025-12-11T09:30:00+00:00"
+    },
+    {
+      "dataset": "gestes-auto-infliges-passages-aux-urgences-france",
+      "verified": true,
+      "title": "Gestes auto-infligés : Passages aux urgences (France)",
+      "license": "Licence ouverte 2.0",
+      "modified": "2025-12-09T16:13:03+00:00"
+    },
+    {
+      "dataset": "gestes-auto-infliges-hospitalisations-departement",
+      "verified": true,
+      "title": "Gestes auto-infligés : Hospitalisations (Département)",
+      "license": "Licence ouverte 2.0",
+      "modified": "2025-12-10T09:28:04+00:00"
+    },
+    {
+      "dataset": "suicides-deces-france",
+      "verified": true,
+      "title": "Suicides : Décès (France)",
+      "license": "Licence ouverte 2.0",
+      "modified": "2026-01-09T13:01:11+00:00"
+    },
+    {
+      "dataset": "gestes-auto-infliges-hospitalisations-france",
+      "verified": true,
+      "title": "Gestes auto-infligés : Hospitalisations (France)",
+      "license": "Licence ouverte 2.0",
+      "modified": "2025-12-10T15:37:43+00:00"
+    },
+    {
+      "dataset": "conduites-sucidaires-indicateurs-du-barometre-2024",
+      "verified": true,
+      "title": "Conduites suicidaires : Indicateurs du Baromètre de Santé publique France 2024",
+      "license": "Licence ouverte 2.0",
+      "modified": "2025-12-11T09:30:00+00:00"
+    },
+    {
+      "dataset": "sante-mentale-episodes-depressifs-caracterises-dans-les-12-derniers-mois_reg",
+      "verified": true,
+      "title": "Santé mentale : Episodes dépressifs caractérisés dans les 12 derniers mois (Région)",
+      "license": "Licence ouverte 2.0",
+      "modified": "2024-12-09T10:34:43+00:00"
+    },
+    {
+      "dataset": "sante-mentale-episodes-depressifs-caracterises-dans-les-12-derniers-mois_fra",
+      "verified": true,
+      "title": "Santé mentale : Episodes dépressifs caractérisés dans les 12 derniers mois (France)",
+      "license": "Licence ouverte 2.0",
+      "modified": "2024-12-11T10:52:30+00:00"
+    },
+    {
+      "dataset": "sante-mentale-pensees-suicidaires-et-tentatives-de-suicide_reg",
+      "verified": true,
+      "title": "Santé mentale : Pensées suicidaires et tentatives de suicide (Région)",
+      "license": "Licence ouverte 2.0",
+      "modified": "2025-03-21T11:20:44+00:00"
+    },
+    {
+      "dataset": "sante-mentale-pensees-suicidaires-et-tentatives-de-suicide_fra",
+      "verified": true,
+      "title": "Santé mentale : Pensées suicidaires et tentatives de suicide (France)",
+      "license": "Licence ouverte 2.0",
+      "modified": "2025-01-24T14:32:40+00:00"
+    }
+  ],
+  "archives_excluded_from_web": true,
+  "browser_checks": {
+    "viewports": [
+      "1440×900",
+      "390×844"
+    ],
+    "story_views_per_viewport": 5,
+    "explorer_views_per_viewport": 10,
+    "method_source_links": 14,
+    "historical_help_national_and_regional_links": true,
+    "javascript_errors": []
+  }
+}

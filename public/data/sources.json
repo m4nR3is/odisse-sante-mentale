@@ -1,0 +1,262 @@
+{
+  "generated": "2026-10-08",
+  "scope": "14 jeux Odissé utilisés par les graphiques. Archives DREES et contours géographiques exclus de la livraison web.",
+  "data_file": "experience-data.json",
+  "data_sha256": "90affeb49ffc78f39e9c7fb826e84cbf464e372592c3366c5ee75fc73f137d50",
+  "transformations": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/scripts/build_web_data.py",
+  "notes": [
+    "Les taux et effectifs diffusés peuvent être arrondis. Les références regroupées par âge sont approchées ; la référence décès des 0–17 ans n’est pas reconstruite.",
+    "Les évolutions et rapports présentés sont calculés à partir des données préparées, sans inférence causale.",
+    "Les empreintes identifient les exports effectivement utilisés ; la date generated est celle de préparation du fichier web, pas celle de collecte de l’enquête."
+  ],
+  "sources": [
+    {
+      "dataset": "episodes-depressif-indicateurs-du-barometre-2024",
+      "title": "Épisodes dépressifs : Indicateurs du Baromètre de Santé publique France 2024",
+      "published_period": "2024",
+      "output_field": "social",
+      "publisher": "Santé publique France",
+      "platform": "Odissé",
+      "license": "Licence Ouverte 2.0",
+      "url": "https://odisse.santepubliquefrance.fr/explore/dataset/episodes-depressif-indicateurs-du-barometre-2024/",
+      "raw_exports": [
+        {
+          "path": "data/raw/odisse/episodes-depressif-indicateurs-du-barometre-2024.csv",
+          "sha256": "f096e77842684bcb6dbd85ba47ef950eaa77900c6bc587abeab827658f086342",
+          "url": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/data/raw/odisse/episodes-depressif-indicateurs-du-barometre-2024.csv"
+        }
+      ]
+    },
+    {
+      "dataset": "gestes-auto-infliges-passages-aux-urgences-departement",
+      "title": "Gestes auto-infligés : Passages aux urgences (Département)",
+      "published_period": "2020–2024",
+      "output_field": "emergencyDepartments",
+      "publisher": "Santé publique France",
+      "platform": "Odissé",
+      "license": "Licence Ouverte 2.0",
+      "url": "https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-passages-aux-urgences-departement/",
+      "raw_exports": [
+        {
+          "path": "data/raw/odisse/gestes-auto-infliges-passages-aux-urgences-departement.csv",
+          "sha256": "f4dba6dac076d479ebba9997f02fab091b5e00f21d53301dc745cf8136a5fc01",
+          "url": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/data/raw/odisse/gestes-auto-infliges-passages-aux-urgences-departement.csv"
+        }
+      ]
+    },
+    {
+      "dataset": "gestes-auto-infliges-patients-hospitalises-france",
+      "title": "Gestes auto-infligés : Patients hospitalisés (France)",
+      "published_period": "2019–2024",
+      "output_field": "odissePatients",
+      "publisher": "Santé publique France",
+      "platform": "Odissé",
+      "license": "Licence Ouverte 2.0",
+      "url": "https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-patients-hospitalises-france/",
+      "raw_exports": [
+        {
+          "path": "data/raw/odisse/gestes-auto-infliges-patients-hospitalises-france.csv",
+          "sha256": "49ceac670a9476d0d1b1313b1ba81be77acfe89ef182d372f5027e7a166c3f07",
+          "url": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/data/raw/odisse/gestes-auto-infliges-patients-hospitalises-france.csv"
+        }
+      ]
+    },
+    {
+      "dataset": "suicides-deces-departement",
+      "title": "Suicides : Décès (Département)",
+      "published_period": "2019–2023",
+      "output_field": "suicideDepartments",
+      "publisher": "Santé publique France",
+      "platform": "Odissé",
+      "license": "Licence Ouverte 2.0",
+      "url": "https://odisse.santepubliquefrance.fr/explore/dataset/suicides-deces-departement/",
+      "raw_exports": [
+        {
+          "path": "data/raw/odisse/suicides-deces-departement.csv",
+          "sha256": "d918ef4ab803c07d8fa911c3042e328e58f4ba351c9295b82689da429f8ed7ce",
+          "url": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/data/raw/odisse/suicides-deces-departement.csv"
+        }
+      ]
+    },
+    {
+      "dataset": "trouble-anxieux-generalise-indicateurs-du-barometre-2024",
+      "title": "Trouble anxieux généralisé : Indicateurs du Baromètre de Santé publique France 2024",
+      "published_period": "2024",
+      "output_field": "social",
+      "publisher": "Santé publique France",
+      "platform": "Odissé",
+      "license": "Licence Ouverte 2.0",
+      "url": "https://odisse.santepubliquefrance.fr/explore/dataset/trouble-anxieux-generalise-indicateurs-du-barometre-2024/",
+      "raw_exports": [
+        {
+          "path": "data/raw/odisse/trouble-anxieux-generalise-indicateurs-du-barometre-2024.csv",
+          "sha256": "488e100b1d22f0d16a542322621634dabaedeac1263ddcc2e83f3fde64caf326",
+          "url": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/data/raw/odisse/trouble-anxieux-generalise-indicateurs-du-barometre-2024.csv"
+        }
+      ]
+    },
+    {
+      "dataset": "gestes-auto-infliges-passages-aux-urgences-france",
+      "title": "Gestes auto-infligés : Passages aux urgences (France)",
+      "published_period": "2020–2024",
+      "output_field": "emergencyNational",
+      "publisher": "Santé publique France",
+      "platform": "Odissé",
+      "license": "Licence Ouverte 2.0",
+      "url": "https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-passages-aux-urgences-france/",
+      "raw_exports": [
+        {
+          "path": "data/raw/odisse/gestes-auto-infliges-passages-aux-urgences-france.csv",
+          "sha256": "31296b637ca551860cb6b5d74c993ec0df2fbf95fe5d2be3827a202bd9d9b274",
+          "url": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/data/raw/odisse/gestes-auto-infliges-passages-aux-urgences-france.csv"
+        }
+      ]
+    },
+    {
+      "dataset": "gestes-auto-infliges-hospitalisations-departement",
+      "title": "Gestes auto-infligés : Hospitalisations (Département)",
+      "published_period": "2019–2024",
+      "output_field": "departments",
+      "publisher": "Santé publique France",
+      "platform": "Odissé",
+      "license": "Licence Ouverte 2.0",
+      "url": "https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-hospitalisations-departement/",
+      "raw_exports": [
+        {
+          "path": "data/raw/odisse/gestes-auto-infliges-hospitalisations-departement.csv",
+          "sha256": "bd159228d81dd61c960413958d5139b2672c9b755f9924c5855d170c8e65f303",
+          "url": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/data/raw/odisse/gestes-auto-infliges-hospitalisations-departement.csv"
+        }
+      ]
+    },
+    {
+      "dataset": "suicides-deces-france",
+      "title": "Suicides : Décès (France)",
+      "published_period": "2019–2023",
+      "output_field": "suicideNational",
+      "publisher": "Santé publique France",
+      "platform": "Odissé",
+      "license": "Licence Ouverte 2.0",
+      "url": "https://odisse.santepubliquefrance.fr/explore/dataset/suicides-deces-france/",
+      "raw_exports": [
+        {
+          "path": "data/raw/odisse/suicides-deces-france.csv",
+          "sha256": "c18daee1f4ef2eca536b9799f6e85d78ffaaa4e6d784fbd8018cdc58a63f5014",
+          "url": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/data/raw/odisse/suicides-deces-france.csv"
+        }
+      ]
+    },
+    {
+      "dataset": "gestes-auto-infliges-hospitalisations-france",
+      "title": "Gestes auto-infligés : Hospitalisations (France)",
+      "published_period": "2019–2024",
+      "output_field": "national",
+      "publisher": "Santé publique France",
+      "platform": "Odissé",
+      "license": "Licence Ouverte 2.0",
+      "url": "https://odisse.santepubliquefrance.fr/explore/dataset/gestes-auto-infliges-hospitalisations-france/",
+      "raw_exports": [
+        {
+          "path": "data/raw/odisse/gestes-auto-infliges-hospitalisations-france.csv",
+          "sha256": "bf8e5bfd73bacf4c2b33826cdc8b1a0051775c59a87d0b797c547da6cae541f4",
+          "url": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/data/raw/odisse/gestes-auto-infliges-hospitalisations-france.csv"
+        }
+      ]
+    },
+    {
+      "dataset": "conduites-sucidaires-indicateurs-du-barometre-2024",
+      "title": "Conduites suicidaires : Indicateurs du Baromètre de Santé publique France 2024",
+      "published_period": "2024",
+      "output_field": "social",
+      "publisher": "Santé publique France",
+      "platform": "Odissé",
+      "license": "Licence Ouverte 2.0",
+      "url": "https://odisse.santepubliquefrance.fr/explore/dataset/conduites-sucidaires-indicateurs-du-barometre-2024/",
+      "raw_exports": [
+        {
+          "path": "data/raw/odisse/conduites-sucidaires-indicateurs-du-barometre-2024.csv",
+          "sha256": "31ccaeaf68a31036f007ee18c81a0f908bd845fdd8c3a030bfc004ae9c58eab4",
+          "url": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/data/raw/odisse/conduites-sucidaires-indicateurs-du-barometre-2024.csv"
+        }
+      ]
+    },
+    {
+      "dataset": "sante-mentale-episodes-depressifs-caracterises-dans-les-12-derniers-mois_reg",
+      "title": "Santé mentale : Episodes dépressifs caractérisés dans les 12 derniers mois (Région)",
+      "published_period": "2005, 2010, 2017, 2021",
+      "output_field": "declaredHistory",
+      "publisher": "Santé publique France",
+      "platform": "Odissé",
+      "license": "Licence Ouverte 2.0",
+      "url": "https://odisse.santepubliquefrance.fr/explore/dataset/sante-mentale-episodes-depressifs-caracterises-dans-les-12-derniers-mois_reg/",
+      "raw_exports": [
+        {
+          "path": "data/raw/odisse/depression-historique-region-page1.json",
+          "sha256": "ca40d72cb3a6f6ca5a8d34dfb3c27ab5501e30d0575747896eab7b9717cdbf17",
+          "url": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/data/raw/odisse/depression-historique-region-page1.json"
+        },
+        {
+          "path": "data/raw/odisse/depression-historique-region-page2.json",
+          "sha256": "4030537d8a6506a2c5eb7ff1365a0f5b6d24043df3987f854d978904ddd77f17",
+          "url": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/data/raw/odisse/depression-historique-region-page2.json"
+        }
+      ]
+    },
+    {
+      "dataset": "sante-mentale-episodes-depressifs-caracterises-dans-les-12-derniers-mois_fra",
+      "title": "Santé mentale : Episodes dépressifs caractérisés dans les 12 derniers mois (France)",
+      "published_period": "2005, 2010, 2017, 2021",
+      "output_field": "declaredHistory",
+      "publisher": "Santé publique France",
+      "platform": "Odissé",
+      "license": "Licence Ouverte 2.0",
+      "url": "https://odisse.santepubliquefrance.fr/explore/dataset/sante-mentale-episodes-depressifs-caracterises-dans-les-12-derniers-mois_fra/",
+      "raw_exports": [
+        {
+          "path": "data/raw/odisse/depression-historique-france.json",
+          "sha256": "41f5ac341137ee7a244903ded3b2bf871815838f3902b69e0ef199c6e50dc620",
+          "url": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/data/raw/odisse/depression-historique-france.json"
+        }
+      ]
+    },
+    {
+      "dataset": "sante-mentale-pensees-suicidaires-et-tentatives-de-suicide_reg",
+      "title": "Santé mentale : Pensées suicidaires et tentatives de suicide (Région)",
+      "published_period": "2005, 2010, 2017, 2021",
+      "output_field": "declaredHistory",
+      "publisher": "Santé publique France",
+      "platform": "Odissé",
+      "license": "Licence Ouverte 2.0",
+      "url": "https://odisse.santepubliquefrance.fr/explore/dataset/sante-mentale-pensees-suicidaires-et-tentatives-de-suicide_reg/",
+      "raw_exports": [
+        {
+          "path": "data/raw/odisse/conduites-suicidaires-historique-region-page1.json",
+          "sha256": "7bf00b9cf742c10fcc7108f66f778e509d4c133e8e7ed5e749e003ad571ae3d7",
+          "url": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/data/raw/odisse/conduites-suicidaires-historique-region-page1.json"
+        },
+        {
+          "path": "data/raw/odisse/conduites-suicidaires-historique-region-page2.json",
+          "sha256": "4cc147c429789f2cf98eff1f206d957c7693d198761f143a73c29637c1eecf58",
+          "url": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/data/raw/odisse/conduites-suicidaires-historique-region-page2.json"
+        }
+      ]
+    },
+    {
+      "dataset": "sante-mentale-pensees-suicidaires-et-tentatives-de-suicide_fra",
+      "title": "Santé mentale : Pensées suicidaires et tentatives de suicide (France)",
+      "published_period": "2005, 2010, 2017, 2021",
+      "output_field": "declaredHistory",
+      "publisher": "Santé publique France",
+      "platform": "Odissé",
+      "license": "Licence Ouverte 2.0",
+      "url": "https://odisse.santepubliquefrance.fr/explore/dataset/sante-mentale-pensees-suicidaires-et-tentatives-de-suicide_fra/",
+      "raw_exports": [
+        {
+          "path": "data/raw/odisse/conduites-suicidaires-historique-france.json",
+          "sha256": "3692a313a5b7cfbb8bc184a0fe7cbff10db62024c4c921df0cf3e9645f3eec35",
+          "url": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/data/raw/odisse/conduites-suicidaires-historique-france.json"
+        }
+      ]
+    }
+  ]
+}

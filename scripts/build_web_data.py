@@ -7,6 +7,8 @@ import csv
 import json
 from collections import defaultdict
 from pathlib import Path
+from datetime import datetime, timezone
+from source_registry import write_source_registry
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -313,28 +315,24 @@ def build_declared_history() -> list[dict]:
 
 
 def main() -> None:
-    analysis_path = ROOT / "analysis" / "mental_health" / "results.json"
-    story_analysis = json.loads(analysis_path.read_text(encoding="utf-8")) if analysis_path.exists() else None
     payload = {
         "meta": {
-            "generated": "2026-10-01",
+            "generated": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
             "odisseLatestYear": 2024,
-            "dreesLatestYear": 2025,
             "unit": "taux pour 100 000 habitants",
         },
-        "longSeries": build_drees(),
         "odissePatients": build_odisse_patients(),
         "national": build_national(),
         "social": build_social(),
         "declaredHistory": build_declared_history(),
-        "storyAnalysis": story_analysis,
         **build_departments(),
         **build_emergency(),
         **build_suicides(),
     }
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    print(f"Écrit : {OUTPUT.relative_to(ROOT)}")
+    write_source_registry(ROOT, OUTPUT)
+    print(f"Écrit : {OUTPUT.relative_to(ROOT)} et registre des 14 sources")
 
 
 if __name__ == "__main__":

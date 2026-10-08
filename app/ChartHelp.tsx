@@ -39,7 +39,7 @@ export function historyExplanation(indicator: string, territory: string, sex: st
     population: `Personnes de 18–75 ans en France hexagonale. Sélection : ${territory} · ${sex === "Hommes et Femmes" ? "tous les sexes" : sex.toLowerCase()}. La référence France correspond à la France hexagonale.`,
     reading: "Les courbes relient les estimations des enquêtes ; elles ne donnent pas de mesures pour les années intermédiaires. Les traits verticaux montrent les intervalles de confiance à 95 %. L’évolution en points est la prévalence de 2021 moins celle de 2005 : passer de 5 % à 6 % représente +1 point, soit +20 % en relatif. Un point de la frise représente une région.",
     limits: "Les réponses sont déclaratives et certains échantillons régionaux sont petits. Les intervalles incohérents dans la source sont signalés et ne sont pas dessinés ; l’estimation est conservée. Les écarts visibles ne constituent pas, à eux seuls, des différences statistiquement significatives. Les données 2024 restent séparées à cause du changement de protocole.",
-    sources: [{ label: "Santé publique France · Baromètres historiques", dataset: indicator === "Dépression" ? "sante-mentale-episodes-depressifs-caracterises-dans-les-12-derniers-mois_reg" : "sante-mentale-pensees-suicidaires-et-tentatives-de-suicide_reg" }],
+    sources: ["reg", "fra"].map((scope) => ({ label: `Santé publique France · Baromètres historiques · ${scope === "reg" ? "régions" : "France hexagonale"}`, dataset: `${indicator === "Dépression" ? "sante-mentale-episodes-depressifs-caracterises-dans-les-12-derniers-mois" : "sante-mentale-pensees-suicidaires-et-tentatives-de-suicide"}_${scope}` })),
   };
 }
 

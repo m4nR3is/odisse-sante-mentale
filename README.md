@@ -21,8 +21,8 @@ Le titre et la question apparaissent à leur tour. La séquence est réversible,
 peut être passée et affiche immédiatement sa composition finale avec la
 préférence de réduction des mouvements.
 
-Un récit de quatre scènes au scroll ouvre la lecture : taux national de patients
-hospitalisés (+4 %), trajectoire des filles de 11–14 ans (+93 %), comparaison aux
+Un récit de cinq scènes au scroll ouvre la lecture : taux national de patients
+hospitalisés (+4 %), femmes et hommes tous âges (+10,7 % / −6,2 %), trajectoire des filles de 11–14 ans (+93 %), comparaison aux
 garçons du même âge (+7 %), puis gradient financier de dépression déclarée
 (×3,1). Une visualisation persiste sur ordinateur ; sur mobile et tablette,
 chaque preuve reste dans le flux. Les liens d’étapes permettent aussi de
@@ -77,8 +77,11 @@ respectent la préférence de réduction des mouvements.
 
 ## Données et méthode
 
-Les liens vers les jeux Odissé figurent dans chaque preuve et dans la section
-Méthode. Les taux tous âges des patients, séjours et décès sont standardisés ; les taux
+Les 14 jeux Odissé sont reliés dans la section Méthode et les fiches « ? ».
+Le registre `public/data/sources.json` relie chaque jeu aux exports utilisés,
+avec leurs empreintes SHA-256 et le script de transformation. Les données
+DREES des anciennes explorations et les contours géographiques non utilisés
+sont exclus du fichier web publié. Les taux tous âges des patients, séjours et décès sont standardisés ; les taux
 par âge sont bruts. Les urgences sont rapportées aux passages, pas à la population.
 Les références nationales par classes d’âge regroupées sont recalculées à partir
 des effectifs et populations reconstituées depuis les taux diffusés : elles sont
@@ -97,7 +100,6 @@ reste dans les archives analytiques ; il ne constitue pas le parcours publié.
 Depuis ce dossier, la préparation complète est reproductible avec :
 
 ```bash
-python3 scripts/analyze_mental_health_story.py
 python3 scripts/build_web_data.py
 ```
 
