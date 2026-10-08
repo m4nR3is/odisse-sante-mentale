@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-08",
+  "viewports": [
+    "1440×900",
+    "1280×500",
+    "390×844",
+    "390×600"
+  ],
+  "checks": {
+    "region_map_and_department_map": true,
+    "pointer_preview_and_leave": true,
+    "keyboard_preview_and_selection": true,
+    "menus_and_map_synchronized": true,
+    "zoom_and_france_reset": true,
+    "no_module_overflow": true,
+    "map_svg_height_at_least_75px": true,
+    "health_values_unchanged": true,
+    "geography_raw_sha256_verified": true,
+    "geography_published_sha256_verified": true,
+    "javascript_errors": []
+  },
+  "geography": {
+    "department_shapes": 101,
+    "region_shapes": 18,
+    "COM_without_shape": [
+      "977",
+      "978"
+    ],
+    "source": "IGN Admin Express COG / INSEE 2018, via France GeoJSON",
+    "license": "Licence Ouverte 2.0",
+    "public_file_bytes": 160818
+  }
+}

@@ -1,6 +1,6 @@
 {
   "generated": "2026-10-08",
-  "scope": "14 jeux Odissé utilisés par les graphiques. Archives DREES et contours géographiques exclus de la livraison web.",
+  "scope": "14 jeux Odissé utilisés par les graphiques, complétés par les contours IGN/INSEE documentés pour la carte de sélection. Archives DREES et ancien fichier géographique non sourcé exclus de la livraison web.",
   "data_file": "experience-data.json",
   "data_sha256": "90affeb49ffc78f39e9c7fb826e84cbf464e372592c3366c5ee75fc73f137d50",
   "transformations": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/scripts/build_web_data.py",
@@ -258,5 +258,30 @@
         }
       ]
     }
-  ]
+  ],
+  "geography": {
+    "repository": "https://github.com/gregoiredavid/france-geojson",
+    "commit": "5d34ee6d0140c29f785fdb047d9329f1aab58833",
+    "files": [
+      "departements-avec-outre-mer.geojson",
+      "regions-avec-outre-mer.geojson"
+    ],
+    "source": "IGN Admin Express COG 2018, codes et noms INSEE 2018",
+    "license": "Licence Ouverte 2.0",
+    "accessed": "2026-10-08",
+    "raw_exports": [
+      {
+        "path": "data/raw/geography/departements-avec-outre-mer.geojson",
+        "sha256": "0c331e85eef244d8014f68a4c256bb732e28776aceec53ddf849624f2eb6c163"
+      },
+      {
+        "path": "data/raw/geography/regions-avec-outre-mer.geojson",
+        "sha256": "a573b672264184d11a2f98220867653b092fe3a964433e30e3a0a4708d72d167"
+      }
+    ],
+    "transformations": "Projection Lambert conforme conique (44°/49°, méridien 3°), ajustement des encarts séparément, simplification Douglas-Peucker à 0,25 unité SVG. Carte de sélection, sans valeurs colorées ; encarts hors échelle. COM non fournies par la source : boutons séparés.",
+    "file": "geography.json",
+    "sha256": "60ffc51b52640daa119f69184936da2f9c5492f6a7bf38abef36ee280c7900d0",
+    "script": "https://github.com/m4nR3is/odisse-sante-mentale/blob/main/scripts/build_geography.py"
+  }
 }

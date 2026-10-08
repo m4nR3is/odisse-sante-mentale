@@ -2,6 +2,11 @@ Quand la souffrance devient visible — licences
 
 Code : MIT. Textes et visuels originaux : CC-BY 4.0.
 Données : Santé publique France / Odissé, Licence Ouverte 2.0.
+Contours : IGN / Admin Express COG 2018 ; noms et codes INSEE 2018.
+Distribution France GeoJSON / Grégoire David, Licence Ouverte.
+https://github.com/gregoiredavid/france-geojson
+Projection et simplification pour la carte de sélection ; encarts hors échelle.
+Version source, empreintes et transformations : data/sources.json.
 Sources, périodes et transformations : section Méthode et dépôt source.
 https://creativecommons.org/licenses/by/4.0/
 https://www.etalab.gouv.fr/licence-ouverte-open-licence/

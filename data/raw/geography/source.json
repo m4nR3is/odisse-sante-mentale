@@ -1,0 +1,11 @@
+{
+  "repository": "https://github.com/gregoiredavid/france-geojson",
+  "commit": "5d34ee6d0140c29f785fdb047d9329f1aab58833",
+  "files": [
+    "departements-avec-outre-mer.geojson",
+    "regions-avec-outre-mer.geojson"
+  ],
+  "source": "IGN Admin Express COG 2018, codes et noms INSEE 2018",
+  "license": "Licence Ouverte 2.0",
+  "accessed": "2026-10-08"
+}
