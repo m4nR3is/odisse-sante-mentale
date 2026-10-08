@@ -1,0 +1,47 @@
+[
+  {
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "bidirectional": true,
+    "reducedMotion": true,
+    "errors": []
+  },
+  {
+    "viewport": {
+      "width": 1280,
+      "height": 600
+    },
+    "bidirectional": true,
+    "reducedMotion": true,
+    "errors": []
+  },
+  {
+    "viewport": {
+      "width": 1024,
+      "height": 360
+    },
+    "bidirectional": true,
+    "reducedMotion": true,
+    "errors": []
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "bidirectional": true,
+    "reducedMotion": true,
+    "errors": []
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 568
+    },
+    "bidirectional": true,
+    "reducedMotion": true,
+    "errors": []
+  }
+]

@@ -10,6 +10,12 @@ Contact : ecrire@m4nu.net · [Visualisation en ligne](https://odisse-sante-menta
 
 ## Parcours
 
+L’accueil se construit au scroll : Santé mentale, Recours aux soins et Inégalités
+arrivent depuis le centre, à très grande taille, puis rejoignent leur place.
+Le titre et la question apparaissent à leur tour. La séquence est réversible,
+peut être passée et affiche immédiatement sa composition finale avec la
+préférence de réduction des mouvements.
+
 Un récit de quatre scènes au scroll ouvre la lecture : taux national de patients
 hospitalisés (+4 %), trajectoire des filles de 11–14 ans (+93 %), comparaison aux
 garçons du même âge (+7 %), puis gradient financier de dépression déclarée

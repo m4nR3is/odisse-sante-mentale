@@ -1077,6 +1077,84 @@ function GuidedOpening({ data, onExplore }: { data: ExperienceData; onExplore: (
   </section>;
 }
 
+function IntroOpening() {
+  const track = useRef<HTMLElement>(null);
+  const stage = useRef<HTMLDivElement>(null);
+  const flights = useRef<Array<HTMLSpanElement | null>>([]);
+  const caption = useRef<HTMLParagraphElement>(null);
+  const progressLine = useRef<HTMLSpanElement>(null);
+  const action = useRef<HTMLAnchorElement>(null);
+
+  useLayoutEffect(() => {
+    const root = track.current, viewport = stage.current;
+    if (!root || !viewport) return;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+    const starts = [0, .17, .34, .49, .64, .79];
+    const synchronize = () => {
+      frame = 0;
+      const bounds = root.getBoundingClientRect();
+      const stageBounds = viewport.getBoundingClientRect();
+      const inset = parseFloat(getComputedStyle(root).paddingTop) || 0;
+      const distance = Math.max(1, root.offsetHeight - viewport.offsetHeight - inset);
+      const progress = motion.matches ? 1 : Math.max(0, Math.min(1, -bounds.top / distance));
+      viewport.dataset.introProgress = progress.toFixed(3);
+      flights.current.forEach((element, index) => {
+        if (!element) return;
+        // Measure the untransformed wrapper: animation cannot alter its destination.
+        const target = element.parentElement!.getBoundingClientRect();
+        const local = Math.max(0, Math.min(1, (progress - starts[index]) / .14));
+        const arrival = local * local * (3 - 2 * local);
+        const dx = stageBounds.left + stageBounds.width / 2 - (target.left + target.width / 2);
+        const dy = stageBounds.top + stageBounds.height / 2 - (target.top + target.height / 2);
+        const large = Math.max(2.5, Math.min(28, stageBounds.width / Math.max(1, target.width) * 2.2));
+        const scale = 1 + (large - 1) * (1 - arrival);
+        element.style.transform = `translate3d(${dx * (1 - arrival)}px, ${dy * (1 - arrival)}px, 0) scale(${scale})`;
+        element.style.opacity = progress >= starts[index] ? String(Math.min(1, local * 10 + (index === 0 ? 1 : 0))) : "0";
+        element.dataset.arrival = arrival.toFixed(3);
+      });
+      viewport.querySelectorAll<HTMLElement>(".intro-topic-divider").forEach((divider, index) => { divider.style.opacity = progress >= starts[index + 1] + .14 ? ".6" : "0"; });
+      if (caption.current) caption.current.textContent = progress < .17 ? "Ce que l’on ressent." : progress < .34 ? "Ce que les soins rendent visible." : progress < .49 ? "Ce qui diffère selon les vies." : "Une mesure éclaire. Elle laisse aussi une part hors champ.";
+      if (progressLine.current) progressLine.current.style.transform = `scaleX(${progress})`;
+      if (action.current) {
+        const visible = progress >= .9;
+        action.current.style.opacity = String(Math.max(0, Math.min(1, (progress - .9) / .08)));
+        action.current.style.visibility = visible ? "visible" : "hidden";
+        action.current.tabIndex = visible ? 0 : -1;
+      }
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(synchronize); };
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    motion.addEventListener("change", schedule);
+    const observer = new ResizeObserver(schedule);
+    observer.observe(viewport);
+    observer.observe(root);
+    synchronize();
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      motion.removeEventListener("change", schedule);
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  const flight = (text: string, index: number) => <span className="intro-flight-target"><span className="intro-flight" ref={(element) => { flights.current[index] = element; }}>{text}</span></span>;
+  return <section className="intro-scroll-track" id="top" ref={track} aria-labelledby="intro-title">
+    <div className="hero meta-hero intro-stage" ref={stage}>
+      <div className="hero-copy">
+        <p className="overline intro-topics">{flight("Santé mentale", 0)}<span className="intro-topic-divider" aria-hidden="true">·</span>{flight("Recours aux soins", 1)}<span className="intro-topic-divider" aria-hidden="true">·</span>{flight("Inégalités", 2)}</p>
+        <h1 id="intro-title">{flight("Quand la souffrance", 3)}{flight("devient visible.", 4)}</h1>
+        <div className="intro-lead-target">{flight("Que montrent les données de santé mentale selon qu’on regarde les enquêtes, les urgences, les hospitalisations ou les décès ? Chaque source éclaire une dimension différente. Aucune ne suffit à en dresser le portrait.", 5)}</div>
+        <a href="#constats" className="read-data" ref={action}>Comprendre ce que les données révèlent <span>↓</span></a>
+      </div>
+      <div className="intro-footer"><p ref={caption}>Ce que l’on ressent.</p><a href="#constats">Passer l’introduction ↓</a></div>
+      <span className="intro-progress" aria-hidden="true" ref={progressLine} />
+    </div>
+  </section>;
+}
+
 const READING_SECTIONS = [
   { id: "constats", label: "Comprendre" },
   { id: "territoires", label: "Explorer" },
@@ -1134,7 +1212,7 @@ export default function Experience({ initialData: data }: { initialData: Experie
   return <main>
     <a className="skip-link" href="#constats">Aller aux observations</a>
     <ReadingNavigation />
-    <section className="hero meta-hero" id="top"><div className="hero-copy"><p className="overline">Santé mentale · recours aux soins · inégalités</p><h1>Quand la souffrance<br />devient visible.</h1><p className="hero-lead">Que montrent les données de santé mentale selon qu’on regarde les enquêtes, les urgences, les hospitalisations ou les décès ? Chaque source éclaire une dimension différente. Aucune ne suffit à en dresser le portrait.</p><a href="#constats" className="read-data">Comprendre ce que les données révèlent <span>↓</span></a></div><p className="hero-question">Une mesure éclaire. Elle laisse aussi une part hors champ.</p></section>
+    <IntroOpening />
     <GuidedOpening data={data} onExplore={explore} />
     <TerritoryAppendix data={data} guidedView={guidedView} />
     {/* Modules éditoriaux conservés pour une réactivation ultérieure :
