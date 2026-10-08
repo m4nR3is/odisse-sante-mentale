@@ -1,6 +1,8 @@
 # Quand la souffrance devient visible
 
-Une proposition pour le défi santé mentale de l’Odissé Dataviz Challenge 2026.
+Une proposition de **Manuel Reismann** pour le défi santé mentale de l’Odissé Dataviz Challenge 2026.
+
+Contact : ecrire@m4nu.net · [Code source public](https://github.com/m4nR3is/odisse-sante-mentale)
 
 **Question :** que montrent les données de santé mentale selon qu’on regarde les
  enquêtes, les urgences, les hospitalisations ou les décès ? Chaque source éclaire
@@ -139,5 +141,6 @@ n’a pas besoin de ces configurations à sa racine.
 Code : MIT (`LICENSE`). Textes et visuels originaux : CC-BY 4.0. Données Odissé :
 Licence Ouverte 2.0. Voir `LICENSES.md` et les notices distribuées avec le site.
 
-Les URL publiques et les informations de contact restent à compléter avant la
-remise. Aucun dépôt distant ou hébergement n’a encore été créé.
+Le code source est publié sur GitHub. L’URL de la visualisation reste à
+compléter après le déploiement sur Vercel ; la remise sur le dépôt GitLab
+officiel reste à effectuer.

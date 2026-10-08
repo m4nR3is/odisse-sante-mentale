@@ -1,6 +1,6 @@
 # Quand la souffrance devient visible
 
-**Équipe :** [À COMPLÉTER — nom complet du ou des membres]
+**Équipe :** Manuel Reismann
 **Mail(s) de contact:** ecrire@m4nu.net
 **Défi :** Défi 1 — Santé mentale
 

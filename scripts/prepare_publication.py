@@ -5,7 +5,7 @@ import subprocess
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT.parent / "tmp" / "publication" / "defi-1_nom-equipe"
+OUTPUT = ROOT.parent / "tmp" / "publication" / "defi-1_m4nu"
 
 
 def main():
@@ -32,7 +32,7 @@ def main():
                 archive.write(path, path.relative_to(dist))
     print(f"Dossier préparé : {OUTPUT}")
     if "[À COMPLÉTER" in doc:
-        print("À finaliser avant remise : identité, contact et URL publiques dans docs/DEPOT_GITLAB.md, puis relancer ce script.")
+        print("À finaliser avant remise : les champs signalés dans docs/DEPOT_GITLAB.md, puis relancer ce script.")
 
 
 if __name__ == "__main__":
