@@ -1206,7 +1206,8 @@ function IntroOpening() {
         const local = Math.max(0, Math.min(1, (progress - starts[index]) / .14));
         const arrival = local * local * (3 - 2 * local);
         const dx = stageBounds.left + stageBounds.width / 2 - (target.left + element.offsetLeft + element.offsetWidth / 2);
-        const dy = stageBounds.top + stageBounds.height / 2 - (target.top + element.offsetTop + element.offsetHeight / 2);
+        const originY = stageBounds.top + stageBounds.height * (index === 5 ? .82 : .5);
+        const dy = originY - (target.top + element.offsetTop + element.offsetHeight / 2);
         const large = index === 0 || index === 3 || index === 4
           ? Math.max(1, Math.min(stageBounds.width * .9 / Math.max(1, target.width), stageBounds.height * .7 / Math.max(1, target.height)))
           : Math.max(2.5, Math.min(28, stageBounds.width / Math.max(1, target.width) * 2.2));
