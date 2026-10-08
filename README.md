@@ -27,7 +27,7 @@ changements se synchronisent dans les deux sens, sur ordinateur et mobile.
 Les quatre regards :
 
 - **Déclaré** : gradient financier du Baromètre 2024 et séries historiques
-  régionales 2005–2021, présentées séparément.
+  nationales et régionales 2005–2021, présentées séparément. La référence France apparaît par défaut ; le survol d’une région révèle sa courbe.
 - **Urgences** : part des passages pour gestes auto-infligés dans l’activité des
   urgences, par département et avec une référence France, 2020–2024.
 - **Hôpital** : séjours départementaux 2019–2024 ; patients hospitalisés selon
@@ -41,7 +41,7 @@ aux soins reflètent aussi l’accès, l’offre et le codage.
 
 ## Lancer et construire
 
-Node.js >= 20.19.0 et npm (un fichier package-lock.json est fourni).
+Node.js 22.x (22.23.2 dans `.nvmrc` et `.node-version`) et npm (un fichier package-lock.json est fourni).
 
 ```bash
 npm ci
@@ -127,5 +127,17 @@ trait de progression lié au scroll, dans les deux sens, comme sur le portfolio.
 Les ancres, le graphique persistant et l’explorateur tiennent compte de sa
 hauteur, sur ordinateur et mobile.
 
-La publication, les URL de remise et le report dans le template officiel restent
-à réaliser. Le dépôt local ne possède pas encore de dépôt distant configuré.
+## Publication et licences
+
+`docs/DEPOT_GITLAB.md` suit le template officiel de remise. `docs/PUBLICATION.md`
+décrit le dépôt et l’hébergement. `vercel.json` prépare Vercel ; `.gitlab-ci.yml`
+permet une construction dans un dépôt GitLab personnel et une publication Pages
+manuelle. Les chemins relatifs permettent l’hébergement à la racine ou dans un
+sous-dossier. Le dépôt officiel du challenge reçoit le dossier de remise ; il
+n’a pas besoin de ces configurations à sa racine.
+
+Code : MIT (`LICENSE`). Textes et visuels originaux : CC-BY 4.0. Données Odissé :
+Licence Ouverte 2.0. Voir `LICENSES.md` et les notices distribuées avec le site.
+
+Les URL publiques et les informations de contact restent à compléter avant la
+remise. Aucun dépôt distant ou hébergement n’a encore été créé.

@@ -1,0 +1,40 @@
+{
+  "checks": [
+    {
+      "prefix": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "steps": 10,
+      "errors": []
+    },
+    {
+      "prefix": "/",
+      "viewport": {
+        "width": 390,
+        "height": 568
+      },
+      "steps": 10,
+      "errors": []
+    },
+    {
+      "prefix": "/odisse/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "steps": 10,
+      "errors": []
+    },
+    {
+      "prefix": "/odisse/",
+      "viewport": {
+        "width": 390,
+        "height": 568
+      },
+      "steps": 10,
+      "errors": []
+    }
+  ]
+}
