@@ -136,5 +136,19 @@
       "adaptive explorer fits remaining viewport including 360 px height"
     ],
     "build": "TypeScript and Vite passed"
+  },
+  "storyNumbers": {
+    "sceneViewportChecks": 8,
+    "failures": [],
+    "checks": [
+      "figures count from zero on becoming visible",
+      "same-age comparison counts both figures",
+      "ratio counts with one decimal",
+      "animation replays on re-entry",
+      "desktop and mobile",
+      "stable final accessible values",
+      "reduced motion shows final values directly"
+    ],
+    "build": "TypeScript and Vite passed"
   }
 }

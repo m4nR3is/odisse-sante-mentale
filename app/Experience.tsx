@@ -823,6 +823,36 @@ function StoryFigure({ data, scene: requestedScene }: { data: ExperienceData; sc
   </div>;
 }
 
+function StoryNumber({ value, ratio = false }: { value: number; ratio?: boolean }) {
+  const element = useRef<HTMLElement>(null);
+  const [visible, setVisible] = useState(false);
+  const [displayed, setDisplayed] = useState(0);
+  const format = (number: number) => ratio ? `× ${fmt(number)}` : signed(number);
+  useEffect(() => {
+    if (!element.current) return;
+    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting && entry.intersectionRatio >= .6), { threshold: .6 });
+    observer.observe(element.current);
+    return () => observer.disconnect();
+  }, []);
+  useEffect(() => {
+    let frame = 0;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const finish = () => { cancelAnimationFrame(frame); setDisplayed(visible ? value : 0); };
+    if (!visible || motion.matches) { finish(); return; }
+    setDisplayed(0);
+    const start = performance.now();
+    const tick = (now: number) => {
+      const progress = Math.min(1, (now - start) / 1000);
+      setDisplayed(value * progress * progress * (3 - 2 * progress));
+      if (progress < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    motion.addEventListener("change", finish);
+    return () => { cancelAnimationFrame(frame); motion.removeEventListener("change", finish); };
+  }, [value, visible]);
+  return <strong ref={element} aria-label={format(value)} data-value={displayed}><span aria-hidden="true">{format(displayed)}</span></strong>;
+}
+
 function GuidedOpening({ data, onExplore }: { data: ExperienceData; onExplore: (view: "declared" | "profiles") => void }) {
   const [scene, setScene] = useState<StoryScene>(0);
   const steps = useRef<Array<HTMLElement | null>>([]);
@@ -872,7 +902,7 @@ function GuidedOpening({ data, onExplore }: { data: ExperienceData; onExplore: (
     <header className="section-heading"><p className="chapter">COMPRENDRE AVANT D’EXPLORER</p><div><h2 id="observations-title">Un chiffre.<br />Plusieurs regards.</h2><p>Partons de la vue d’ensemble. Changeons de population, puis de source, pour comprendre ce que chaque mesure rend visible.</p></div></header>
     <div className="story-layout">
       <div className="story-steps">{scenes.map((step, index) => <article className={`story-step${scene === index ? " is-active" : ""}`} id={`scene-${index + 1}`} data-story-step={index} key={step.chapter} ref={(element) => { steps.current[index] = element; }} aria-labelledby={`scene-title-${index}`}>
-        <p className="chapter">{step.chapter}</p><h3 id={`scene-title-${index}`}>{step.title.replace("11–14", "11\u2060–\u206014")}</h3><div className="story-stat">{index === 2 ? <div className="story-comparison"><div><strong>{signed(change(girls))}</strong><span>Filles</span></div><div><strong>{signed(change(boys))}</strong><span>Garçons</span></div></div> : <strong>{step.metric}</strong>}<span>{step.definition}</span></div><p className="story-copy">{step.copy}</p>
+        <p className="chapter">{step.chapter}</p><h3 id={`scene-title-${index}`}>{step.title.replace("11–14", "11\u2060–\u206014")}</h3><div className="story-stat">{index === 2 ? <div className="story-comparison"><div><StoryNumber value={change(girls)} /><span>Filles</span></div><div><StoryNumber value={change(boys)} /><span>Garçons</span></div></div> : <StoryNumber value={index === 0 ? change(national) : index === 1 ? change(girls) : difficult.estimate / comfortable.estimate} ratio={index === 3} />}<span>{step.definition}</span></div><p className="story-copy">{step.copy}</p>
         <div className="story-mobile-figure"><StoryFigure data={data} scene={index as StoryScene} /></div>
         <p className="story-next">{index < 3 && <span aria-hidden="true">↓ </span>}{step.next}</p>
         {index === 2 && <button type="button" className="evidence-action" onClick={() => onExplore("profiles")}>Explorer les seize profils <span>↗</span></button>}
