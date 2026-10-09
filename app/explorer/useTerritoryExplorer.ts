@@ -1,3 +1,11 @@
+import {
+  measureFamilyFor,
+  entryStepForMode,
+  entryStepForDataset,
+  entryStepForFamily,
+  type ExplorerMode,
+  type MeasureFamily,
+} from "./explorerSteps";
 import { useTerritoryChartSize } from "./useTerritoryChartSize";
 import {
   territoryChartGeometry,
@@ -105,7 +113,7 @@ export function useTerritoryExplorer({
     if (!guidedView) return;
     setProfileAge("11–14 ans");
     setProfileSex("Femmes");
-    navigateStep(guidedView.view === "profiles" ? 8 : 0);
+    navigateStep(entryStepForMode(guidedView.view));
   }, [guidedView]);
   const [tooltip, setTooltip] = useState<{
     x: number;
@@ -323,33 +331,13 @@ export function useTerritoryExplorer({
       setProfileSex(nextSex);
     }
   };
-  const switchMode = (nextMode: "territories" | "profiles" | "declared") =>
-    navigateStep(nextMode === "profiles" ? 8 : nextMode === "declared" ? 0 : 7);
-  const switchTerritoryDataset = (
-    dataset: "hospitalisations" | "emergency" | "suicides",
-  ) =>
-    navigateStep(dataset === "emergency" ? 6 : dataset === "suicides" ? 9 : 7);
-  const chooseMeasureFamily = (
-    family: "declared" | "emergency" | "hospital" | "deaths",
-  ) =>
-    navigateStep(
-      family === "declared"
-        ? 0
-        : family === "emergency"
-          ? 6
-          : family === "hospital"
-            ? 7
-            : 9,
-    );
-  const family =
-    mode === "declared"
-      ? "declared"
-      : mode === "territories" && territoryDataset === "emergency"
-        ? "emergency"
-        : mode === "profiles" ||
-            (mode === "territories" && territoryDataset === "hospitalisations")
-          ? "hospital"
-          : "deaths";
+  const switchMode = (nextMode: ExplorerMode) =>
+    navigateStep(entryStepForMode(nextMode));
+  const switchTerritoryDataset = (dataset: TerritoryDataset) =>
+    navigateStep(entryStepForDataset(dataset));
+  const chooseMeasureFamily = (family: MeasureFamily) =>
+    navigateStep(entryStepForFamily(family));
+  const family = measureFamilyFor(mode, territoryDataset);
   const title =
     mode === "territories"
       ? selected.department.name

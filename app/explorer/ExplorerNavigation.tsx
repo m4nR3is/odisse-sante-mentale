@@ -1,3 +1,4 @@
+import { familyScrollRange, entryStepForMode } from "./explorerSteps";
 import { ScrollIndicator } from "./ScrollIndicator";
 import { scrollRangeProgress } from "../animation/progress";
 import type { TerritoryExplorerModel } from "./useTerritoryExplorer";
@@ -12,6 +13,12 @@ export function ExplorerNavigation({
   switchTerritoryDataset,
   switchMode,
 }: Props) {
+  const ranges = {
+    declared: familyScrollRange("declared"),
+    emergency: familyScrollRange("emergency"),
+    hospital: familyScrollRange("hospital"),
+    deaths: familyScrollRange("deaths"),
+  };
   return (
     <div className="explorer-navigation">
       <div
@@ -26,7 +33,11 @@ export function ExplorerNavigation({
         >
           Déclaré <span>Enquête · expérience rapportée</span>
           <ScrollIndicator
-            progress={scrollRangeProgress(scrollPosition, 0, 6)}
+            progress={scrollRangeProgress(
+              scrollPosition,
+              ranges.declared.start,
+              ranges.declared.count,
+            )}
           />
         </button>
         <button
@@ -36,7 +47,11 @@ export function ExplorerNavigation({
         >
           Urgences <span>Recours aigu · OSCOUR®</span>
           <ScrollIndicator
-            progress={scrollRangeProgress(scrollPosition, 6, 1)}
+            progress={scrollRangeProgress(
+              scrollPosition,
+              ranges.emergency.start,
+              ranges.emergency.count,
+            )}
           />
         </button>
         <button
@@ -46,7 +61,11 @@ export function ExplorerNavigation({
         >
           Hôpital <span>Patients et séjours · MCO</span>
           <ScrollIndicator
-            progress={scrollRangeProgress(scrollPosition, 7, 2)}
+            progress={scrollRangeProgress(
+              scrollPosition,
+              ranges.hospital.start,
+              ranges.hospital.count,
+            )}
           />
         </button>
         <button
@@ -56,7 +75,11 @@ export function ExplorerNavigation({
         >
           Décès <span>Suicides enregistrés</span>
           <ScrollIndicator
-            progress={scrollRangeProgress(scrollPosition, 9, 1)}
+            progress={scrollRangeProgress(
+              scrollPosition,
+              ranges.deaths.start,
+              ranges.deaths.count,
+            )}
           />
         </button>
       </div>
@@ -73,7 +96,10 @@ export function ExplorerNavigation({
           >
             Séjours · départements
             <ScrollIndicator
-              progress={scrollRangeProgress(scrollPosition, 7)}
+              progress={scrollRangeProgress(
+                scrollPosition,
+                entryStepForMode("territories"),
+              )}
             />
           </button>
           <button
@@ -83,7 +109,10 @@ export function ExplorerNavigation({
           >
             Patients · âge × sexe
             <ScrollIndicator
-              progress={scrollRangeProgress(scrollPosition, 8)}
+              progress={scrollRangeProgress(
+                scrollPosition,
+                entryStepForMode("profiles"),
+              )}
             />
           </button>
         </div>

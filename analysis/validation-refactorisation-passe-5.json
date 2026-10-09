@@ -1,0 +1,305 @@
+{
+  "date": "2026-10-09",
+  "referenceCommit": "51ce211cc017132f0ceee353aaf22b8928cc86cc",
+  "publicationBeforeRefactoring": {
+    "githubCommit": "51ce211cc017132f0ceee353aaf22b8928cc86cc",
+    "githubURL": "https://github.com/m4nR3is/odisse-sante-mentale/commit/51ce211cc017132f0ceee353aaf22b8928cc86cc",
+    "vercelProduction": "https://odisse-sante-mentale.vercel.app",
+    "vercelDeployment": "dpl_39pekQTW8tLhFApMupVonbYBnThp",
+    "vercelReady": true,
+    "publicHTMLAssetsMatched": [
+      "index-BAjLZQtz.js",
+      "index-KDnVGwsS.css"
+    ],
+    "gitlabWritten": false
+  },
+  "objective": "Dernière passe de lisibilité : assemblage du parcours, destinations de navigation explicites et responsabilités géographiques séparées.",
+  "changes": {
+    "experience": {
+      "beforeLines": 127,
+      "afterLines": 45,
+      "extracted": [
+        "app/animation/useExperienceEntrance.ts",
+        "app/sections/HelpSection.tsx",
+        "app/components/SiteFooter.tsx"
+      ]
+    },
+    "navigation": {
+      "source": "app/explorer/explorerSteps.ts",
+      "namedSteps": 10,
+      "entryPointsByModeDatasetFamily": true,
+      "scrollRangesDerived": true,
+      "publicAnchorsPreserved": true
+    },
+    "map": {
+      "beforeLines": 373,
+      "afterLines": 319,
+      "pureModel": "app/maps/mapModel.ts",
+      "sharedRequest": "app/maps/useGeography.ts",
+      "requestFailureCachePreserved": true
+    },
+    "dependenciesAdded": [],
+    "dataRulesStylesChanged": false
+  },
+  "checks": {
+    "npmTest": {
+      "passed": 21,
+      "failed": 0
+    },
+    "build": {
+      "typescript": "passed",
+      "vite": "passed"
+    },
+    "prettier": "passed on modified TypeScript, browser test and fixture",
+    "gitDiffCheck": "passed",
+    "browser": {
+      "passed": 12,
+      "failed": 0,
+      "totalDurationMs": 191882,
+      "baselineBuildCompared": true,
+      "beforeAfterTextSVGSelectionsTooltipsIdentical": true,
+      "responsiveFormats": [
+        {
+          "width": 1440,
+          "height": 1000
+        },
+        {
+          "width": 1024,
+          "height": 768
+        },
+        {
+          "width": 1280,
+          "height": 560
+        },
+        {
+          "width": 768,
+          "height": 1024
+        },
+        {
+          "width": 390,
+          "height": 844
+        },
+        {
+          "width": 390,
+          "height": 600
+        }
+      ],
+      "styleStatesPerFormat": 21,
+      "styleStatesTotal": 126,
+      "computedStyleDifferences": 0,
+      "keyboardSelectionEscapeAndBackgroundReset": true,
+      "navigationButtonDestinations": true,
+      "geographySingleRequest": true,
+      "geographyFailureMenusUsable": true,
+      "storyMotionAndReducedMotion": true,
+      "horizontalOverflow": false,
+      "javascriptErrors": 0
+    },
+    "mapTransforms": {
+      "fixture": "tests/fixtures/refactor-pass5-map.json",
+      "createdFromCommit": "51ce211cc017132f0ceee353aaf22b8928cc86cc",
+      "allDepartmentAndRegionTransformsIdentical": true
+    },
+    "preparedDataSHA256": "4e826e5c97f69118fc64d74b08862f8f88b0d4403437f7b6a586897b2857419b",
+    "pixelComparison": {
+      "method": "Pillow, comparaison ponctuelle de 12 captures, hors suite portable.",
+      "results": [
+        {
+          "width": 1440,
+          "step": 1,
+          "changedPixels": 0,
+          "totalPixels": 1440000
+        },
+        {
+          "width": 1440,
+          "step": 4,
+          "changedPixels": 0,
+          "totalPixels": 1440000
+        },
+        {
+          "width": 1440,
+          "step": 7,
+          "changedPixels": 0,
+          "totalPixels": 1440000
+        },
+        {
+          "width": 1440,
+          "step": 8,
+          "changedPixels": 20,
+          "totalPixels": 1440000
+        },
+        {
+          "width": 1440,
+          "step": 9,
+          "changedPixels": 7,
+          "totalPixels": 1440000
+        },
+        {
+          "width": 1440,
+          "step": 10,
+          "changedPixels": 1,
+          "totalPixels": 1440000
+        },
+        {
+          "width": 390,
+          "step": 1,
+          "changedPixels": 0,
+          "totalPixels": 329160
+        },
+        {
+          "width": 390,
+          "step": 4,
+          "changedPixels": 0,
+          "totalPixels": 329160
+        },
+        {
+          "width": 390,
+          "step": 7,
+          "changedPixels": 1,
+          "totalPixels": 329160
+        },
+        {
+          "width": 390,
+          "step": 8,
+          "changedPixels": 0,
+          "totalPixels": 329160
+        },
+        {
+          "width": 390,
+          "step": 9,
+          "changedPixels": 0,
+          "totalPixels": 329160
+        },
+        {
+          "width": 390,
+          "step": 10,
+          "changedPixels": 0,
+          "totalPixels": 329160
+        }
+      ]
+    },
+    "screenshotsVisuallyInspected": [
+      "1440-current-8.png",
+      "390-current-4.png"
+    ]
+  },
+  "performance": {
+    "runtime": "v20.20.2",
+    "method": "Fonction pure sous Node local, 5 chauffes puis 30 mesures par configuration. Hors navigateur ; aucune mesure de FPS.",
+    "results": [
+      {
+        "scenario": "hospitalisations",
+        "points": 101,
+        "width": 720,
+        "height": 160,
+        "samples": 30,
+        "medianMs": 4.558,
+        "p95Ms": 4.633
+      },
+      {
+        "scenario": "hospitalisations",
+        "points": 101,
+        "width": 330,
+        "height": 160,
+        "samples": 30,
+        "medianMs": 5.604,
+        "p95Ms": 8.375
+      },
+      {
+        "scenario": "emergency",
+        "points": 94,
+        "width": 720,
+        "height": 160,
+        "samples": 30,
+        "medianMs": 4.538,
+        "p95Ms": 5.574
+      },
+      {
+        "scenario": "emergency",
+        "points": 94,
+        "width": 330,
+        "height": 160,
+        "samples": 30,
+        "medianMs": 4.64,
+        "p95Ms": 9.84
+      },
+      {
+        "scenario": "suicides",
+        "points": 100,
+        "width": 720,
+        "height": 160,
+        "samples": 30,
+        "medianMs": 4.877,
+        "p95Ms": 9.47
+      },
+      {
+        "scenario": "suicides",
+        "points": 100,
+        "width": 330,
+        "height": 160,
+        "samples": 30,
+        "medianMs": 5.446,
+        "p95Ms": 5.643
+      },
+      {
+        "scenario": "profiles",
+        "points": 16,
+        "width": 720,
+        "height": 160,
+        "samples": 30,
+        "medianMs": 0.125,
+        "p95Ms": 0.135
+      },
+      {
+        "scenario": "profiles",
+        "points": 16,
+        "width": 330,
+        "height": 160,
+        "samples": 30,
+        "medianMs": 0.136,
+        "p95Ms": 0.343
+      }
+    ],
+    "algorithmChanged": false,
+    "decision": "Conserver le placement actuel. Mesure isolée de la fonction pure ; profiler le parcours React/SVG sur appareil cible avant toute optimisation."
+  },
+  "assets": {
+    "gzipLevel": 9,
+    "before": [
+      {
+        "file": "index-BAjLZQtz.js",
+        "bytes": 359081,
+        "gzipBytes": 112404
+      },
+      {
+        "file": "index-KDnVGwsS.css",
+        "bytes": 124146,
+        "gzipBytes": 21404
+      }
+    ],
+    "after": [
+      {
+        "file": "index-CMYihK_E.js",
+        "bytes": 360552,
+        "gzipBytes": 112971
+      },
+      {
+        "file": "index-KDnVGwsS.css",
+        "bytes": 124146,
+        "gzipBytes": 21404
+      }
+    ]
+  },
+  "documentation": [
+    "README.md",
+    "docs/ARCHITECTURE.md"
+  ],
+  "limitations": [
+    "Chrome headless et Node 20.20.2 locaux ; cible du projet Node 22.x conservée et quatrième passe construite sur Vercel.",
+    "Comparaison de styles sur les éléments visibles : transformations et propriétés interpolées exclues, pseudo-éléments non comparés. Animations testées séparément.",
+    "Quelques pixels diffèrent ponctuellement dans quatre captures (maximum 20 sur 1 440 000) ; textes, tracés, transformations géographiques et styles contrôlés restent identiques.",
+    "Les familles restent contiguës dans les dix étapes. Les règles de progression reposent sur cet ordre éditorial.",
+    "Les timings Node ne mesurent ni les FPS, ni les appareils mobiles, ni le coût du rendu complet. Aucun gain de performance revendiqué.",
+    "Archives conservées. Dernière passe locale, non publiée ; production sur 51ce211. GitLab inchangé."
+  ]
+}

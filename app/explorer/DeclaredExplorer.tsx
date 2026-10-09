@@ -1,6 +1,10 @@
 import type { ExperienceData } from "../data/experienceTypes";
 import { scrollRangeProgress } from "../animation/progress";
-import { EXPLORER_STEPS } from "./explorerSteps";
+import {
+  declaredStepIndex,
+  declaredScrollRange,
+  type ExplorerStep,
+} from "./explorerSteps";
 import { ScrollIndicator } from "./ScrollIndicator";
 import { SocialDeclaredView } from "./SocialDeclaredView";
 import { HistoricalDeclaredView } from "./HistoricalDeclaredView";
@@ -12,11 +16,13 @@ export function DeclaredExplorer({
   position,
 }: {
   data: ExperienceData;
-  step: (typeof EXPLORER_STEPS)[number];
+  step: ExplorerStep;
   onNavigate: (index: number) => void;
   position: number;
 }) {
   const view = step.view;
+  const socialRange = declaredScrollRange("social");
+  const historyRange = declaredScrollRange("history");
   return (
     <div className="declared-shell">
       <div
@@ -27,18 +33,30 @@ export function DeclaredExplorer({
         <button
           type="button"
           aria-pressed={view === "social"}
-          onClick={() => onNavigate(0)}
+          onClick={() => onNavigate(socialRange.start)}
         >
           Inégalités sociales · 2024
-          <ScrollIndicator progress={scrollRangeProgress(position, 0, 3)} />
+          <ScrollIndicator
+            progress={scrollRangeProgress(
+              position,
+              socialRange.start,
+              socialRange.count,
+            )}
+          />
         </button>
         <button
           type="button"
           aria-pressed={view === "history"}
-          onClick={() => onNavigate(3)}
+          onClick={() => onNavigate(historyRange.start)}
         >
           Évolution déclarée · 2005–2021
-          <ScrollIndicator progress={scrollRangeProgress(position, 3, 3)} />
+          <ScrollIndicator
+            progress={scrollRangeProgress(
+              position,
+              historyRange.start,
+              historyRange.count,
+            )}
+          />
         </button>
       </div>
       {view === "social" ? (
@@ -47,13 +65,7 @@ export function DeclaredExplorer({
           position={position}
           indicator={step.indicator}
           onIndicator={(indicator) =>
-            onNavigate(
-              EXPLORER_STEPS.findIndex(
-                (candidate) =>
-                  candidate.view === "social" &&
-                  candidate.indicator === indicator,
-              ),
-            )
+            onNavigate(declaredStepIndex("social", indicator))
           }
         />
       ) : (
@@ -62,13 +74,7 @@ export function DeclaredExplorer({
           position={position}
           indicator={step.indicator}
           onIndicator={(indicator) =>
-            onNavigate(
-              EXPLORER_STEPS.findIndex(
-                (candidate) =>
-                  candidate.view === "history" &&
-                  candidate.indicator === indicator,
-              ),
-            )
+            onNavigate(declaredStepIndex("history", indicator))
           }
         />
       )}

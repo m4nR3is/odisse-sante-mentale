@@ -2,29 +2,15 @@ import ViewportTooltip from "../components/ViewportTooltip";
 import type { CSSProperties } from "react";
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 
-type MapFeature = {
-  code: string;
-  name: string;
-  path: string;
-  overseas: boolean;
-};
-type Geography = {
-  source: { repository: string };
-  departments: MapLayer;
-  regions: MapLayer;
-};
-type MapLayer = {
-  features: MapFeature[];
-  insets: { label: string; x: number; y: number }[];
-};
-export type MapItem = {
-  code: string;
-  name: string;
-  detail?: string;
-  value?: number;
-  available?: boolean;
-};
-let geographyRequest: Promise<Geography> | undefined;
+import {
+  mapColorScale,
+  formatMapValue,
+  preferBottomInsets,
+  mapFeatureTransform,
+  type MapFeature,
+  type MapItem,
+} from "./mapModel";
+import { useGeography } from "./useGeography";
 
 export default function TerritoryMap({
   level,
@@ -52,42 +38,12 @@ export default function TerritoryMap({
   const mapHeight = bottomInsets ? 355 : 240;
   const patternId = useId().replace(/:/g, "");
   const [anchor, setAnchor] = useState({ x: 0, y: 0 });
-  const values = items.flatMap((item) =>
-    Number.isFinite(item.value) ? [item.value!] : [],
-  );
-  const low = values.length ? Math.min(...values) : 0,
-    high = values.length ? Math.max(...values) : 0;
-  const color = (item?: MapItem) => {
-    if (!Number.isFinite(item?.value)) return `url(#${patternId})`;
-    const shade = Math.round(
-      220 - (high === low ? 0.5 : (item!.value! - low) / (high - low)) * 170,
-    );
-    return `rgb(${shade}, ${shade}, ${shade})`;
-  };
-  const label = (value: number) =>
-    `${value < 0 ? "−" : signedValues ? "+" : ""}${Math.abs(value).toLocaleString("fr-FR", { maximumFractionDigits: 1 })}`;
-  const [geography, setGeography] = useState<Geography | null>(null);
-  const [failed, setFailed] = useState(false);
+  const { low, high, hasValues, color } = mapColorScale(items, patternId);
+  const label = (value: number) => formatMapValue(value, signedValues);
+  const { geography, failed } = useGeography();
   const [localHover, setLocalHover] = useState<string | null>(null);
   const drag = useRef<{ x: number; y: number } | null>(null);
   const dragged = useRef(false);
-  useEffect(() => {
-    let active = true;
-    geographyRequest ??= fetch("./data/geography.json").then((response) => {
-      if (!response.ok) throw new Error("Contours indisponibles");
-      return response.json();
-    });
-    geographyRequest
-      .then((value) => {
-        if (active) setGeography(value);
-      })
-      .catch(() => {
-        if (active) setFailed(true);
-      });
-    return () => {
-      active = false;
-    };
-  }, []);
   const layer = geography?.[level];
   const interacting = useRef(false);
   interacting.current = localHover != null || preview != null;
@@ -98,10 +54,7 @@ export default function TerritoryMap({
     const resize = () => {
       if (interacting.current) return;
       const { width, height } = element.getBoundingClientRect();
-      // Choisir la disposition qui donne la plus grande France hexagonale.
-      const sideScale = Math.min(width / 300, height / 240);
-      const bottomScale = Math.min(width / 300, height / 355) * (290 / 229);
-      setBottomInsets(bottomScale > sideScale * 1.04);
+      setBottomInsets(preferBottomInsets(width, height));
     };
     const observer = new ResizeObserver(resize);
     observer.observe(element);
@@ -111,15 +64,8 @@ export default function TerritoryMap({
   useEffect(() => {
     drag.current = null;
   }, [bottomInsets]);
-  const transform = (feature: MapFeature) => {
-    if (!bottomInsets) return undefined;
-    if (!feature.overseas)
-      return "translate(5 4) scale(1.26637554585) translate(-5 -4)";
-    const insetIndex = layer!.features
-      .filter((item) => item.overseas)
-      .findIndex((item) => item.code === feature.code);
-    return `translate(${8 + insetIndex * 58 - 248} ${305 - (5 + insetIndex * 45)})`;
-  };
+  const transform = (feature: MapFeature) =>
+    mapFeatureTransform(feature, layer!, bottomInsets);
   const frontCode = localHover ?? preview;
   const frontFeature = layer?.features.find(
     (feature) => feature.code === frontCode,
@@ -326,14 +272,14 @@ export default function TerritoryMap({
           role="img"
           title="Échelle de gris propre à la vue et aux filtres actifs · hachures : données indisponibles ou non comparables"
           aria-label={
-            values.length
+            hasValues
               ? `Gris clair : ${label(low)} ; gris foncé : ${label(high)}. Hachures : données indisponibles ou non comparables. Échelle propre à cette vue.`
               : "Aucune évolution comparable"
           }
         >
-          <span>{values.length ? label(low) : "—"}</span>
+          <span>{hasValues ? label(low) : "—"}</span>
           <i aria-hidden="true" />
-          <span>{values.length ? label(high) : "—"}</span>
+          <span>{hasValues ? label(high) : "—"}</span>
           <em aria-hidden="true" />
           <span title="Évolution non comparable ou indisponible">N/C</span>
         </div>

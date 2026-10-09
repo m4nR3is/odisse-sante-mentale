@@ -8,11 +8,12 @@ avant publication ; aucun backend n’est nécessaire à la lecture du site.
 
 1. `src/main.tsx` : chargement du JSON, annulation au démontage, attente et reprise
    après échec. Le contrat chargé est défini dans `app/data/experienceTypes.ts`.
-2. `app/Experience.tsx` : assemblage du parcours, introduction automatique et
-   communication entre le récit et l’explorateur.
+2. `app/Experience.tsx` : assemblage du parcours et communication entre le récit
+   et l’explorateur. `animation/useExperienceEntrance.ts` pilote la séquence
+   d’entrée ; `HelpSection` et `SiteFooter` rendent l’aide et les crédits.
 3. `app/sections/` : introduction, récit guidé, méthode et conclusion.
-4. `app/explorer/explorerSteps.ts` : les dix étapes communes au scroll et aux
-   commandes ; `TerritoryExplorer.tsx` assemble les panneaux et
+4. `app/explorer/explorerSteps.ts` : les dix étapes nommées, leurs destinations
+   et plages de progression communes au scroll et aux commandes ; `TerritoryExplorer.tsx` assemble les panneaux et
    `DeclaredExplorer.tsx` choisit entre les deux familles d’enquêtes déclarées.
    Le pilotage des états est dans leurs hooks dédiés, décrits ci-dessous.
 5. `app/data/territoryMetrics.ts` : sélection des séries et calcul des évolutions
@@ -109,6 +110,39 @@ horizontale ; ses seuils minimaux restent explicitement 0,001 et 0,01 selon la
 vue. `useTerritoryChartSize` conserve les mesures DOM et leur nettoyage ;
 `useTerritoryExplorer` conserve les sélections, interactions et animations.
 
+## Dernière passe : assemblage, navigation et cartes
+
+`Experience.tsx` contient le parcours dans son ordre de lecture et conserve
+l’état de navigation guidée. L’effet de la séquence d’entrée est dans
+`animation/useExperienceEntrance.ts`, avec ses mêmes conditions de sortie,
+durée et nettoyage. `HelpSection` et `SiteFooter` gardent leurs liens, textes et
+balises ; leur extraction n’ajoute pas de conteneur DOM.
+
+Les identifiants des dix étapes sont définis dans `explorerSteps.ts`. Les
+commandes résolvent leur destination par identifiant, et les progressions
+utilisent les plages des familles de mesure et des vues déclarées. Il ne faut
+plus recopier des indices numériques dans un bouton ou un contrôleur. Les
+familles restent groupées dans l’ordre de scroll ; les ancres publiques
+`explorer-step-1` à `explorer-step-10` sont conservées. Les tests caractérisent
+les destinations et plages de la version publiée.
+
+La carte est organisée en trois responsabilités :
+
+| Responsabilité | Module |
+| --- | --- |
+| Contrats des contours, échelle de gris, formatage et disposition des encarts | `maps/mapModel.ts` — fonctions pures |
+| Chargement partagé des contours, attente et échec | `maps/useGeography.ts` |
+| Rendu SVG, sélection, survol, clavier et mesure du viewport | `maps/TerritoryMap.tsx` |
+
+Le chargement garde une seule promesse partagée, y compris en cas d’échec. Le
+démontage d’une carte ignore son résultat sans annuler la requête des autres.
+Il n’ajoute pas de nouvelle tentative ; les menus restent utilisables en cas
+d’échec, comme dans la version publiée. Les transformations des encarts sont
+comparées à une empreinte extraite du commit `51ce211` dans
+`tests/fixtures/refactor-pass5-map.json`. L’échelle de gris reste propre aux
+valeurs finies de la vue, avec hachures pour les absences et gris moyen pour
+un domaine constant. La marge de 4 % du choix de disposition est conservée.
+
 ## Organisation des styles après la quatrième passe
 
 `src/main.tsx` importe uniquement `app/styles/index.css`. Ce fichier rend
@@ -163,7 +197,7 @@ data/raw/ → scripts Python → public/data/experience-data.json
 ```
 
 `scripts/build_geography.py` produit `public/data/geography.json`, chargé par
-`TerritoryMap`. `scripts/source_registry.py` documente les sources dans
+`maps/useGeography.ts`. `scripts/source_registry.py` documente les sources dans
 `public/data/sources.json`. Les données brutes ne sont pas servies au navigateur.
 
 La sélection d’une étape au scroll pilote la famille de mesure et remet les
@@ -206,7 +240,9 @@ caractérisé dans les tests. Le changer serait une correction fonctionnelle,
 | Traité en troisième passe | Les contrôles navigateur étaient des scripts temporaires. | Suite Playwright dans `tests/browser/`, avec comparaison optionnelle entre deux builds. |
 | Conservation justifiée | Plusieurs sections mesurent des repères au scroll et des tailles SVG. | Garder leurs contrats distincts : les seuils, dimensions et délais diffèrent. Le récit et l’explorateur ont leurs hooks propres. |
 | Traité en quatrième passe | Les modules partagés et le CSS accumulé étaient à la racine d’`app`. | Racine limitée à l’assemblage ; dossiers explicites et styles par responsabilité, avec contrôles de cascade. |
-| À mesurer | La distribution résout les collisions par plusieurs centaines de passes sur les paires de points. | Profiler ses déclenchements et son coût avant d’optimiser le placement. |
+| Mesure initiale | La distribution résout les collisions par 340 passes sur les paires de points. | Coût médian local de 4,5–5,6 ms pour 94–101 territoires et 0,13–0,14 ms pour les seize profils ; profiler le rendu complet sur appareil cible avant une optimisation. |
+| Traité en dernière passe | Les indices de navigation et plages de progression étaient recopiés dans les commandes. | Destinations nommées et plages dérivées des étapes dans `explorerSteps.ts`. |
+| Traité en dernière passe | `TerritoryMap` mélangeait chargement, calculs de présentation et interactions. | Contrats et calculs purs dans `mapModel`, requête partagée dans `useGeography`, interactions dans le composant. |
 | À mesurer | Le survol et le scroll peuvent entraîner des recalculs et des rendus de grandes vues. | Mesurer les composants concernés avant de mémoriser ou déplacer leurs états. |
 
 La séparation de modules améliore la lecture et la vérification. Elle ne
@@ -259,6 +295,10 @@ progression interpolées sont exclues de la comparaison des styles ; les
 animations restent couvertes séparément. Cette suite ne compare pas les
 pseudo-éléments et ne remplace pas une vérification visuelle ponctuelle.
 
+Les tests de carte ajoutent le retour à France par Échap et clic sur le fond,
+les destinations des boutons, la requête géographique partagée et le maintien
+des menus lorsque les contours échouent.
+
 Options facultatives :
 
 - `BROWSER_EXECUTABLE_PATH` : chemin du Chrome/Chromium déjà installé, pour
@@ -306,5 +346,14 @@ La quatrième passe est documentée dans
 `analysis/validation-refactorisation-passe-4.json`, avec `3c3d2ef` comme
 référence. Elle porte sur les dossiers, les imports et les styles ; les données,
 mesures et textes n’ont pas été modifiés. La troisième passe a été publiée sur
-GitHub et Vercel avant le début de cette réorganisation. Les changements de la
-quatrième passe restent locaux jusqu’à une nouvelle demande de publication.
+GitHub et Vercel avant le début de cette réorganisation. La quatrième passe est
+ensuite publiée sous `51ce211`, avant la dernière passe.
+
+La dernière passe est documentée dans
+`analysis/validation-refactorisation-passe-5.json`. Les changements restent
+locaux après la publication de la quatrième passe. Aucun changement de données,
+de style ou de règle statistique n’est prévu. La mesure du placement des
+distributions utilise la fonction pure sous Node local, après chauffe, avec
+30 échantillons par configuration ; elle ne mesure ni les FPS ni le coût du
+rendu React/SVG et ne permet pas de conclure sur un téléphone. L’algorithme
+reste inchangé.

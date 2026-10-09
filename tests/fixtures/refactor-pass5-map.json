@@ -1,0 +1,47 @@
+{
+  "baselineCommit": "51ce211cc017132f0ceee353aaf22b8928cc86cc",
+  "geographySHA256": "f1733da07cfc27cdeb02153b42149119b9ca85c34e33ab1487c8840bd141c2f8",
+  "transformsSHA256": "63826b5a9cbb5498621f61b579f5416ef7b47a529b0ca7f6cf8cbca815a48de3",
+  "dimensions": [
+    {
+      "width": 300,
+      "height": 240,
+      "bottom": false
+    },
+    {
+      "width": 300,
+      "height": 355,
+      "bottom": true
+    },
+    {
+      "width": 200,
+      "height": 500,
+      "bottom": true
+    },
+    {
+      "width": 600,
+      "height": 240,
+      "bottom": false
+    },
+    {
+      "width": 390,
+      "height": 350,
+      "bottom": false
+    },
+    {
+      "width": 300,
+      "height": 290,
+      "bottom": false
+    },
+    {
+      "width": 300,
+      "height": 291,
+      "bottom": false
+    },
+    {
+      "width": 0,
+      "height": 0,
+      "bottom": false
+    }
+  ]
+}

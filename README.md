@@ -162,7 +162,7 @@ conservées comme archives, distinctes de la proposition actuelle.
 - `app/Experience.tsx` : assemblage des sections et navigation guidée vers l’explorateur.
 - `app/data/` : contrat du JSON, définitions des indicateurs, calculs territoriaux et indexation.
 - `app/sections/` : introduction, récit guidé, méthode et conclusion ; `story/` sépare les données du récit, le scroll, les animations et les rendus hospitalier/financier.
-- `app/explorer/` : assemblage des dix étapes, hooks de pilotage, commandes et graphiques séparés par mesure ; contrats d’entrée dans `explorerTypes.ts`.
+- `app/explorer/` : dix étapes nommées, destinations et progressions communes dans `explorerSteps.ts` ; hooks de pilotage, commandes et graphiques séparés par mesure ; contrats d’entrée dans `explorerTypes.ts`.
 - `app/charts/` : formatage, géométries pures propres à chaque vue, tracés SVG, disposition des distributions et animations.
 - `app/navigation/ReadingNavigation.tsx` : synchronisation de la navigation et des ancres.
 - `app/archive/` : anciennes vues éditoriales et contrats analytiques, hors parcours actif.
@@ -172,8 +172,9 @@ conservées comme archives, distinctes de la proposition actuelle.
 - `app/charts/useChartInteractions.ts` : réponse commune au survol et au focus clavier ; clic ou Entrée/Espace sur un point de valeur conserve sa précision, Échap ou clic ailleurs la ferme.
 - `app/charts/help/` : dialogue de précisions et textes méthodologiques séparés.
 - `app/charts/ReadingAnnotations.tsx` : annotations SVG de lecture.
-- `app/maps/TerritoryMap.tsx` : chargement des contours, projection et interactions géographiques.
-- `app/components/ViewportTooltip.tsx` : infobulle commune rendue dans le viewport.
+- `app/maps/` : rendu et interactions dans `TerritoryMap.tsx`, chargement partagé dans `useGeography.ts`, contrats et calculs purs dans `mapModel.ts`.
+- `app/components/` : infobulle commune `ViewportTooltip` et crédits `SiteFooter`.
+- `app/animation/useExperienceEntrance.ts` : séquence d’entrée et nettoyage des événements ; la section d’aide est dans `sections/HelpSection.tsx`.
 - `app/portraits/` : illustrations symboliques, 50 variantes, traits et interactions.
 - `public/data/experience-data.json` : données préparées et livrées localement.
 - `src/main.tsx` : entrée React.
