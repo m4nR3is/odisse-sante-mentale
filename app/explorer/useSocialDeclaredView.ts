@@ -1,3 +1,4 @@
+import { socialChartGeometry } from "../charts/geometry";
 import type { DeclaredViewProps } from "./explorerTypes";
 import { type SocialPoint } from "../data/experienceTypes";
 import { usePanelReveal } from "./usePanelReveal";
@@ -94,15 +95,11 @@ export function useSocialDeclaredView({
     { length: Math.floor(max / tickStep) + 1 },
     (_, index) => index * tickStep,
   );
-  const plotLeft = Math.min(160, chartSize.width * 0.34);
-  const plotWidth = Math.max(1, chartSize.width - plotLeft - 90);
-  const plotHeight = Math.min(520, chartSize.height - 12);
-  const plotOffset = (chartSize.height - plotHeight) / 2;
-  const plotTop = plotOffset + Math.min(20, plotHeight * 0.15);
-  const plotBottom = plotOffset + plotHeight - 57;
-  const rowY = (index: number) =>
-    plotTop + (index * (plotBottom - plotTop)) / 3;
-  const x = (value: number) => plotLeft + (value / max) * plotWidth;
+  const { plotWidth, plotTop, plotBottom, rowY, x } = socialChartGeometry(
+    chartSize.width,
+    chartSize.height,
+    max,
+  );
   const source = regional[0]?.source;
   const explanation = socialExplanation(indicator);
   if (comparing) {

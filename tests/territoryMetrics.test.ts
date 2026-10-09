@@ -139,7 +139,7 @@ test("données publiées : seize profils, chiffres du récit et sources immuable
   const girls = profiles.find(
     (row) => row.department.code === "11–14 ans|Femmes",
   )!;
-  assert.equal(Math.round(girls.change), 93);
+  assert.equal(Math.round(girls.change!), 93);
   for (const dataset of [
     "hospitalisations",
     "emergency",

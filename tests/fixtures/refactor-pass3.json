@@ -1,0 +1,14 @@
+{
+  "baselineCommit": "cc7517e461386c89f8e84e67e6e182cda4ad95b9",
+  "dataSHA256": "4e826e5c97f69118fc64d74b08862f8f88b0d4403437f7b6a586897b2857419b",
+  "metricsSHA256": "2c5c91c79f43191106ded7d12c79a0649509b5b54237207769747ef270a3e1a3",
+  "filterCombinations": 54,
+  "storyMetrics": [
+    "+4 %",
+    "+10,7 % / −6,2 %",
+    "+93 %",
+    "+93 % / +7 %",
+    "× 3,1"
+  ],
+  "storyScenesSHA256": "79b4be187a630193b881110dd1216b17f661a395a037e77bdcd4bec258083e4a"
+}

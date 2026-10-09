@@ -102,6 +102,19 @@ npm run preview
 npm test
 ```
 
+Les contrôles navigateur sont inclus dans le dépôt. Après `npm ci` :
+
+```bash
+npx playwright install chromium
+npm run test:browser
+```
+
+Ils vérifient les parcours ordinateur/mobile, les filtres et le clavier, les
+cinq scènes du récit, les animations réversibles et la reprise du chargement.
+Les options pour comparer deux builds ou utiliser un navigateur déjà installé
+sont décrites dans [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md#vérifications-reproductibles).
+Playwright est une dépendance de développement ; le site livré reste React/SVG.
+
 `dist/` est un site statique déployable sur un hébergement avec HTTPS. Aucun
 compte, CMS, backend, service de cartographie, police distante ou outil de suivi
 n’est nécessaire. Les données sont chargées depuis un fichier JSON local au site, séparé du code
@@ -148,12 +161,12 @@ conservées comme archives, distinctes de la proposition actuelle.
 - `docs/ARCHITECTURE.md` : parcours de lecture du code, flux et règles à préserver.
 - `app/Experience.tsx` : assemblage des sections et navigation guidée vers l’explorateur.
 - `app/data/` : contrat du JSON, définitions des indicateurs, calculs territoriaux et indexation.
-- `app/sections/` : introduction, récit guidé, méthode et conclusion.
+- `app/sections/` : introduction, récit guidé, méthode et conclusion ; `story/` sépare les données du récit, le scroll, les animations et les rendus hospitalier/financier.
 - `app/explorer/` : assemblage des dix étapes, hooks de pilotage, commandes et graphiques séparés par mesure ; contrats d’entrée dans `explorerTypes.ts`.
-- `app/charts/` : formatage, tracés SVG, disposition des distributions et animations.
+- `app/charts/` : formatage, géométries pures propres à chaque vue, tracés SVG, disposition des distributions et animations.
 - `app/navigation/ReadingNavigation.tsx` : synchronisation de la navigation et des ancres.
 - `app/archive/` : anciennes vues éditoriales et contrats analytiques, hors parcours actif.
-- `tests/` : tests des calculs et des invariants, exécutés avec `npm test`.
+- `tests/` : calculs et invariants (`npm test`) ; parcours et animations dans `tests/browser/` (`npm run test:browser`).
 - `app/site.css` : mises en page, animations, responsive et navigation clavier.
 - `app/visual-system.css` : hiérarchie typographique et couleurs communes aux rubriques, graphiques, légendes et infobulles.
 - `app/useChartTypography.ts` : tailles des textes, points et zones de survol en pixels écran, indépendantes de l’échelle des SVG.

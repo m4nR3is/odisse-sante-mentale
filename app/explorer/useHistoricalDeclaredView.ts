@@ -1,3 +1,7 @@
+import {
+  historicalChartGeometry,
+  distributionGeometry,
+} from "../charts/geometry";
 import type { DeclaredViewProps } from "./explorerTypes";
 import { type DeclaredHistoryPoint } from "../data/experienceTypes";
 import {
@@ -8,7 +12,7 @@ import {
   useId,
   useEffect,
 } from "react";
-import { hasValidInterval, formatNumber } from "../charts/format";
+import { hasValidInterval } from "../charts/format";
 import { usePanelReveal } from "./usePanelReveal";
 
 export function useHistoricalDeclaredView({
@@ -118,18 +122,8 @@ export function useHistoricalDeclaredView({
     resize();
     return () => observer.disconnect();
   }, []);
-  const historyUnscale = historySize.labelSize / 10;
-  const historyTickWidth =
-    Math.max(
-      ...[0, maxValue / 2, maxValue].map(
-        (tick) => `${formatNumber(tick, 0)} %`.length,
-      ),
-    ) * 7.2;
-  const historyLeft = (historyTickWidth + 12) * historyUnscale;
-  const historyRight = historySize.width - 44 * historyUnscale;
-  const x = (year: number) =>
-    historyLeft + ((year - 2005) / 16) * (historyRight - historyLeft);
-  const y = (value: number) => 218 - (value / maxValue) * 176;
+  const { historyUnscale, historyLeft, historyRight, x, y } =
+    historicalChartGeometry(historySize.width, historySize.labelSize, maxValue);
   const distributionMin = regionChanges.length
     ? Math.min(...regionChanges.map((point) => point.change))
     : 0;
@@ -156,15 +150,13 @@ export function useHistoricalDeclaredView({
     update();
     return () => observer.disconnect();
   }, []);
-  const distributionX = (value: number) =>
-    20 +
-    ((value - distributionMin) /
-      Math.max(0.01, distributionMax - distributionMin)) *
-      (distributionSize.width - 40);
-  const distributionOrigin = Math.max(
-    20,
-    Math.min(distributionSize.width - 20, distributionX(0)),
+  const { x: distributionX, markerX } = distributionGeometry(
+    distributionSize.width,
+    distributionMin,
+    distributionMax,
+    0.01,
   );
+  const distributionOrigin = markerX(0);
   const showTooltip = (
     event: ReactPointerEvent<SVGGElement>,
     point: DeclaredHistoryPoint,

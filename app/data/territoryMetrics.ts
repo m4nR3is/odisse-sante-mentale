@@ -1,5 +1,22 @@
-import type { ExperienceData, ReferencePoint } from "./experienceTypes";
+import {
+  compareRates,
+  comparisonValue,
+  type ComparisonResult,
+} from "./comparisons";
+import type {
+  ExperienceData,
+  ReferencePoint,
+  Department,
+} from "./experienceTypes";
 import { EMERGENCY_CODING_BREAK, ODISSE_AGES } from "./indicatorDefinitions";
+
+export type SelectionMetric = {
+  department: Department;
+  series: ReferencePoint[];
+  comparison: ComparisonResult;
+  change: number | null;
+  comparable: boolean;
+};
 
 export type TerritoryDataset = "hospitalisations" | "emergency" | "suicides";
 export type TerritoryConfiguration = ReturnType<
@@ -53,7 +70,7 @@ export function calculateTerritoryMetrics(
   territoryDataset: TerritoryDataset,
   age: string,
   sex: string,
-) {
+): SelectionMetric[] {
   return territoryConfig.departments
     .map((department) => {
       const series = department.series
@@ -74,24 +91,16 @@ export function calculateTerritoryMetrics(
       const last = series.find(
         (point) => point.year === territoryConfig.endYear,
       );
-      // Les décès évoluent en points de taux ; les autres mesures en pourcentage.
-      const isDeathDataset = territoryDataset === "suicides";
-      const change =
-        first && last && (isDeathDataset || first.rate > 0)
-          ? isDeathDataset
-            ? last.rate - first.rate
-            : 100 * (last.rate / first.rate - 1)
-          : null;
-      // Le seuil de prudence filtre les comparaisons, sans retirer la courbe.
-      const comparable =
-        change != null &&
-        (!isDeathDataset ||
-          ((first?.count ?? 0) >= 10 && (last?.count ?? 0) >= 10));
+      const comparison = compareRates(first, last, {
+        unit: territoryDataset === "suicides" ? "rate-points" : "percent",
+        requireDeathCounts: territoryDataset === "suicides",
+      });
       return {
         department,
         series,
-        change: change != null && Number.isFinite(change) ? change : null,
-        comparable,
+        comparison,
+        change: comparisonValue(comparison),
+        comparable: comparison.status === "available",
       };
     })
     .sort((a, b) => (a.change ?? 0) - (b.change ?? 0));
@@ -99,7 +108,7 @@ export function calculateTerritoryMetrics(
 
 export function calculateProfileMetrics(
   data: Pick<ExperienceData, "odissePatients">,
-) {
+): SelectionMetric[] {
   return ODISSE_AGES.flatMap((profileAgeValue) =>
     ["Femmes", "Hommes"].map((profileSexValue) => {
       const series = data.odissePatients
@@ -110,6 +119,7 @@ export function calculateProfileMetrics(
         .sort((a, b) => a.year - b.year);
       const first = series[0];
       const last = series.at(-1)!;
+      const comparison = compareRates(first, last, { unit: "percent" });
       return {
         department: {
           code: `${profileAgeValue}|${profileSexValue}`,
@@ -118,11 +128,12 @@ export function calculateProfileMetrics(
           series: [],
         },
         series,
-        change: 100 * (last.rate / first.rate - 1),
-        comparable: true,
+        comparison,
+        change: comparisonValue(comparison),
+        comparable: comparison.status === "available",
       };
     }),
-  ).sort((a, b) => a.change - b.change);
+  ).sort((a, b) => (a.change ?? 0) - (b.change ?? 0));
 }
 
 export function calculateNationalSelection(
@@ -130,20 +141,13 @@ export function calculateNationalSelection(
   startYear: number,
   endYear: number,
   territoryDataset: TerritoryDataset,
-) {
+): SelectionMetric {
   const first = reference.find((point) => point.year === startYear);
   const last = reference.find((point) => point.year === endYear);
-  const isDeath = territoryDataset === "suicides";
-  // Le périmètre national des urgences varie : conserver le niveau seul.
-  const change =
-    first &&
-    last &&
-    (isDeath || first.rate > 0) &&
-    territoryDataset !== "emergency"
-      ? isDeath
-        ? last.rate - first.rate
-        : 100 * (last.rate / first.rate - 1)
-      : null;
+  const comparison = compareRates(first, last, {
+    unit: territoryDataset === "suicides" ? "rate-points" : "percent",
+    changingCoverage: territoryDataset === "emergency",
+  });
   return {
     department: {
       code: "FR",
@@ -155,7 +159,8 @@ export function calculateNationalSelection(
       series: [],
     },
     series: reference,
-    change,
-    comparable: change != null && Number.isFinite(change),
+    comparison,
+    change: comparisonValue(comparison),
+    comparable: comparison.status === "available",
   };
 }

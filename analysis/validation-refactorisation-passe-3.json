@@ -1,0 +1,193 @@
+{
+  "date": "2026-10-09",
+  "referenceCommit": "cc7517e461386c89f8e84e67e6e182cda4ad95b9",
+  "objective": "Lisibilité du récit et de l’explorateur pour le jury, avec préservation des données et comportements publiés.",
+  "changes": [
+    "GuidedStory : 1008 → 164 lignes ; préparation commune des séries et scènes, scroll, dessin animé, chiffre animé et rendus SVG hospitalier/financier séparés.",
+    "Comparaisons disponibles, indisponibles avec raison et effectifs insuffisants exprimés par un type discriminé ; change/comparable restent des propriétés dérivées pour les panneaux.",
+    "Choix de référence, séries en niveau/base 100 et écarts extraits en fonctions pures ; mesure SVG territoriale isolée dans son hook.",
+    "Géométries pures spécifiques aux courbes territoriales, historiques, au gradient et au récit ; projection horizontale des distributions partagée avec seuils conservés.",
+    "Tests navigateur reproductibles intégrés au dépôt avec Playwright en dépendance de développement et comparaison optionnelle entre deux builds.",
+    "README et carte d’architecture mis à jour."
+  ],
+  "checks": {
+    "npmTest": {
+      "passed": 17,
+      "failed": 0
+    },
+    "build": {
+      "typescript": "passed",
+      "vite": "passed"
+    },
+    "gitDiffCheck": "passed",
+    "publishedCalculations": {
+      "filterCombinations": 54,
+      "profiles": 16,
+      "nationalReferences": true,
+      "identicalSeriesValuesAndComparability": true,
+      "baselineFingerprintFixture": "tests/fixtures/refactor-pass3.json"
+    },
+    "story": {
+      "scenes": 5,
+      "identicalTextsAndFormattedMetrics": true,
+      "samePreparedSeriesForNarrationAndGraphics": true
+    },
+    "browser": {
+      "runner": "npm run test:browser",
+      "playwright": "1.64.0",
+      "browser": "Installed Google Chrome, headless",
+      "testsPassed": 4,
+      "testsFailed": 0,
+      "viewports": [
+        {
+          "width": 1440,
+          "height": 1000
+        },
+        {
+          "width": 390,
+          "height": 844
+        }
+      ],
+      "explorerStepsPerViewport": 10,
+      "reverseNavigation": true,
+      "editorialStatesPerViewport": 11,
+      "interactionScenariosPerViewport": 14,
+      "identicalBeforeAfterTextSVGSelectionsAndTooltips": true,
+      "normalMotionStoryScenes": 5,
+      "girlsCurveContinuityBothDirections": "sampled each animation frame; same path and full reveal throughout scenes 2 ↔ 3",
+      "keyboardStoryTooltipAndEscape": true,
+      "reducedMotionDuringAnimation": true,
+      "guidedNavigation": true,
+      "loadingFailureAndRetry": true,
+      "horizontalOverflow": false,
+      "javascriptErrors": 0
+    },
+    "pixelComparison": {
+      "method": "Temporary Pillow comparison of six explorer screenshots per viewport, outside the portable test suite.",
+      "maximumChangedPixelFraction": 0.00017430555555555556,
+      "results": [
+        {
+          "viewportWidth": 1440,
+          "step": 1,
+          "changedPixels": 251,
+          "totalPixels": 1440000,
+          "fraction": 0.00017430555555555556
+        },
+        {
+          "viewportWidth": 1440,
+          "step": 4,
+          "changedPixels": 0,
+          "totalPixels": 1440000,
+          "fraction": 0.0
+        },
+        {
+          "viewportWidth": 1440,
+          "step": 7,
+          "changedPixels": 14,
+          "totalPixels": 1440000,
+          "fraction": 9.722222222222223e-06
+        },
+        {
+          "viewportWidth": 1440,
+          "step": 8,
+          "changedPixels": 0,
+          "totalPixels": 1440000,
+          "fraction": 0.0
+        },
+        {
+          "viewportWidth": 1440,
+          "step": 9,
+          "changedPixels": 7,
+          "totalPixels": 1440000,
+          "fraction": 4.861111111111111e-06
+        },
+        {
+          "viewportWidth": 1440,
+          "step": 10,
+          "changedPixels": 1,
+          "totalPixels": 1440000,
+          "fraction": 6.944444444444445e-07
+        },
+        {
+          "viewportWidth": 390,
+          "step": 1,
+          "changedPixels": 0,
+          "totalPixels": 329160,
+          "fraction": 0.0
+        },
+        {
+          "viewportWidth": 390,
+          "step": 4,
+          "changedPixels": 0,
+          "totalPixels": 329160,
+          "fraction": 0.0
+        },
+        {
+          "viewportWidth": 390,
+          "step": 7,
+          "changedPixels": 1,
+          "totalPixels": 329160,
+          "fraction": 3.0380362133916637e-06
+        },
+        {
+          "viewportWidth": 390,
+          "step": 8,
+          "changedPixels": 0,
+          "totalPixels": 329160,
+          "fraction": 0.0
+        },
+        {
+          "viewportWidth": 390,
+          "step": 9,
+          "changedPixels": 0,
+          "totalPixels": 329160,
+          "fraction": 0.0
+        },
+        {
+          "viewportWidth": 390,
+          "step": 10,
+          "changedPixels": 0,
+          "totalPixels": 329160,
+          "fraction": 0.0
+        }
+      ]
+    }
+  },
+  "assets": {
+    "before": {
+      "js": {
+        "file": "index-C9BYfaf3.js",
+        "bytes": 356309,
+        "gzipBytes": 111523,
+        "sha256": "2bbb973435607164e6e54a3b46f2d0981100bce22052066f6fe7aab4bce0124b"
+      },
+      "css": {
+        "file": "index-RCtQk63u.css",
+        "bytes": 122945,
+        "gzipBytes": 21270,
+        "sha256": "b5225fd4c17ca6e349d125d5350e1af5d01fcc783b2cc57bf028f7b297b8eeaa"
+      }
+    },
+    "after": {
+      "js": {
+        "file": "index-nkm901d_.js",
+        "bytes": 359074,
+        "gzipBytes": 112432,
+        "sha256": "421995e88357fe909adb092dc290dc96a9269cbb6bf826aebff24b9d391680f3"
+      },
+      "css": {
+        "file": "index-RCtQk63u.css",
+        "bytes": 122945,
+        "gzipBytes": 21270,
+        "sha256": "b5225fd4c17ca6e349d125d5350e1af5d01fcc783b2cc57bf028f7b297b8eeaa"
+      }
+    }
+  },
+  "limitations": [
+    "Exécution locale avec Node 20.20.2 ; la cible déclarée du projet demeure Node 22.x.",
+    "Les contrôles navigateur portent sur Chrome et deux dimensions ; ils ne constituent pas un audit complet d’accessibilité ou une validation de tous les navigateurs.",
+    "Les données publiées et leurs règles statistiques sont inchangées. Les entrées de comparaison non finies ou les profils sans base valide sont maintenant explicitement indisponibles, sans changement sur les données livrées.",
+    "Aucun gain de performance revendiqué. Le coût du placement des distributions et des rendus au survol reste à mesurer avant optimisation.",
+    "Modifications locales ; aucun push GitHub ni déploiement Vercel effectué pour cette passe. GitLab inchangé."
+  ]
+}

@@ -1,12 +1,21 @@
+import { useTerritoryChartSize } from "./useTerritoryChartSize";
+import {
+  territoryChartGeometry,
+  distributionGeometry,
+} from "../charts/geometry";
+import {
+  selectReferenceSeries,
+  findSelectionMetric,
+  seriesForChart,
+  calculateReferenceMetrics,
+} from "../data/territorySelection";
 import type { TerritoryExplorerProps } from "./explorerTypes";
 import { useExplorerScrollNavigation } from "./useExplorerScrollNavigation";
 import { type ReferencePoint } from "../data/experienceTypes";
 import {
   useState,
-  useRef,
   useEffect,
   useMemo,
-  useLayoutEffect,
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import {
@@ -16,7 +25,6 @@ import {
   calculateProfileMetrics,
   calculateNationalSelection,
 } from "../data/territoryMetrics";
-import { indexSeries } from "../data/series";
 import {
   useAnimatedNumber,
   useAnimatedSeries,
@@ -115,42 +123,14 @@ export function useTerritoryExplorer({
     count?: number;
   } | null>(null);
   const [hoveredCode, setHoveredCode] = useState<string | null>(null);
-  const chartSvgRef = useRef<SVGSVGElement>(null);
-  const [chartWidth, setChartWidth] = useState(500);
-  const [chartLabelSize, setChartLabelSize] = useState(10);
-  const distributionSvgRef = useRef<SVGSVGElement>(null);
-  const [distributionWidth, setDistributionWidth] = useState(720);
-  const [distributionHeight, setDistributionHeight] = useState(160);
-  useLayoutEffect(() => {
-    const element = chartSvgRef.current;
-    if (!element) return;
-    const updateWidth = () => {
-      const bounds = element.getBoundingClientRect();
-      if (bounds.width > 0 && bounds.height > 0) {
-        setChartWidth((260 * bounds.width) / bounds.height);
-        setChartLabelSize((260 * 10) / bounds.height);
-      }
-    };
-    updateWidth();
-    const observer = new ResizeObserver(updateWidth);
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [mode]);
-  useLayoutEffect(() => {
-    const element = distributionSvgRef.current;
-    if (!element) return;
-    const updateWidth = () => {
-      const bounds = element.getBoundingClientRect();
-      if (bounds.width > 0 && bounds.height > 0) {
-        setDistributionWidth((160 * bounds.width) / bounds.height);
-        setDistributionHeight(bounds.height);
-      }
-    };
-    updateWidth();
-    const observer = new ResizeObserver(updateWidth);
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [mode]);
+  const {
+    chartSvgRef,
+    chartWidth,
+    chartLabelSize,
+    distributionSvgRef,
+    distributionWidth,
+    distributionHeight,
+  } = useTerritoryChartSize(mode);
   const selectionMetrics = useMemo(
     () => (mode === "territories" ? metrics : profileMetrics),
     [metrics, mode, profileMetrics],
@@ -163,17 +143,15 @@ export function useTerritoryExplorer({
     mode === "territories" ? code : `${profileAge}|${profileSex}`;
   const reference = useMemo(
     () =>
-      mode === "territories"
-        ? territoryConfig.national.filter(
-            (point) => point.age === age && point.sex === sex,
-          )
-        : data.odissePatients
-            .filter(
-              (point) =>
-                point.age === profileAge &&
-                point.sex === (profileSex === "Femmes" ? "Hommes" : "Femmes"),
-            )
-            .sort((a, b) => a.year - b.year),
+      selectReferenceSeries({
+        data,
+        mode,
+        configuration: territoryConfig,
+        age,
+        sex,
+        profileAge,
+        profileSex,
+      }),
     [
       age,
       data.odissePatients,
@@ -198,80 +176,54 @@ export function useTerritoryExplorer({
   );
   const selected = isNationalView
     ? nationalSelection
-    : (selectionMetrics.find((row) => row.department.code === selectedCode) ?? {
-        department: {
-          code: selectedCode,
-          name: "Données indisponibles",
-          region: "",
-          series: [],
-        },
-        series: [],
-        change: null,
-        comparable: false,
-      });
+    : findSelectionMetric(selectionMetrics, selectedCode);
   const hoveredMetric =
     hoveredCode && hoveredCode !== selected.department.code
       ? selectionMetrics.find((row) => row.department.code === hoveredCode)
       : null;
   const chartSeries = useMemo(
-    () =>
-      chartView === "level"
-        ? selected.series
-        : indexSeries(selected.series, startYear),
+    () => seriesForChart(selected.series, startYear, chartView),
     [chartView, selected.series, startYear],
   );
   const chartReference: { year: number; rate: number }[] = useMemo(
     () =>
-      chartView === "level"
-        ? reference
-        : mode === "territories" && territoryDataset === "emergency"
-          ? []
-          : indexSeries(
-              reference as { year: number; rate: number }[],
-              startYear,
-            ),
+      seriesForChart(
+        reference,
+        startYear,
+        chartView,
+        !(mode === "territories" && territoryDataset === "emergency"),
+      ),
     [chartView, reference, startYear, mode, territoryDataset],
   );
   const chartHoveredSeries = useMemo(
     () =>
       hoveredMetric
-        ? chartView === "level"
-          ? hoveredMetric.series
-          : indexSeries(hoveredMetric.series, startYear)
+        ? seriesForChart(hoveredMetric.series, startYear, chartView)
         : null,
     [chartView, hoveredMetric, startYear],
   );
-  const referenceFirst = reference.find((point) => point.year === startYear);
-  const referenceLast = reference.find((point) => point.year === endYear);
-  const selectedFirst = selected.series.find(
-    (point) => point.year === startYear,
-  );
-  const selectedLast = selected.series.find((point) => point.year === endYear);
   const usesAbsoluteChange =
     mode === "territories" && territoryDataset === "suicides";
-  const hasNationalReference = Boolean(
-    referenceFirst &&
-      referenceLast &&
-      (usesAbsoluteChange || referenceFirst.rate > 0),
+  const {
+    referenceLast,
+    selectedFirst,
+    selectedLast,
+    hasNationalReference,
+    hasComparableNationalChange,
+    nationalChange,
+    levelGap,
+  } = calculateReferenceMetrics(
+    reference,
+    selected,
+    startYear,
+    endYear,
+    usesAbsoluteChange,
+    mode === "territories" && territoryDataset === "emergency",
   );
-  const hasComparableNationalChange =
-    hasNationalReference &&
-    !(mode === "territories" && territoryDataset === "emergency");
-  const nationalChange = hasNationalReference
-    ? usesAbsoluteChange
-      ? referenceLast!.rate - referenceFirst!.rate
-      : 100 * (referenceLast!.rate / referenceFirst!.rate - 1)
-    : 0;
-  const levelGap =
-    hasNationalReference && selectedLast
-      ? usesAbsoluteChange
-        ? selectedLast.rate - referenceLast!.rate
-        : 100 * (selectedLast.rate / referenceLast!.rate - 1)
-      : 0;
   const animatedChange = useAnimatedNumber(selected.change ?? 0);
   const animatedNationalLevel = useAnimatedNumber(referenceLast?.rate ?? 0);
-  const animatedNationalChange = useAnimatedNumber(nationalChange);
-  const animatedLevelGap = useAnimatedNumber(levelGap);
+  const animatedNationalChange = useAnimatedNumber(nationalChange ?? 0);
+  const animatedLevelGap = useAnimatedNumber(levelGap ?? 0);
   const animatedSeries = useAnimatedSeries<ReferencePoint>(chartSeries);
   const animatedReference = useAnimatedSeries(chartReference);
   const animatedDistribution = useAnimatedDistribution(
@@ -292,20 +244,15 @@ export function useTerritoryExplorer({
   );
   const axisScale = useAnimatedAxisScale(targetMaxRate);
   const maxRate = axisScale.domainMax;
-  const chartUnscale = chartLabelSize / 10;
-  const tickWidth =
-    Math.max(
-      ...[0, targetMaxRate / 2, targetMaxRate, axisScale.previousMax].map(
-        (tick) => formatNumber(tick, 0).length,
-      ),
-    ) * 7.2;
-  const plotLeft = (tickWidth + 12) * chartUnscale;
-  const plotRight = chartWidth - 44 * chartUnscale;
-  const x = (point: { year: number }) =>
-    plotLeft +
-    ((point.year - startYear) / Math.max(1, endYear - startYear)) *
-      (plotRight - plotLeft);
-  const y = (point: { rate: number }) => 218 - (point.rate / maxRate) * 180;
+  const { chartUnscale, plotLeft, plotRight, x, y } = territoryChartGeometry({
+    width: chartWidth,
+    labelSize: chartLabelSize,
+    targetMaxRate,
+    previousMax: axisScale.previousMax,
+    maxRate,
+    startYear,
+    endYear,
+  });
   const { min, max, increaseShare } = animatedDistribution;
   const distributionMin =
     mode === "territories" && hasComparableNationalChange
@@ -315,15 +262,13 @@ export function useTerritoryExplorer({
     mode === "territories" && hasComparableNationalChange
       ? Math.max(max, animatedNationalChange)
       : max;
-  const distributionX = (value: number) =>
-    20 +
-    ((value - distributionMin) /
-      Math.max(0.001, distributionMax - distributionMin)) *
-      (distributionWidth - 40);
-  const nationalMarkerX = Math.max(
-    20,
-    Math.min(distributionWidth - 20, distributionX(animatedNationalChange)),
+  const { x: distributionX, markerX } = distributionGeometry(
+    distributionWidth,
+    distributionMin,
+    distributionMax,
+    0.001,
   );
+  const nationalMarkerX = markerX(animatedNationalChange);
   const formatEvolution = (value: number) =>
     usesAbsoluteChange
       ? `${value >= 0 ? "+" : "−"}${formatNumber(Math.abs(value), 1)}`
