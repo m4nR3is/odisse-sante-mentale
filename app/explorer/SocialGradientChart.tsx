@@ -1,12 +1,12 @@
-import { declaredMeasure } from "../ChartHelp";
+import { declaredMeasure } from "../charts/help/chartExplanations";
 import { FINANCIAL_ORDER, FINANCIAL_SHORT } from "../data/indicatorDefinitions";
 import {
   formatNumber,
   formatConfidenceInterval,
   hasValidInterval,
 } from "../charts/format";
-import { ExplorerAnnotation } from "../ReadingIllustrations";
-import ViewportTooltip from "../ViewportTooltip";
+import { ExplorerAnnotation } from "../charts/ReadingAnnotations";
+import ViewportTooltip from "../components/ViewportTooltip";
 import type { SocialDeclaredViewModel } from "./useSocialDeclaredView";
 
 type Props = SocialDeclaredViewModel["chart"];

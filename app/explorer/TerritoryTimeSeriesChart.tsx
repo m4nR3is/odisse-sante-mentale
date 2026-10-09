@@ -1,8 +1,8 @@
 import { type CSSProperties } from "react";
 import { formatNumber } from "../charts/format";
 import { createYearLinePath } from "../charts/paths";
-import { ExplorerAnnotation } from "../ReadingIllustrations";
-import ViewportTooltip from "../ViewportTooltip";
+import { ExplorerAnnotation } from "../charts/ReadingAnnotations";
+import ViewportTooltip from "../components/ViewportTooltip";
 import type { TerritoryExplorerModel } from "./useTerritoryExplorer";
 
 type Props = TerritoryExplorerModel["chart"];

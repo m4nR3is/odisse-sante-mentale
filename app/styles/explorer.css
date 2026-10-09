@@ -1,0 +1,1446 @@
+/* Disposition de l’explorateur, filtres, courbes territoriales et distributions. */
+
+.territory-appendix {
+  padding-bottom: 120px;
+}
+.territory-lab {
+  margin: 0 7vw;
+  border: 1px solid var(--ink);
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  padding: 34px;
+  gap: 3vw;
+}
+.territory-selector {
+  width: max(var(--filter-width, 26ch), 26ch);
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+.territory-selector label {
+  font: 9px var(--mono);
+  text-transform: uppercase;
+}
+.territory-selector select {
+  width: 100%;
+  margin: 12px 0 35px;
+  padding: 12px;
+  background: transparent;
+  border: 1px solid var(--ink);
+}
+.territory-selector strong {
+  font-size: 80px;
+  font-weight: 350;
+  letter-spacing: -0.07em;
+}
+.territory-selector span {
+  font: 9px/1.5 var(--mono);
+  color: var(--muted);
+}
+.territory-chart {
+  min-width: 0;
+}
+.territory-chart svg {
+  width: 100%;
+}
+.territory-chart .national-line,
+.territory-chart .department-line {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+.territory-chart .national-line {
+  stroke: var(--reference);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 5;
+}
+.territory-chart .department-line {
+  stroke: var(--accent);
+  stroke-width: 3;
+}
+.territory-chart circle {
+  fill: var(--accent);
+}
+.territory-chart text {
+  font: 9px var(--mono);
+  fill: var(--muted);
+}
+.distribution {
+  grid-column: 1/-1;
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+.distribution p {
+  grid-column: 1/-1;
+  margin: 0;
+}
+.distribution p b {
+  font-size: 30px;
+  font-weight: 450;
+}
+.distribution svg {
+  grid-column: 1/-1;
+  width: 100%;
+}
+.distribution svg line {
+  stroke: #a7a9a2;
+}
+.distribution svg circle {
+  fill: var(--reference);
+  opacity: 0.65;
+}
+.distribution svg circle.selected {
+  fill: var(--accent);
+  opacity: 1;
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+.distribution > span {
+  font: 9px var(--mono);
+  color: var(--muted);
+}
+.distribution > span:last-child {
+  text-align: right;
+}
+.distribution svg {
+  overflow: visible;
+}
+.distribution svg .zero-marker {
+  stroke: var(--ink);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+}
+.distribution svg .zero-label {
+  fill: var(--ink);
+  font: 8px var(--mono);
+  font-weight: 700;
+}
+.distribution-interaction {
+  fill: transparent;
+  pointer-events: all;
+  cursor: pointer;
+}
+.distribution-point {
+  pointer-events: none;
+  outline: none;
+}
+.distribution svg .distribution-dot {
+  fill: var(--reference);
+  opacity: 0.65;
+  transition:
+    fill 0.15s ease,
+    opacity 0.15s ease,
+    stroke-width 0.15s ease;
+}
+.distribution-point.is-hovered .distribution-dot,
+.distribution-point:focus .distribution-dot {
+  fill: var(--accent);
+  opacity: 1;
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+.distribution-point.selected .distribution-dot {
+  fill: var(--accent);
+  opacity: 1;
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+.data-change {
+  animation: data-change-in 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes data-change-in {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.territory-filters {
+  width: min(100%, var(--filter-width, 32ch));
+  display: grid;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.territory-filters label {
+  display: block;
+}
+.territory-selector .territory-filters select {
+  display: block;
+  width: 100%;
+  margin: 7px 0 0;
+  padding: 11px 12px;
+  background: transparent;
+  border: 1px solid var(--ink);
+}
+.territory-context {
+  margin: -14px 0 12px;
+  font: 9px/1.5 var(--mono);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.explorer-mode {
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--ink);
+  margin: -1px -1px 6px;
+}
+.explorer-mode button {
+  appearance: none;
+  border: 0;
+  border-right: 1px solid var(--ink);
+  padding: 14px 16px;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.explorer-mode button:last-child {
+  border-right: 0;
+}
+.explorer-mode button span {
+  display: block;
+  margin-top: 4px;
+  font: 8px var(--mono);
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.explorer-mode button[aria-selected="true"] {
+  background: var(--ink);
+  color: var(--white);
+}
+.explorer-mode button[aria-selected="true"] span {
+  color: var(--on-dark-muted);
+}
+.explorer-mode button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -4px;
+}
+.territory-chart .hover-line {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.6;
+  vector-effect: non-scaling-stroke;
+  animation: hover-line-draw 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes hover-line-draw {
+  from {
+    clip-path: inset(-2px 100% -2px -2px);
+  }
+  to {
+    clip-path: inset(-2px);
+  }
+}
+.territory-chart .legend .hovered-slot {
+  display: inline-block;
+  width: 190px;
+  min-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: opacity 0.12s ease;
+}
+.territory-chart .legend .hovered-slot:before {
+  display: block;
+  margin: 0 0 6px;
+}
+.territory-chart .legend .hovered-slot.is-empty {
+  opacity: 0;
+}
+.territory-chart .legend .selected-legend {
+  display: inline-block;
+  max-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.territory-chart .legend .selected-legend:before {
+  display: block;
+  margin: 0 0 6px;
+}
+.territory-chart .legend .france {
+  display: inline-block;
+  white-space: nowrap;
+}
+.territory-chart .legend .france:before {
+  display: block;
+  margin: 0 0 6px;
+}
+.territory-chart .legend {
+  justify-content: flex-start;
+  margin-left: 0;
+  margin-right: 0;
+}
+.territory-chart .chart-point {
+  outline: none;
+}
+.territory-chart .chart-hit {
+  fill: transparent;
+  opacity: 1;
+  cursor: default;
+}
+.territory-chart .chart-dot {
+  pointer-events: none;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+    stroke-width 0.18s ease;
+}
+.territory-chart .chart-point:hover .chart-dot,
+.territory-chart .chart-point:focus .chart-dot {
+  transform: scale(1.85);
+  stroke: var(--ink);
+  stroke-width: 0.8;
+}
+.territory-chart > svg {
+  overflow: visible;
+}
+.chart-view-toggle {
+  display: inline-flex;
+  margin: 0 0 8px;
+  border: 1px solid var(--ink);
+}
+.chart-view-toggle button {
+  appearance: none;
+  border: 0;
+  border-right: 1px solid var(--ink);
+  padding: 7px 10px;
+  background: transparent;
+  color: var(--ink);
+  font: 8px var(--mono);
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.chart-view-toggle button:last-child {
+  border-right: 0;
+}
+.chart-view-toggle button[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--white);
+}
+.chart-view-toggle button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.territory-chart .chart-grid line {
+  stroke: var(--line);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.territory-chart .chart-grid text {
+  font-size: 7px;
+  fill: var(--muted);
+}
+.territory-chart .index-baseline {
+  stroke: #a8aaa4;
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+  vector-effect: non-scaling-stroke;
+}
+.distribution-kicker {
+  grid-column: 1/-1;
+  margin-bottom: 7px;
+  color: var(--muted);
+  font: 8px var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.territory-selector .relative-level {
+  margin: 15px 0 0;
+  padding-top: 11px;
+  border-top: 1px solid var(--line);
+  font: 10px/1.4 var(--mono);
+  color: var(--ink);
+}
+.territory-selector .relative-level b {
+  font-size: 18px;
+  font-weight: 600;
+}
+.territory-selector .relative-level.is-positive b {
+  color: var(--accent);
+}
+.territory-selector .relative-level.is-negative b {
+  color: #7d817a;
+}
+.territory-selector .relative-level.is-neutral {
+  color: var(--muted);
+}
+.distribution svg .national-marker {
+  stroke: #777b74;
+  stroke-width: 1;
+  stroke-dasharray: 5 3;
+}
+.distribution svg .national-marker-label {
+  fill: #686c66;
+  font: 7px var(--mono);
+  font-weight: 700;
+}
+.territory-selector .low-sample {
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px 0;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  gap: 4px;
+}
+.territory-selector .low-sample strong {
+  font: 600 20px var(--sans);
+  letter-spacing: -0.02em;
+  color: #7d817a;
+}
+.territory-selector .low-sample span {
+  font: 9px/1.5 var(--mono);
+  color: var(--muted);
+}
+.distribution .no-comparison {
+  padding: 13px 0;
+  font: 11px/1.5 var(--mono);
+  color: var(--muted);
+}
+.explorer-mode.data-types {
+  grid-template-columns: repeat(4, 1fr);
+}
+.explorer-mode.data-types button {
+  min-width: 0;
+}
+.explorer-mode.data-types button:last-child {
+  border-right: 0;
+}
+.explorer-navigation {
+  grid-column: 1/-1;
+  min-width: 0;
+}
+.explorer-navigation .explorer-mode {
+  margin-bottom: 0;
+}
+.measure-subnav {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--ink);
+  border-top: 0;
+}
+.measure-subnav button {
+  appearance: none;
+  border: 0;
+  border-right: 1px solid var(--line);
+  padding: 9px 14px;
+  background: transparent;
+  color: var(--ink);
+  font: 8px var(--mono);
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.measure-subnav button[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--white);
+  box-shadow: none;
+}
+.measure-subnav button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+@media (min-width: 981px) {
+  .territory-lab {
+    height: min(940px, calc(100svh - 16px));
+    min-height: 540px;
+    padding: clamp(16px, 2.3vh, 34px);
+    gap: clamp(16px, 3vw, 5vw);
+    grid-template-rows: auto minmax(250px, 1fr) minmax(135px, 0.48fr);
+    overflow: hidden;
+  }
+  .explorer-mode.data-types {
+    margin-bottom: 0;
+  }
+  .explorer-mode button {
+    padding-block: clamp(9px, 1.4vh, 14px);
+  }
+  .territory-selector,
+  .territory-chart {
+    min-height: 0;
+  }
+  .territory-selector {
+    overflow: hidden;
+  }
+  .territory-filters {
+    gap: clamp(5px, 1vh, 12px);
+    margin-bottom: clamp(10px, 2vh, 32px);
+  }
+  .territory-selector .territory-filters select {
+    margin-top: 4px;
+    padding-block: clamp(7px, 1.1vh, 11px);
+  }
+  .territory-selector > strong {
+    font-size: clamp(48px, 8vh, 80px);
+  }
+  .territory-selector .relative-level {
+    margin-top: clamp(7px, 1.5vh, 15px);
+    padding-top: clamp(7px, 1.2vh, 11px);
+  }
+  .territory-chart {
+    display: grid;
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    align-content: stretch;
+  }
+  .territory-chart h3 {
+    margin: 0 0 clamp(12px, 2vh, 20px);
+  }
+  .territory-context {
+    margin-top: calc(clamp(8px, 1.5vh, 14px) * -1);
+    margin-bottom: clamp(5px, 1vh, 12px);
+  }
+  .chart-view-toggle {
+    margin-bottom: clamp(3px, 0.8vh, 8px);
+  }
+  .territory-chart > svg {
+    height: 100%;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+  .territory-chart .legend {
+    margin-top: clamp(7px, 1.5vh, 20px);
+  }
+  .distribution {
+    min-height: 0;
+    padding-top: clamp(10px, 1.8vh, 24px);
+    grid-template-rows: auto auto minmax(70px, 1fr) auto;
+  }
+  .distribution p b {
+    font-size: clamp(23px, 3.4vh, 30px);
+  }
+  .distribution svg {
+    height: 100%;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+}
+@media (max-width: 980px) {
+  .territory-lab {
+    grid-template-columns: 1fr;
+  }
+  .explorer-mode.data-types {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 650px) {
+  .territory-lab {
+    margin: 0 14px;
+    padding: 20px;
+  }
+  .explorer-mode,
+  .explorer-mode.data-types {
+    grid-template-columns: 1fr;
+  }
+  .explorer-mode button {
+    border-right: 0;
+    border-bottom: 1px solid var(--ink);
+  }
+  .explorer-mode button:last-child {
+    border-bottom: 0;
+  }
+  .territory-selector strong {
+    font-size: 60px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .data-change,
+  .territory-chart .hover-line {
+    animation: none;
+  }
+  .distribution-dot,
+  .territory-chart .chart-dot {
+    transition: none !important;
+  }
+}
+.metric-definition {
+  display: grid;
+  gap: 5px;
+  margin: 0 0 14px;
+  max-width: 32ch;
+}
+.metric-definition b {
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+.territory-selector .metric-definition span {
+  font: 11px/1.5 var(--mono);
+}
+.territory-selector .metric-period {
+  font: 11px/1.5 var(--mono);
+  color: var(--ink);
+  margin-top: 6px;
+}
+.territory-selector .metric-endpoints {
+  font: 11px/1.5 var(--mono);
+  color: var(--ink);
+}
+.distribution .distribution-explanation {
+  font: 11px/1.5 var(--mono);
+  color: var(--muted);
+  max-width: 950px;
+  margin: 7px 0 12px;
+}
+.territory-lab {
+  scroll-margin-top: 18px;
+}
+.low-sample strong {
+  font-family: inherit !important;
+}
+@media (min-width: 981px) {
+  .territory-lab {
+    height: auto;
+    min-height: 640px;
+    overflow: visible;
+    grid-template-rows: auto minmax(350px, auto) minmax(215px, auto);
+  }
+  .territory-selector {
+    overflow: visible;
+  }
+  .territory-chart > svg {
+    min-height: 240px;
+  }
+  .distribution {
+    grid-template-rows: auto auto auto 120px auto;
+  }
+}
+@media (max-width: 980px) {
+  .territory-selector {
+    width: 100%;
+  }
+  .territory-filters {
+    width: 100%;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .metric-definition {
+    max-width: none;
+  }
+  .distribution .distribution-explanation {
+    margin-bottom: 14px;
+  }
+}
+@media (max-width: 650px) {
+  .territory-selector .animated-number {
+    font-size: 64px;
+  }
+  .metric-definition {
+    margin-top: 6px;
+  }
+  .explorer-mode.data-types {
+    grid-template-columns: 1fr 1fr;
+  }
+  .explorer-mode.data-types button {
+    font-size: 13px;
+    border: 1px solid var(--line);
+    margin: -1px 0 0 -1px;
+  }
+  .explorer-mode.data-types button span {
+    font-size: 8px;
+    line-height: 1.5;
+  }
+  .distribution svg {
+    min-height: 110px;
+  }
+  .territory-chart svg text {
+    font-size: 16px;
+  }
+  .distribution svg .zero-label,
+  .distribution svg .national-marker-label {
+    font-size: 12px;
+  }
+}
+.explorer-mode button[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--white);
+}
+.explorer-mode button[aria-pressed="true"] span {
+  color: var(--on-dark-muted);
+}
+.territory-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+@media (min-width: 981px) {
+  .territory-lab[data-mode="territories"],
+  .territory-lab[data-mode="profiles"] {
+    height: calc(100svh - 32px);
+    min-height: 0;
+    max-height: 1100px;
+    padding: clamp(10px, 2svh, 28px);
+    gap: clamp(8px, 1.6svh, 20px) clamp(20px, 3vw, 48px);
+    grid-template-columns: 25% minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) minmax(0, 0.42fr);
+    overflow: visible;
+    scroll-margin-top: 16px;
+  }
+  .territory-selector {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    gap: 0;
+  }
+  .territory-filters {
+    width: 100%;
+    margin-bottom: clamp(8px, 1.4svh, 18px);
+    gap: clamp(4px, 0.8svh, 10px);
+  }
+  .territory-selector .territory-filters select {
+    margin-top: 3px;
+    padding: clamp(5px, 0.8svh, 10px) 9px;
+  }
+  .metric-definition {
+    margin: 0 0 clamp(4px, 0.8svh, 10px);
+    gap: 3px;
+  }
+  .metric-definition b {
+    font-size: clamp(11px, 1.7svh, 14px);
+  }
+  .territory-selector .metric-definition span,
+  .territory-selector .metric-period,
+  .territory-selector .metric-endpoints {
+    font-size: clamp(9px, 1.3svh, 11px);
+    line-height: 1.4;
+  }
+  .territory-summary > .animated-number {
+    font-size: clamp(36px, 7svh, 76px);
+    line-height: 1.05;
+    margin: 4px 0;
+  }
+  .territory-selector .relative-level {
+    margin-top: clamp(5px, 1svh, 12px);
+    padding-top: clamp(5px, 0.8svh, 9px);
+  }
+  .territory-selector .relative-level b {
+    font-size: clamp(13px, 2.2svh, 18px);
+  }
+  .territory-chart {
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    gap: 0;
+    min-height: 0;
+  }
+  .territory-chart h3 {
+    grid-row: 1;
+    margin: 0 0 clamp(4px, 0.8svh, 10px);
+    font-size: clamp(20px, 3svh, 30px);
+  }
+  .territory-context {
+    grid-row: 2;
+    margin: 0 0 clamp(3px, 0.6svh, 8px);
+    font-size: 9px;
+  }
+  .chart-view-toggle {
+    grid-row: 3;
+    margin: 0 0 clamp(3px, 0.6svh, 8px);
+  }
+  .chart-view-toggle button {
+    padding: clamp(4px, 0.7svh, 7px) 9px;
+  }
+  .territory-chart > svg {
+    grid-row: 4;
+    height: 100%;
+    width: 100%;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+  .territory-chart > .legend {
+    grid-row: 5;
+    margin-top: clamp(4px, 0.8svh, 10px);
+    gap: clamp(12px, 2vw, 25px);
+    font-size: 9px;
+  }
+  .territory-chart .legend .hovered-slot {
+    width: 140px;
+    min-width: 0;
+    max-width: 30%;
+  }
+  .territory-chart .legend .hovered-slot.is-empty {
+    display: none;
+  }
+  .distribution {
+    padding-top: clamp(5px, 1svh, 12px);
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    min-height: 0;
+    gap: 0;
+  }
+  .distribution .distribution-explanation {
+    font-size: clamp(9px, 1.3svh, 11px);
+    line-height: 1.4;
+    margin: 4px 0 6px;
+  }
+  .distribution p {
+    font-size: clamp(11px, 1.6svh, 14px);
+  }
+  .distribution p b {
+    font-size: clamp(18px, 3svh, 28px);
+  }
+  .distribution > svg {
+    height: 100%;
+    min-height: 0;
+    width: 100%;
+    aspect-ratio: auto;
+  }
+  .distribution-kicker {
+    font-size: 9px;
+  }
+  .explorer-mode button {
+    padding: clamp(6px, 1svh, 12px) 12px;
+  }
+  .measure-subnav button {
+    padding: clamp(5px, 0.8svh, 9px) 12px;
+  }
+}
+@media (min-width: 981px) and (max-height: 760px) {
+  .territory-lab[data-mode="territories"],
+  .territory-lab[data-mode="profiles"] {
+    grid-template-rows: auto auto minmax(0, 1fr) minmax(0, 0.48fr);
+  }
+  .territory-selector {
+    display: contents;
+  }
+  .territory-filters {
+    grid-column: 1/-1;
+    grid-row: 2;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+    gap: 12px;
+  }
+  .territory-lab[data-mode="profiles"] .territory-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .territory-summary {
+    grid-column: 1;
+    grid-row: 3;
+  }
+  .territory-chart {
+    grid-column: 2;
+    grid-row: 3;
+  }
+  .distribution {
+    grid-row: 4;
+  }
+  .territory-selector .low-sample {
+    margin-top: 4px;
+    padding: 8px 0;
+  }
+  .territory-selector .low-sample strong {
+    font-size: 16px;
+  }
+  .metric-definition {
+    max-width: none;
+  }
+}
+@media (min-width: 981px) and (max-height: 560px) {
+  .territory-lab[data-mode="territories"],
+  .territory-lab[data-mode="profiles"] {
+    padding: 8px;
+    gap: 6px 24px;
+    grid-template-rows: auto auto minmax(0, 1fr) minmax(0, 0.65fr);
+  }
+  .territory-summary .metric-definition {
+    display: none;
+  }
+  .territory-summary > .animated-number {
+    font-size: 36px;
+  }
+  .territory-summary .relative-level {
+    font-size: 9px;
+  }
+  .explorer-mode button {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+  .explorer-mode button span {
+    margin-top: 2px;
+    font-size: 8px;
+  }
+  .measure-subnav button {
+    padding: 4px 10px;
+    font-size: 9px;
+  }
+  .territory-filters label {
+    font-size: 8px;
+  }
+  .territory-selector .territory-filters select {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+  .territory-chart h3 {
+    font-size: 20px;
+  }
+  .distribution .distribution-explanation {
+    font-size: 9px;
+    margin: 3px 0;
+  }
+  .distribution p b {
+    font-size: 18px;
+  }
+  .territory-chart .legend {
+    font-size: 8px;
+  }
+  .territory-context {
+    font-size: 8px;
+  }
+  .distribution-kicker {
+    font-size: 8px;
+  }
+}
+@media (min-width: 981px) {
+  .territory-chart svg text,
+  .territory-chart .chart-grid text {
+    font-size: var(--chart-label-size, 10px);
+  }
+}
+@media (min-width: 981px) and (max-height: 560px) {
+  .territory-lab[data-mode="territories"],
+  .territory-lab[data-mode="profiles"] {
+    grid-template-rows: auto auto minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .territory-chart {
+    grid-row: 3/5;
+  }
+  .distribution {
+    grid-column: 1;
+    grid-row: 4;
+    padding-top: 4px;
+  }
+  .distribution .distribution-explanation {
+    display: none;
+  }
+  .distribution p {
+    font-size: 9px;
+    line-height: 1.3;
+  }
+  .distribution p b {
+    font-size: 16px;
+  }
+  .distribution-kicker {
+    font-size: 8px;
+    line-height: 1.3;
+  }
+  .territory-summary .metric-period,
+  .territory-summary .metric-endpoints {
+    font-size: 9px;
+    line-height: 1.3;
+  }
+  .territory-summary .relative-level {
+    margin-top: 4px;
+    padding-top: 4px;
+    line-height: 1.3;
+  }
+  .territory-summary .relative-level b {
+    font-size: 12px;
+  }
+  .territory-chart > .legend {
+    flex-wrap: wrap;
+    gap: 8px 14px;
+  }
+}
+@media (min-width: 981px) {
+  .distribution-kicker {
+    grid-column: 1/-1;
+    grid-row: 1;
+  }
+  .distribution .distribution-explanation {
+    grid-row: 2;
+  }
+  .distribution > p:not(.distribution-explanation) {
+    grid-row: 3;
+  }
+  .distribution > svg {
+    grid-row: 4;
+  }
+  .distribution > span {
+    grid-row: 5;
+  }
+  .territory-lab[data-mode] {
+    height: calc(100svh - var(--nav-height) - 32px);
+    scroll-margin-top: 0;
+  }
+}
+.explorer-scroll-track {
+  --explorer-height: calc(100svh - var(--nav-height) - 56px);
+  display: grid;
+  position: relative;
+}
+.explorer-scroll-landmarks {
+  grid-column: 1;
+  grid-row: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0 0 var(--explorer-height);
+  pointer-events: none;
+}
+.explorer-scroll-landmarks > li {
+  height: 80svh;
+  scroll-margin-top: 0;
+}
+.explorer-scroll-track .territory-lab[data-mode] {
+  grid-column: 1;
+  grid-row: 1;
+  position: sticky;
+  top: calc(var(--nav-height) + 16px);
+  align-self: start;
+  z-index: 2;
+  height: var(--explorer-height);
+  min-height: 0;
+  scroll-margin-top: 0;
+}
+.explorer-scroll-status {
+  grid-column: 1;
+  grid-row: 1;
+  position: sticky;
+  top: calc(100svh - 28px);
+  align-self: start;
+  z-index: 3;
+  margin: calc(var(--explorer-height) + 12px) 7vw 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font: 9px/1.5 var(--mono);
+  pointer-events: none;
+}
+.explorer-scroll-status b {
+  color: var(--accent);
+}
+@media (max-width: 980px) {
+  .explorer-scroll-track .territory-lab[data-mode] {
+    padding: 12px;
+    gap: 8px 14px;
+    overflow: visible;
+    max-height: none;
+  }
+  .explorer-navigation {
+    grid-column: 1/-1;
+  }
+  .explorer-mode.data-types {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: 0;
+  }
+  .explorer-mode.data-types button {
+    font-size: 11px;
+    padding: 7px 5px;
+    border-bottom: 0;
+    border-right: 1px solid var(--line);
+  }
+  .explorer-mode.data-types button span {
+    font-size: 7px;
+  }
+  .measure-subnav button {
+    padding: 6px 8px;
+    font-size: 9px;
+  }
+  .explorer-scroll-track .territory-lab[data-mode="territories"],
+  .explorer-scroll-track .territory-lab[data-mode="profiles"] {
+    grid-template-columns: minmax(110px, 0.36fr) minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr) minmax(0, 0.45fr);
+  }
+  .territory-selector {
+    display: contents;
+  }
+  .territory-filters {
+    grid-column: 1/-1;
+    grid-row: 2;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    gap: 6px;
+    margin: 0;
+  }
+  .territory-lab[data-mode="profiles"] .territory-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .territory-selector .territory-filters select {
+    margin-top: 3px;
+    padding: 6px 4px;
+    font-size: 10px;
+  }
+  .territory-filters label {
+    font-size: 8px;
+  }
+  .territory-summary {
+    grid-column: 1;
+    grid-row: 3;
+  }
+  .territory-summary .metric-definition {
+    display: none;
+  }
+  .territory-summary > .animated-number {
+    font-size: 36px;
+    margin: 5px 0;
+  }
+  .territory-summary .metric-period,
+  .territory-summary .metric-endpoints {
+    font-size: 8px;
+  }
+  .territory-summary .relative-level {
+    font-size: 8px;
+    margin-top: 6px;
+    padding-top: 6px;
+  }
+  .territory-summary .relative-level b {
+    font-size: 14px;
+  }
+  .territory-chart {
+    grid-column: 2;
+    grid-row: 3;
+    display: grid;
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    min-height: 0;
+  }
+  .territory-chart h3 {
+    grid-row: 1;
+    font-size: 20px;
+    margin: 0 0 5px;
+  }
+  .territory-context {
+    grid-row: 2;
+    font-size: 8px;
+    margin: 0 0 5px;
+  }
+  .chart-view-toggle {
+    grid-row: 3;
+    margin: 0 0 5px;
+  }
+  .chart-view-toggle button {
+    font-size: 8px;
+    padding: 5px;
+  }
+  .territory-chart > svg {
+    grid-row: 4;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+  .territory-chart svg text {
+    font-size: var(--chart-label-size, 10px);
+  }
+  .territory-chart > .legend {
+    grid-row: 5;
+    margin: 5px 0 0;
+    font-size: 8px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .territory-chart .legend .hovered-slot.is-empty {
+    display: none;
+  }
+  .distribution {
+    grid-column: 1/-1;
+    grid-row: 4;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    padding-top: 8px;
+  }
+  .distribution-kicker {
+    grid-column: 1/-1;
+    grid-row: 1;
+    font-size: 8px;
+  }
+  .distribution .distribution-explanation {
+    display: none;
+  }
+  .distribution > p:not(.distribution-explanation) {
+    grid-row: 2;
+    font-size: 9px;
+  }
+  .distribution p b {
+    font-size: 18px;
+  }
+  .distribution > svg {
+    grid-row: 3;
+    height: 100%;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+  .distribution > span {
+    grid-row: 4;
+    font-size: 8px;
+  }
+  .explorer-scroll-status {
+    margin-left: 14px;
+    margin-right: 14px;
+    font-size: 8px;
+  }
+  .explorer-scroll-status > span:last-child {
+    display: none;
+  }
+}
+@media (max-width: 980px) and (max-height: 650px) {
+  .explorer-scroll-track .territory-lab[data-mode="territories"],
+  .explorer-scroll-track .territory-lab[data-mode="profiles"] {
+    grid-template-rows: auto auto minmax(0, 1fr) minmax(0, 0.65fr);
+  }
+  .metric-definition {
+    display: none;
+  }
+  .territory-summary .relative-level {
+    font-size: 7px;
+  }
+  .territory-summary > .animated-number {
+    font-size: 28px;
+  }
+  .distribution p b {
+    font-size: 14px;
+  }
+}
+.explorer-mode.data-types button > .control-scroll-progress {
+  display: block;
+  margin: 0;
+  font-size: 0;
+}
+.measure-subnav button[aria-pressed="true"] {
+  box-shadow: none;
+}
+.territory-chart > .chart-scope-note {
+  grid-row: 6;
+  font: 9px/1.4 var(--mono);
+  color: var(--muted);
+  margin: 6px 0 0;
+}
+.territory-chart circle.reference-dot {
+  fill: var(--reference);
+}
+.territory-chart svg .scope-annotation line {
+  stroke: var(--muted);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.territory-chart svg .scope-annotation text {
+  fill: var(--ink);
+  font-size: var(--chart-label-size, 10px);
+  paint-order: stroke;
+  stroke: var(--paper);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+.territory-chart[data-national="true"] .national-line {
+  stroke: var(--ink);
+}
+.territory-chart[data-national="true"] .chart-dot {
+  fill: var(--ink);
+}
+@media (min-width: 981px) {
+  .explorer-scroll-track .territory-lab[data-mode="territories"] {
+    grid-template-columns: 25% minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) minmax(0, 0.35fr);
+  }
+  .territory-lab[data-mode="territories"] .territory-selector {
+    display: flex;
+    grid-column: 1;
+    grid-row: 2/4;
+    width: 100%;
+    min-height: 0;
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .territory-lab[data-mode="territories"] .territory-filters {
+    display: grid;
+    grid-template-columns: 1fr;
+    flex-shrink: 0;
+    gap: 5px;
+    margin: 0;
+    grid-column: auto;
+    grid-row: auto;
+  }
+  .territory-lab[data-mode="territories"] .territory-filters select {
+    margin: 3px 0 0;
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+  .territory-lab[data-mode="territories"] .territory-chart {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .territory-lab[data-mode="territories"] .distribution {
+    grid-column: 2;
+    grid-row: 3;
+  }
+  .territory-lab[data-mode="territories"] .territory-summary {
+    flex-shrink: 0;
+    display: flex;
+    grid-row: auto;
+    grid-column: auto;
+    gap: 0;
+  }
+  .territory-lab[data-mode="territories"] .metric-definition {
+    display: none;
+  }
+  .territory-lab[data-mode="territories"]
+    .territory-summary
+    > .animated-number {
+    font-size: clamp(28px, 5svh, 52px);
+  }
+  .territory-lab[data-mode="territories"] .metric-period,
+  .territory-lab[data-mode="territories"] .metric-endpoints,
+  .territory-lab[data-mode="territories"] .relative-level {
+    font-size: 9px;
+    line-height: 1.3;
+  }
+  .territory-lab[data-mode="territories"] .relative-level {
+    margin: 4px 0 0;
+    padding: 4px 0 0;
+  }
+  .territory-lab[data-mode="territories"]
+    .distribution
+    .distribution-explanation {
+    font-size: 9px;
+    margin: 2px 0;
+  }
+}
+@media (min-width: 981px) and (max-height: 650px) {
+  .territory-lab[data-mode="territories"] .territory-filters label {
+    font-size: 7px;
+  }
+  .territory-lab[data-mode="territories"] .territory-filters select {
+    padding: 3px 7px;
+    font-size: 9px;
+  }
+  .territory-lab[data-mode="territories"]
+    .territory-summary
+    > .animated-number {
+    font-size: 28px;
+    margin: 2px 0;
+  }
+  .territory-lab[data-mode="territories"] .metric-endpoints,
+  .territory-lab[data-mode="territories"] .metric-period,
+  .territory-lab[data-mode="territories"] .relative-level {
+    font-size: 8px;
+  }
+}
+@media (max-width: 980px) {
+  .explorer-scroll-track .territory-lab[data-mode="territories"] {
+    grid-template-columns: minmax(112px, 0.42fr) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) minmax(0, 0.4fr);
+  }
+  .territory-lab[data-mode="territories"] .territory-selector {
+    display: flex;
+    flex-direction: column;
+    grid-column: 1;
+    grid-row: 2/4;
+    min-height: 0;
+    width: 100%;
+    align-items: stretch;
+  }
+  .territory-lab[data-mode="territories"] .territory-filters {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .territory-lab[data-mode="territories"] .territory-chart {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .territory-lab[data-mode="territories"] .distribution {
+    grid-column: 2;
+    grid-row: 3;
+  }
+  .territory-lab[data-mode="territories"] .territory-summary {
+    flex-shrink: 0;
+    grid-column: auto;
+    grid-row: auto;
+  }
+  .territory-lab[data-mode="territories"]
+    .territory-summary
+    > .animated-number {
+    font-size: 27px;
+  }
+  .territory-lab[data-mode="territories"] .territory-filters select {
+    font-size: 9px;
+  }
+}
+@media (min-width: 981px) and (max-height: 560px) {
+  .territory-lab[data-mode="territories"] .territory-filters {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+  }
+  .territory-lab[data-mode="territories"] .territory-filters label {
+    min-width: 0;
+  }
+  .territory-lab[data-mode="territories"] .territory-filters select {
+    width: 100%;
+    padding: 3px;
+  }
+}
+@media (max-width: 980px) and (max-height: 650px) {
+  .explorer-scroll-track .territory-lab[data-mode="territories"] {
+    grid-template-rows: auto auto minmax(0, 1fr) minmax(0, 0.35fr);
+    gap: 6px 10px;
+  }
+  .territory-lab[data-mode="territories"] .territory-selector {
+    display: contents;
+  }
+  .territory-lab[data-mode="territories"] .territory-filters {
+    grid-column: 1/-1;
+    grid-row: 2;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+  }
+  .territory-lab[data-mode="territories"] .territory-summary {
+    grid-column: 1;
+    grid-row: 4;
+    min-height: 0;
+    align-self: start;
+  }
+  .territory-lab[data-mode="territories"]
+    .territory-summary
+    > .animated-number {
+    font-size: 23px;
+    margin: 2px 0;
+  }
+  .territory-lab[data-mode="territories"] .territory-summary .metric-period,
+  .territory-lab[data-mode="territories"] .territory-summary .metric-endpoints,
+  .territory-lab[data-mode="territories"] .territory-summary .relative-level {
+    font-size: 7px;
+    line-height: 1.25;
+    margin-top: 2px;
+    padding-top: 2px;
+  }
+  .territory-lab[data-mode="territories"] .territory-chart {
+    grid-row: 3;
+  }
+  .territory-lab[data-mode="territories"] .distribution {
+    grid-row: 4;
+  }
+}
+.explorer-scroll-track,
+.territory-lab,
+.territory-lab * {
+  overflow-anchor: none;
+}
+.territory-lab[data-mode="territories"] .low-sample {
+  margin-top: 4px;
+  padding: 4px 0;
+  gap: 3px;
+}
+.territory-lab[data-mode="territories"] .low-sample strong {
+  font-size: 14px;
+  line-height: 1.1;
+}
+.territory-lab[data-mode="territories"] .low-sample span {
+  font-size: 8px;
+  line-height: 1.3;
+}
+@media (max-width: 980px) and (max-height: 650px) {
+  .territory-lab[data-mode="territories"] .low-sample strong {
+    font-size: 12px;
+  }
+  .territory-lab[data-mode="territories"] .low-sample span {
+    font-size: 7px;
+  }
+}
+.explorer-scroll-status {
+  padding-right: 32px;
+}

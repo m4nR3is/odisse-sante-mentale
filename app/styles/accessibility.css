@@ -1,0 +1,17 @@
+/* Repères du focus clavier communs à l’application. */
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 3px;
+}
+a,
+button,
+input,
+select,
+textarea,
+[tabindex] {
+  -webkit-tap-highlight-color: transparent;
+}

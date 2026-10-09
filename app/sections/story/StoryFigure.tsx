@@ -1,12 +1,13 @@
 import { FINANCIAL_SHORT } from "../../data/indicatorDefinitions";
 import { formatNumber } from "../../charts/format";
 import { createLinePath } from "../../charts/paths";
-import { StoryAnnotations } from "../../ReadingIllustrations";
-import ViewportTooltip from "../../ViewportTooltip";
-import ChartHelp, {
+import { StoryAnnotations } from "../../charts/ReadingAnnotations";
+import ViewportTooltip from "../../components/ViewportTooltip";
+import ChartHelp from "../../charts/help/ChartHelp";
+import {
   socialExplanation,
   storyHospitalExplanation,
-} from "../../ChartHelp";
+} from "../../charts/help/chartExplanations";
 import type { StoryData } from "./buildStoryScenes";
 import type { StoryScene } from "./storyTypes";
 import { useStoryFigure } from "./useStoryFigure";

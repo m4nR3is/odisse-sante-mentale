@@ -167,12 +167,14 @@ conservées comme archives, distinctes de la proposition actuelle.
 - `app/navigation/ReadingNavigation.tsx` : synchronisation de la navigation et des ancres.
 - `app/archive/` : anciennes vues éditoriales et contrats analytiques, hors parcours actif.
 - `tests/` : calculs et invariants (`npm test`) ; parcours et animations dans `tests/browser/` (`npm run test:browser`).
-- `app/site.css` : mises en page, animations, responsive et navigation clavier.
-- `app/visual-system.css` : hiérarchie typographique et couleurs communes aux rubriques, graphiques, légendes et infobulles.
-- `app/useChartTypography.ts` : tailles des textes, points et zones de survol en pixels écran, indépendantes de l’échelle des SVG.
-- `app/useChartInteractions.ts` : réponse commune au survol et au focus clavier ; clic ou Entrée/Espace sur un point de valeur conserve sa précision, Échap ou clic ailleurs la ferme. Les clics sur la carte et les distributions conservent leur fonction de sélection. Les annotations ne suivent pas le survol.
-- `app/IntroPortrait.tsx`, `app/PortraitVariants.tsx`, `app/PortraitStyles.ts`,
-  `app/FacialFeatures.tsx` : illustration SVG, 50 portraits et interactions.
+- `app/styles/index.css` : point d’entrée CSS ; dispositions par vue, tokens, conventions visuelles et accessibilité dans des fichiers séparés.
+- `app/charts/useChartTypography.ts` : tailles des textes, points et zones de survol en pixels écran, indépendantes de l’échelle des SVG.
+- `app/charts/useChartInteractions.ts` : réponse commune au survol et au focus clavier ; clic ou Entrée/Espace sur un point de valeur conserve sa précision, Échap ou clic ailleurs la ferme.
+- `app/charts/help/` : dialogue de précisions et textes méthodologiques séparés.
+- `app/charts/ReadingAnnotations.tsx` : annotations SVG de lecture.
+- `app/maps/TerritoryMap.tsx` : chargement des contours, projection et interactions géographiques.
+- `app/components/ViewportTooltip.tsx` : infobulle commune rendue dans le viewport.
+- `app/portraits/` : illustrations symboliques, 50 variantes, traits et interactions.
 - `public/data/experience-data.json` : données préparées et livrées localement.
 - `src/main.tsx` : entrée React.
 - `docs/pitch/pitch.md` : texte oral de trois minutes et sources.

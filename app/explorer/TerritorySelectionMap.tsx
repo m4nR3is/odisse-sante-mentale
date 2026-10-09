@@ -1,4 +1,4 @@
-import TerritoryMap from "../TerritoryMap";
+import TerritoryMap from "../maps/TerritoryMap";
 import { formatNumber, formatSignedPercent } from "../charts/format";
 import type { TerritoryExplorerModel } from "./useTerritoryExplorer";
 type Props = TerritoryExplorerModel["selection"]["map"];

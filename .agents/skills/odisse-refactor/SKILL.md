@@ -34,9 +34,10 @@ Suivre ces flux dans le code :
   `app/data/`, `app/explorer/`, `app/sections/` et `app/charts/` pour les contrats,
   les calculs et les rendus. Tracer sélection, filtres, survol, valeurs dérivées
   et rendu SVG avant de modifier leurs responsabilités.
-- Examiner les responsabilités déjà séparées : `TerritoryMap`, `ChartHelp`,
-  `ViewportTooltip`, `useChartInteractions`, `useChartTypography`, portraits et
-  illustrations. Lire `site.css` et `visual-system.css` pour leurs dépendances
+- Examiner les responsabilités déjà séparées : `maps/TerritoryMap`, `charts/help/ChartHelp`,
+  `components/ViewportTooltip`, `charts/useChartInteractions`, `charts/useChartTypography`,
+  `portraits/` et `charts/ReadingAnnotations`. Lire `styles/index.css`, les styles
+  des vues et `styles/visual-system.css` pour leurs dépendances
   aux classes, aux dimensions et aux états d’animation.
 
 Distinguer le parcours monté des anciennes explorations dans `app/archive/`

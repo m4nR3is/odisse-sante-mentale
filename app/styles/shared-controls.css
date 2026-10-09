@@ -1,0 +1,38 @@
+/* Progression et ajustements qui concernent plusieurs panneaux. */
+
+.story-progress a,
+.declared-indicators button,
+.measure-subnav button,
+.explorer-mode.data-types button {
+  position: relative;
+}
+.story-progress a:not([aria-current="step"]) > .control-scroll-progress,
+.declared-indicators
+  button:not([aria-pressed="true"])
+  > .control-scroll-progress,
+.measure-subnav button:not([aria-pressed="true"]) > .control-scroll-progress,
+.explorer-mode.data-types
+  button:not([aria-pressed="true"])
+  > .control-scroll-progress {
+  visibility: hidden;
+}
+#root:empty,
+.loading-page.is-intro-loading {
+  min-height: 100svh;
+  background: var(--night);
+}
+.entrance-pending .topbar .brand,
+.entrance-pending .topbar nav a,
+.entrance-pending .topbar .top-help,
+.entrance-pending .intro-footer > * {
+  animation: intro-furniture-draw 1300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .entrance-pending .intro-word-fill,
+  .entrance-pending .topbar .brand,
+  .entrance-pending .topbar nav a,
+  .entrance-pending .topbar .top-help,
+  .entrance-pending .intro-footer > * {
+    animation: none;
+  }
+}

@@ -1,7 +1,8 @@
 import type { DeclaredViewProps } from "./explorerTypes";
-import ViewportTooltip from "../ViewportTooltip";
+import ViewportTooltip from "../components/ViewportTooltip";
 import { formatNumber } from "../charts/format";
-import ChartHelp, { historyExplanation } from "../ChartHelp";
+import ChartHelp from "../charts/help/ChartHelp";
+import { historyExplanation } from "../charts/help/chartExplanations";
 import { useHistoricalDeclaredView } from "./useHistoricalDeclaredView";
 import { HistoricalDeclaredControls } from "./HistoricalDeclaredControls";
 import { HistoricalDeclaredChart } from "./HistoricalDeclaredChart";

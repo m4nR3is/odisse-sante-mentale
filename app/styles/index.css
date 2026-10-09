@@ -1,0 +1,20 @@
+/* Point d’entrée des styles globaux. Les tokens et fondations précèdent les vues ;
+   la grammaire visuelle et les conventions des graphiques sont appliquées en dernier. */
+@import "./tokens.css";
+@import "./base.css";
+@import "./archive.css";
+@import "./navigation.css";
+@import "./intro.css";
+@import "./portraits.css";
+@import "./story.css";
+@import "./explorer.css";
+@import "./declared.css";
+@import "./maps.css";
+@import "./method.css";
+@import "./conclusion.css";
+@import "./annotations.css";
+@import "./chart-help.css";
+@import "./tooltips.css";
+@import "./shared-controls.css";
+@import "./accessibility.css";
+@import "./visual-system.css";

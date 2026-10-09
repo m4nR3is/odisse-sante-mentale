@@ -1,5 +1,5 @@
 import type { DeclaredViewProps } from "./explorerTypes";
-import ChartHelp from "../ChartHelp";
+import ChartHelp from "../charts/help/ChartHelp";
 import { useSocialDeclaredView } from "./useSocialDeclaredView";
 import { SocialDeclaredControls } from "./SocialDeclaredControls";
 import { SocialGradientChart } from "./SocialGradientChart";

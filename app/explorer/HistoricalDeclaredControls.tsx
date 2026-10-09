@@ -1,6 +1,6 @@
 import { ScrollIndicator } from "./ScrollIndicator";
 import { scrollRangeProgress } from "../animation/progress";
-import TerritoryMap from "../TerritoryMap";
+import TerritoryMap from "../maps/TerritoryMap";
 import { formatSignedPercent, formatNumber } from "../charts/format";
 import type { HistoricalDeclaredViewModel } from "./useHistoricalDeclaredView";
 

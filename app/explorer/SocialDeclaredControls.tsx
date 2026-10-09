@@ -1,8 +1,8 @@
 import { ScrollIndicator } from "./ScrollIndicator";
 import { scrollRangeProgress } from "../animation/progress";
-import TerritoryMap from "../TerritoryMap";
+import TerritoryMap from "../maps/TerritoryMap";
 import { formatNumber, formatConfidenceInterval } from "../charts/format";
-import { declaredMeasure } from "../ChartHelp";
+import { declaredMeasure } from "../charts/help/chartExplanations";
 import type { SocialDeclaredViewModel } from "./useSocialDeclaredView";
 
 type Props = SocialDeclaredViewModel["controls"];

@@ -1,0 +1,305 @@
+{
+  "date": "2026-10-09",
+  "referenceCommit": "3c3d2ef6974b05f218829cdd5e93ecfee8e45646",
+  "publicationBeforeRefactoring": {
+    "githubCommit": "3c3d2ef6974b05f218829cdd5e93ecfee8e45646",
+    "githubURL": "https://github.com/m4nR3is/odisse-sante-mentale/commit/3c3d2ef6974b05f218829cdd5e93ecfee8e45646",
+    "vercelProduction": "https://odisse-sante-mentale.vercel.app",
+    "vercelDeployment": "dpl_3GnR4YmrJj7xr6LQv5B2wogJdTuQ",
+    "vercelReady": true,
+    "publicHTMLAssetsMatched": [
+      "index-nkm901d_.js",
+      "index-RCtQk63u.css"
+    ]
+  },
+  "objective": "Réorganiser les styles et modules partagés pour rendre le parcours de lecture du code explicite, en préservant le site publié.",
+  "changes": {
+    "appRootFilesBefore": 15,
+    "appRootFilesAfter": [
+      "Experience.tsx"
+    ],
+    "sourceModulesMoved": {
+      "app/IntroPortrait.tsx": "app/portraits/IntroPortrait.tsx",
+      "app/ConclusionPortrait.tsx": "app/portraits/ConclusionPortrait.tsx",
+      "app/PortraitVariants.tsx": "app/portraits/PortraitVariants.tsx",
+      "app/PortraitStyles.ts": "app/portraits/PortraitStyles.ts",
+      "app/PortraitDefinitions.tsx": "app/portraits/PortraitDefinitions.tsx",
+      "app/FacialFeatures.tsx": "app/portraits/FacialFeatures.tsx",
+      "app/TerritoryMap.tsx": "app/maps/TerritoryMap.tsx",
+      "app/ViewportTooltip.tsx": "app/components/ViewportTooltip.tsx",
+      "app/ReadingIllustrations.tsx": "app/charts/ReadingAnnotations.tsx",
+      "app/useChartInteractions.ts": "app/charts/useChartInteractions.ts",
+      "app/useChartTypography.ts": "app/charts/useChartTypography.ts",
+      "app/ChartHelp.tsx": "app/charts/help/ChartHelp.tsx"
+    },
+    "chartHelp": "Dialogue React et explications méthodologiques pures séparés dans app/charts/help.",
+    "stylesEntry": "app/styles/index.css",
+    "thematicStylesheets": 18,
+    "originalSelectorDeclarationsExtracted": 4349,
+    "shadowedTokenDeclarationsRemoved": [
+      "--mono",
+      "--viz-label",
+      "--viz-note",
+      "--type-caption",
+      "--type-control",
+      "--viz-label",
+      "--viz-note",
+      "--type-control",
+      "--type-caption"
+    ],
+    "cascade": "Fondations et vues séparées ; variantes responsive gardées dans leur responsabilité ; grammaire visuelle finale chargée après les dispositions.",
+    "documentation": [
+      "README.md",
+      "docs/ARCHITECTURE.md",
+      ".agents/skills/odisse-refactor/SKILL.md"
+    ],
+    "tests": "Comparaison des styles calculés intégrée dans tests/browser/styles.test.mjs ; portraits décoratifs déterministes dans les tests."
+  },
+  "checks": {
+    "npmTest": {
+      "passed": 17,
+      "failed": 0
+    },
+    "build": {
+      "typescript": "passed",
+      "vite": "passed"
+    },
+    "gitDiffCheck": "passed",
+    "experienceBrowserTests": {
+      "passed": 4,
+      "failed": 0,
+      "viewports": [
+        {
+          "width": 1440,
+          "height": 1000
+        },
+        {
+          "width": 390,
+          "height": 844
+        }
+      ],
+      "beforeAfterTextSVGSelectionsTooltipsIdentical": true,
+      "reverseNavigation": true,
+      "motionAndReducedMotion": true,
+      "loadingRetry": true
+    },
+    "computedStyleComparison": {
+      "summaries": [
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "states": 21,
+          "differingElements": 0
+        },
+        {
+          "viewport": {
+            "width": 1024,
+            "height": 768
+          },
+          "states": 21,
+          "differingElements": 0
+        },
+        {
+          "viewport": {
+            "width": 1280,
+            "height": 560
+          },
+          "states": 21,
+          "differingElements": 0
+        },
+        {
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          },
+          "states": 21,
+          "differingElements": 0
+        },
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "states": 21,
+          "differingElements": 0
+        },
+        {
+          "viewport": {
+            "width": 390,
+            "height": 600
+          },
+          "states": 21,
+          "differingElements": 0
+        }
+      ],
+      "differences": []
+    },
+    "pixelComparison": {
+      "method": "Pillow, ponctuellement hors suite portable ; 6 captures par largeur.",
+      "results": [
+        {
+          "viewportWidth": 1440,
+          "step": 1,
+          "changedPixels": 99,
+          "totalPixels": 1440000,
+          "fraction": 6.875e-05
+        },
+        {
+          "viewportWidth": 1440,
+          "step": 4,
+          "changedPixels": 0,
+          "totalPixels": 1440000,
+          "fraction": 0.0
+        },
+        {
+          "viewportWidth": 1440,
+          "step": 7,
+          "changedPixels": 0,
+          "totalPixels": 1440000,
+          "fraction": 0.0
+        },
+        {
+          "viewportWidth": 1440,
+          "step": 8,
+          "changedPixels": 0,
+          "totalPixels": 1440000,
+          "fraction": 0.0
+        },
+        {
+          "viewportWidth": 1440,
+          "step": 9,
+          "changedPixels": 0,
+          "totalPixels": 1440000,
+          "fraction": 0.0
+        },
+        {
+          "viewportWidth": 1440,
+          "step": 10,
+          "changedPixels": 1,
+          "totalPixels": 1440000,
+          "fraction": 6.944444444444445e-07
+        },
+        {
+          "viewportWidth": 390,
+          "step": 1,
+          "changedPixels": 0,
+          "totalPixels": 329160,
+          "fraction": 0.0
+        },
+        {
+          "viewportWidth": 390,
+          "step": 4,
+          "changedPixels": 0,
+          "totalPixels": 329160,
+          "fraction": 0.0
+        },
+        {
+          "viewportWidth": 390,
+          "step": 7,
+          "changedPixels": 0,
+          "totalPixels": 329160,
+          "fraction": 0.0
+        },
+        {
+          "viewportWidth": 390,
+          "step": 8,
+          "changedPixels": 0,
+          "totalPixels": 329160,
+          "fraction": 0.0
+        },
+        {
+          "viewportWidth": 390,
+          "step": 9,
+          "changedPixels": 0,
+          "totalPixels": 329160,
+          "fraction": 0.0
+        },
+        {
+          "viewportWidth": 390,
+          "step": 10,
+          "changedPixels": 0,
+          "totalPixels": 329160,
+          "fraction": 0.0
+        }
+      ]
+    },
+    "screenshotsVisuallyInspected": [
+      "1440-current-8.png",
+      "390-current-4.png"
+    ],
+    "preparedDataSHA256": "4e826e5c97f69118fc64d74b08862f8f88b0d4403437f7b6a586897b2857419b",
+    "browserStyleTests": {
+      "passed": 6,
+      "failed": 0,
+      "statesPerViewport": 21,
+      "viewports": [
+        {
+          "width": 1440,
+          "height": 1000
+        },
+        {
+          "width": 1024,
+          "height": 768
+        },
+        {
+          "width": 1280,
+          "height": 560
+        },
+        {
+          "width": 768,
+          "height": 1024
+        },
+        {
+          "width": 390,
+          "height": 844
+        },
+        {
+          "width": 390,
+          "height": 600
+        }
+      ],
+      "baselineBuildCompared": true,
+      "horizontalOverflow": false,
+      "keyboardFocusVisible": true,
+      "dialogEscapeAndScrollRestore": true,
+      "javascriptErrors": 0,
+      "execution": "Targeted rerun after correcting test selectors and activating keyboard focus with Tab/Shift+Tab. The four unchanged experience/motion tests passed in the preceding full run."
+    },
+    "browserTestsTotalPassed": 10
+  },
+  "assets": {
+    "before": {
+      "js": {
+        "file": "index-nkm901d_.js",
+        "bytes": 359074,
+        "gzipBytes": 112432
+      },
+      "css": {
+        "file": "index-RCtQk63u.css",
+        "bytes": 122945,
+        "gzipBytes": 21270
+      }
+    },
+    "after": {
+      "js": {
+        "file": "index-BAjLZQtz.js",
+        "bytes": 359081,
+        "gzipBytes": 112404
+      },
+      "css": {
+        "file": "index-KDnVGwsS.css",
+        "bytes": 124146,
+        "gzipBytes": 21404
+      }
+    }
+  },
+  "limitations": [
+    "Tests exécutés avec Chrome headless et Node 20.20.2 ; cible du projet Node 22.x conservée.",
+    "Comparaison de styles limitée aux éléments visibles dans 21 états sur six formats. Transformations et propriétés interpolées exclues ; pseudo-éléments non comparés par cette suite. Les animations sont contrôlées séparément.",
+    "Styles d’archives conservés. Aucune suppression générale des règles répétées non adjacentes ; leurs priorités restent à examiner avant un nettoyage supplémentaire.",
+    "Aucun gain de performance revendiqué ; CSS construit toujours en une seule feuille.",
+    "Quatrième passe locale, sans publication. La production héberge la troisième passe. GitLab inchangé."
+  ]
+}

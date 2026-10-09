@@ -5,8 +5,8 @@ import { ReadingNavigation } from "./navigation/ReadingNavigation";
 import { GuidedStory } from "./sections/GuidedStory";
 import { IntroOpening } from "./sections/IntroOpening";
 import { MethodSection } from "./sections/MethodSection";
-import useChartInteractions from "./useChartInteractions";
-import useChartTypography from "./useChartTypography";
+import useChartInteractions from "./charts/useChartInteractions";
+import useChartTypography from "./charts/useChartTypography";
 import { useRef, useLayoutEffect, useState } from "react";
 
 export default function Experience({

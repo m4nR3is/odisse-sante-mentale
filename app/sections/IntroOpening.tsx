@@ -1,4 +1,4 @@
-import IntroPortrait from "../IntroPortrait";
+import IntroPortrait from "../portraits/IntroPortrait";
 import { slidingLead, centeredFlight, IntroLeadLines } from "./introTypography";
 import { useRef, useLayoutEffect, useEffect } from "react";
 

@@ -1,11 +1,12 @@
 import type { TerritoryExplorerProps } from "./explorerTypes";
 import { EXPLORER_STEPS } from "./explorerSteps";
 import { DeclaredExplorer } from "./DeclaredExplorer";
-import ChartHelp, {
+import ChartHelp from "../charts/help/ChartHelp";
+import {
   hospitalExplanation,
   emergencyExplanation,
   deathExplanation,
-} from "../ChartHelp";
+} from "../charts/help/chartExplanations";
 import { useTerritoryExplorer } from "./useTerritoryExplorer";
 import { ExplorerNavigation } from "./ExplorerNavigation";
 import { TerritorySelectionPanel } from "./TerritorySelectionPanel";

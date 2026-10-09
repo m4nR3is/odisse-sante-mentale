@@ -76,6 +76,15 @@ export async function openExperience(
   await page.addInitScript(() => {
     let seed = 42;
     Math.random = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
+    let portraitSeed = 98;
+    // The conclusion uses crypto to choose decorative portraits and frame lengths.
+    crypto.getRandomValues = (values) => {
+      for (let index = 0; index < values.length; index++) {
+        portraitSeed = (portraitSeed * 16807) % 2147483647;
+        values[index] = portraitSeed;
+      }
+      return values;
+    };
   });
   await page.goto(url, { waitUntil: "networkidle" });
   await page.locator(".experience").waitFor();

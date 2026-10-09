@@ -12,7 +12,7 @@ import {
 } from "react";
 import { FINANCIAL_ORDER } from "../data/indicatorDefinitions";
 import { hasValidInterval } from "../charts/format";
-import { socialExplanation } from "../ChartHelp";
+import { socialExplanation } from "../charts/help/chartExplanations";
 
 export function useSocialDeclaredView({
   data,

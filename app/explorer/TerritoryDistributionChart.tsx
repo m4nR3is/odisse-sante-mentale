@@ -1,5 +1,5 @@
 import { formatNumber } from "../charts/format";
-import ViewportTooltip from "../ViewportTooltip";
+import ViewportTooltip from "../components/ViewportTooltip";
 import type { TerritoryExplorerModel } from "./useTerritoryExplorer";
 
 type Props = TerritoryExplorerModel["distribution"];

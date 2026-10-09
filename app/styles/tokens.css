@@ -1,0 +1,63 @@
+/* Tokens effectifs : couleurs, typographie et dimensions. Les variantes responsive suivent les valeurs de base. */
+:root {
+  --paper: #f1efe8;
+  --ink: #121310;
+  --muted: #666962;
+  --line: #c9c8c0;
+  --accent: #ed5d43;
+  --accent-soft: #f7d8cf;
+  --night: #151816;
+  --night-line: #41443f;
+  --white: #f8f7f1;
+  font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  font-synthesis: none;
+  --nav-height: 60px;
+  --reference: #757970;
+  --viz-kpi: clamp(28px, 5svh, 44px);
+  --viz-title: clamp(24px, 3.5svh, 40px);
+  --paper-alt: #dad8d0;
+  --on-dark-line: #41443f;
+  --on-dark-muted: #c9cbc4;
+  --accent-strong: #a63c29;
+  --type-section: clamp(40px, 5.2vw, 76px);
+  --type-heading: clamp(28px, 3.4vw, 44px);
+  --type-body: 17px;
+  --sans: Inter, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --type-caption: 11px;
+  --type-control: 11px;
+  --viz-label: 11px;
+  --viz-note: 10px;
+  --data-label: 16px;
+  --data-axis: 12px;
+  --data-value: 16px;
+}
+@media (max-width: 980px) {
+  :root {
+    --nav-height: 88px;
+  }
+}
+@media (max-width: 980px) {
+  :root {
+    --viz-kpi: 28px;
+    --viz-title: 22px;
+  }
+}
+@media (max-height: 650px) {
+  :root {
+    --viz-kpi: 24px;
+  }
+}
+@media (max-width: 980px) {
+  :root {
+    --type-body: 16px;
+  }
+}
+@media (max-width: 650px) {
+  :root {
+    --type-section: 42px;
+    --type-heading: 32px;
+  }
+}

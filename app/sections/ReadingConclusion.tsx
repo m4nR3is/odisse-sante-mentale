@@ -1,4 +1,4 @@
-import ConclusionPortrait from "../ConclusionPortrait";
+import ConclusionPortrait from "../portraits/ConclusionPortrait";
 import { slidingLead, centeredFlight, IntroLeadLines } from "./introTypography";
 import { useRef, useLayoutEffect } from "react";
 

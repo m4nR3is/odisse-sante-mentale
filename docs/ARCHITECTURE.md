@@ -21,8 +21,10 @@ avant publication ; aucun backend n’est nécessaire à la lecture du site.
 6. `app/charts/` : formatage français, tracés avec interruptions temporelles,
    placement des distributions et interpolation des valeurs affichées.
 
-Les portraits, aides, cartes, annotations et infobulles restent dans leurs
-modules dédiés à la racine d’`app/`. `app/navigation/ReadingNavigation.tsx`
+La racine d’`app/` contient uniquement `Experience.tsx`, qui assemble le parcours.
+Les portraits sont dans `portraits/`, les cartes dans `maps/`, l’infobulle
+commune dans `components/` et les annotations/hooks dans `charts/`.
+`charts/help/` sépare le dialogue React des explications méthodologiques pures. `app/navigation/ReadingNavigation.tsx`
 synchronise les ancres avec le scroll. `app/sections/introTypography.tsx`
 partage la composition des lignes et les trajectoires entre l’ouverture et la
 conclusion. `app/animation/progress.ts` exprime une progression bornée.
@@ -107,6 +109,41 @@ horizontale ; ses seuils minimaux restent explicitement 0,001 et 0,01 selon la
 vue. `useTerritoryChartSize` conserve les mesures DOM et leur nettoyage ;
 `useTerritoryExplorer` conserve les sélections, interactions et animations.
 
+## Organisation des styles après la quatrième passe
+
+`src/main.tsx` importe uniquement `app/styles/index.css`. Ce fichier rend
+l’ordre des feuilles visible. Vite produit toujours une seule feuille CSS pour
+le site, sans chargement de styles au moment des interactions.
+
+| Groupe | Fichiers dans `app/styles/` |
+| --- | --- |
+| Valeurs partagées et fondations | `tokens.css`, `base.css` |
+| Anciennes vues conservées | `archive.css` |
+| Navigation et ouverture | `navigation.css`, `intro.css`, `portraits.css` |
+| Récit et exploration | `story.css`, `explorer.css`, `declared.css`, `maps.css` |
+| Méthode et conclusion | `method.css`, `conclusion.css` |
+| Éléments communs | `annotations.css`, `chart-help.css`, `tooltips.css`, `shared-controls.css` |
+| Focus clavier et grammaire visuelle finale | `accessibility.css`, `visual-system.css` |
+
+Les media queries restent avec les règles de leur responsabilité, plutôt que
+dans un fichier responsive séparé. Les tokens de base précèdent leurs variantes
+responsive. Neuf déclarations de tokens qui étaient systématiquement masquées
+par des définitions ultérieures ont été retirées ; les valeurs effectives sont
+conservées. Les règles identiques adjacentes peuvent être réunies sans déplacer
+leurs déclarations à travers d’autres règles.
+
+La grammaire visuelle est chargée après les dispositions : elle fixe les rôles
+typographiques et couleurs communs, puis les conventions SVG corrigées par
+`useChartTypography`. Les règles globales du focus doivent garder leur relation
+avec les conventions des points de données et les dialogues rendus par portail.
+La séparation ne crée ni CSS Modules ni couches `@layer`, qui modifieraient les
+contrats de classes ou la priorité de la cascade.
+
+Pour modifier un style, partir de la vue concernée, puis vérifier les valeurs
+partagées et conventions finales si une déclaration paraît sans effet. Les
+styles d’archives sont conservés ; cette passe ne supprime pas des sélecteurs
+sur la seule base de leur absence dans le parcours actif.
+
 ## Flux des données et des interactions
 
 ```text
@@ -168,6 +205,7 @@ caractérisé dans les tests. Le changer serait une correction fonctionnelle,
 | Traité en troisième passe | `GuidedStory` regroupait cinq scènes, préparation dupliquée, scroll, animations et deux rendus SVG. | Préparation commune et modules dédiés dans `sections/story/`, avec conservation de la courbe des filles. |
 | Traité en troisième passe | Les contrôles navigateur étaient des scripts temporaires. | Suite Playwright dans `tests/browser/`, avec comparaison optionnelle entre deux builds. |
 | Conservation justifiée | Plusieurs sections mesurent des repères au scroll et des tailles SVG. | Garder leurs contrats distincts : les seuils, dimensions et délais diffèrent. Le récit et l’explorateur ont leurs hooks propres. |
+| Traité en quatrième passe | Les modules partagés et le CSS accumulé étaient à la racine d’`app`. | Racine limitée à l’assemblage ; dossiers explicites et styles par responsabilité, avec contrôles de cascade. |
 | À mesurer | La distribution résout les collisions par plusieurs centaines de passes sur les paires de points. | Profiler ses déclenchements et son coût avant d’optimiser le placement. |
 | À mesurer | Le survol et le scroll peuvent entraîner des recalculs et des rendus de grandes vues. | Mesurer les composants concernés avant de mémoriser ou déplacer leurs états. |
 
@@ -207,6 +245,19 @@ le clavier et les infobulles. Le récit animé est échantillonné à chaque fra
 pour vérifier que la courbe des filles reste dessinée pendant les transitions
 2 ↔ 3 ; les cinq scènes, la réduction des mouvements en cours d’animation, la
 navigation guidée et la reprise après échec sont aussi contrôlées.
+
+La suite des styles ajoute six formats : 1440×1000, 1024×768, 1280×560,
+768×1024, 390×844 et 390×600. Elle vérifie l’absence de débordement horizontal,
+le dialogue d’aide, son focus clavier et la restauration du scroll après
+fermeture. Avec `TEST_BASELINE_DIR`, elle compare les styles calculés de tous
+les éléments visibles dans 21 états par format : cinq scènes, dix étapes,
+quatre gestes méthodologiques, conclusion et dialogue.
+
+Les portraits décoratifs sont déterministes dans les tests, y compris ceux
+choisis avec `crypto.getRandomValues`. Les valeurs de transformation et de
+progression interpolées sont exclues de la comparaison des styles ; les
+animations restent couvertes séparément. Cette suite ne compare pas les
+pseudo-éléments et ne remplace pas une vérification visuelle ponctuelle.
 
 Options facultatives :
 
@@ -250,3 +301,10 @@ avant/après, les contrôles d’animation et une comparaison ponctuelle des pix
 Les optimisations du placement des distributions et des rendus au survol restent
 à mesurer : cette passe vise la lisibilité et ne revendique pas de gain de
 performance.
+
+La quatrième passe est documentée dans
+`analysis/validation-refactorisation-passe-4.json`, avec `3c3d2ef` comme
+référence. Elle porte sur les dossiers, les imports et les styles ; les données,
+mesures et textes n’ont pas été modifiés. La troisième passe a été publiée sur
+GitHub et Vercel avant le début de cette réorganisation. Les changements de la
+quatrième passe restent locaux jusqu’à une nouvelle demande de publication.

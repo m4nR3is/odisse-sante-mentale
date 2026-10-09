@@ -50,27 +50,54 @@ const beardPaths = [
 ];
 
 const ear = "M341 258C356 262 355 279 342 281C329 279 329 263 341 258";
-const necklace = "M194 411C215 447 278 446 304 411M247 443L247 462L237 471L247 481L258 471L247 462";
+const necklace =
+  "M194 411C215 447 278 446 304 411M247 443L247 462L237 471L247 481L258 471L247 462";
 const collar = "M194 410L175 428L223 460L245 445L283 460L321 428L303 410";
-const hairHatches = "M162 145L191 121M170 155L209 124M284 122L318 158M296 134L327 171";
-const longHatches = "M134 287L137 407M146 292L147 397M348 288L354 413M358 306L363 401";
+const hairHatches =
+  "M162 145L191 121M170 155L209 124M284 122L318 158M296 134L327 171";
+const longHatches =
+  "M134 287L137 407M146 292L147 397M348 288L354 413M358 306L363 401";
 
 export function createAdditionalPortraits(base: Portrait[]): Portrait[] {
-  return haircuts.flatMap((hair, cut) => [0, 1].map((treatment): Portrait => {
-    const long = cut < 10;
-    const shaved = cut === 10 || cut === 11;
-    const beard = treatment === 1 && ![0, 1, 2, 3, 4, 5, 6, 8, 14, 18].includes(cut);
-    const older = treatment === 1 && [0, 1, 3, 8, 11, 16].includes(cut);
-    return {
-      ...base[older ? 1 : treatment === 0 ? 0 : 2],
-      hair,
-      // New silhouettes are kept as ink contours; no inherited hair mass can conflict with them.
-      wash: "",
-      glasses: treatment === 1 && cut % 4 === 0,
-      details: beard ? beardPaths[cut % 3] : older ? base[1].details : base[treatment === 0 ? 0 : 2].details + "M178 271L179 271M187 274L188 274M298 273L299 273M308 269L309 269",
-      hatches: (shaved ? treatment === 0 ? "" : "M161 162L163 159M171 145L173 142M187 126L189 124M211 113L213 112M288 125L290 127M314 146L316 149M328 175L329 178" : hairHatches) + (long ? longHatches : "") + (beard ? "M185 332L192 346M205 356L213 367M277 356L270 370M300 332L293 348" : ""),
-      accent: treatment === 0 ? ear + necklace : collar + "M291 291L310 286M294 298L312 293",
-      brush: shaved ? "M174 203L197 199" : cut % 2 === 0 ? "M185 140L204 130M343 363L350 385" : "M285 140L309 153M138 351L142 375",
-    };
-  }));
+  return haircuts.flatMap((hair, cut) =>
+    [0, 1].map((treatment): Portrait => {
+      const long = cut < 10;
+      const shaved = cut === 10 || cut === 11;
+      const beard =
+        treatment === 1 && ![0, 1, 2, 3, 4, 5, 6, 8, 14, 18].includes(cut);
+      const older = treatment === 1 && [0, 1, 3, 8, 11, 16].includes(cut);
+      return {
+        ...base[older ? 1 : treatment === 0 ? 0 : 2],
+        hair,
+        // New silhouettes are kept as ink contours; no inherited hair mass can conflict with them.
+        wash: "",
+        glasses: treatment === 1 && cut % 4 === 0,
+        details: beard
+          ? beardPaths[cut % 3]
+          : older
+            ? base[1].details
+            : base[treatment === 0 ? 0 : 2].details +
+              "M178 271L179 271M187 274L188 274M298 273L299 273M308 269L309 269",
+        hatches:
+          (shaved
+            ? treatment === 0
+              ? ""
+              : "M161 162L163 159M171 145L173 142M187 126L189 124M211 113L213 112M288 125L290 127M314 146L316 149M328 175L329 178"
+            : hairHatches) +
+          (long ? longHatches : "") +
+          (beard
+            ? "M185 332L192 346M205 356L213 367M277 356L270 370M300 332L293 348"
+            : ""),
+        accent:
+          treatment === 0
+            ? ear + necklace
+            : collar + "M291 291L310 286M294 298L312 293",
+        brush: shaved
+          ? "M174 203L197 199"
+          : cut % 2 === 0
+            ? "M185 140L204 130M343 363L350 385"
+            : "M285 140L309 153M138 351L142 375",
+      };
+    }),
+  );
 }
