@@ -180,7 +180,6 @@ conservées comme archives, distinctes de la proposition actuelle.
 - `src/main.tsx` : entrée React.
 - `docs/pitch/pitch.md` : texte oral de trois minutes et sources.
 - `docs/pitch/support-presentation.pdf` : support final de cinq diapositives, inclus dans la remise GitLab.
-- `scripts/build_pitch.py` : génération du support depuis les données livrées (dépendance facultative : ReportLab).
 - `analysis/PROPOSITION_FINALE.md` : proposition et trame initiale du pitch.
 
 ## Point de sauvegarde

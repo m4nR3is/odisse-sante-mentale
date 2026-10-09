@@ -45,3 +45,8 @@ next-env.d.ts
 # Python data preparation
 __pycache__/
 *.pyc
+
+# Local development instructions and presentation tooling
+/AGENTS.md
+/.agents/
+/scripts/build_pitch.py

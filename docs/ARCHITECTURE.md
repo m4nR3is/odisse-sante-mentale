@@ -64,7 +64,7 @@ périmètre des urgences ne passent pas par un composant générique qui masquer
 leurs différences. Les règles de dimensions SVG restent spécifiques à chaque
 vue : unités écran, unités du viewBox et seuils de mise à jour diffèrent.
 
-## Lire le récit et les calculs après la troisième passe
+## Lire le récit et les calculs
 
 `GuidedStory.tsx` assemble les cinq articles et la figure persistante. Il passe
 une seule préparation à toutes les figures, sur ordinateur et mobile : les
@@ -110,7 +110,7 @@ horizontale ; ses seuils minimaux restent explicitement 0,001 et 0,01 selon la
 vue. `useTerritoryChartSize` conserve les mesures DOM et leur nettoyage ;
 `useTerritoryExplorer` conserve les sélections, interactions et animations.
 
-## Dernière passe : assemblage, navigation et cartes
+## Assemblage, navigation et cartes
 
 `Experience.tsx` contient le parcours dans son ordre de lecture et conserve
 l’état de navigation guidée. L’effet de la séquence d’entrée est dans
@@ -143,7 +143,7 @@ comparées à une empreinte extraite du commit `51ce211` dans
 valeurs finies de la vue, avec hachures pour les absences et gris moyen pour
 un domaine constant. La marge de 4 % du choix de disposition est conservée.
 
-## Organisation des styles après la quatrième passe
+## Organisation des styles
 
 `src/main.tsx` importe uniquement `app/styles/index.css`. Ce fichier rend
 l’ordre des feuilles visible. Vite produit toujours une seule feuille CSS pour
@@ -234,15 +234,15 @@ caractérisé dans les tests. Le changer serait une correction fonctionnelle,
 | Traité | Types, calculs, rendu, animations et archives étaient réunis dans `Experience.tsx`. | Maintenir les responsabilités désormais séparées. |
 | Traité | Les règles territoriales étaient difficiles à vérifier sans lire le JSX. | Tester les fonctions de `territoryMetrics.ts` et conserver leurs invariants. |
 | Traité | Le JSX compact et des noms comme `fmt` compliquaient la lecture. | Conserver une mise en forme régulière et des noms explicites. |
-| Traité en deuxième passe | `TerritoryExplorer` et `DeclaredExplorer` concentraient plusieurs graphiques et la logique d’interaction. | Les commandes, cartes, chiffres, courbes et distributions sont séparés ; les hooks pilotent les états communs à une vue. |
-| Traité en troisième passe | `useTerritoryExplorer` mélangeait comparaisons, références, géométrie et effets. | Les calculs purs, règles typées, géométries et mesures SVG sont séparés ; le hook conserve les états et animations. |
-| Traité en troisième passe | `GuidedStory` regroupait cinq scènes, préparation dupliquée, scroll, animations et deux rendus SVG. | Préparation commune et modules dédiés dans `sections/story/`, avec conservation de la courbe des filles. |
-| Traité en troisième passe | Les contrôles navigateur étaient des scripts temporaires. | Suite Playwright dans `tests/browser/`, avec comparaison optionnelle entre deux builds. |
+| Traité | `TerritoryExplorer` et `DeclaredExplorer` concentraient plusieurs graphiques et la logique d’interaction. | Les commandes, cartes, chiffres, courbes et distributions sont séparés ; les hooks pilotent les états communs à une vue. |
+| Traité | `useTerritoryExplorer` mélangeait comparaisons, références, géométrie et effets. | Les calculs purs, règles typées, géométries et mesures SVG sont séparés ; le hook conserve les états et animations. |
+| Traité | `GuidedStory` regroupait cinq scènes, préparation dupliquée, scroll, animations et deux rendus SVG. | Préparation commune et modules dédiés dans `sections/story/`, avec conservation de la courbe des filles. |
+| Traité | Les contrôles navigateur étaient des scripts temporaires. | Suite Playwright dans `tests/browser/`, avec comparaison optionnelle entre deux builds. |
 | Conservation justifiée | Plusieurs sections mesurent des repères au scroll et des tailles SVG. | Garder leurs contrats distincts : les seuils, dimensions et délais diffèrent. Le récit et l’explorateur ont leurs hooks propres. |
-| Traité en quatrième passe | Les modules partagés et le CSS accumulé étaient à la racine d’`app`. | Racine limitée à l’assemblage ; dossiers explicites et styles par responsabilité, avec contrôles de cascade. |
+| Traité | Les modules partagés et le CSS accumulé étaient à la racine d’`app`. | Racine limitée à l’assemblage ; dossiers explicites et styles par responsabilité, avec contrôles de cascade. |
 | Mesure initiale | La distribution résout les collisions par 340 passes sur les paires de points. | Coût médian local de 4,5–5,6 ms pour 94–101 territoires et 0,13–0,14 ms pour les seize profils ; profiler le rendu complet sur appareil cible avant une optimisation. |
-| Traité en dernière passe | Les indices de navigation et plages de progression étaient recopiés dans les commandes. | Destinations nommées et plages dérivées des étapes dans `explorerSteps.ts`. |
-| Traité en dernière passe | `TerritoryMap` mélangeait chargement, calculs de présentation et interactions. | Contrats et calculs purs dans `mapModel`, requête partagée dans `useGeography`, interactions dans le composant. |
+| Traité | Les indices de navigation et plages de progression étaient recopiés dans les commandes. | Destinations nommées et plages dérivées des étapes dans `explorerSteps.ts`. |
+| Traité | `TerritoryMap` mélangeait chargement, calculs de présentation et interactions. | Contrats et calculs purs dans `mapModel`, requête partagée dans `useGeography`, interactions dans le composant. |
 | À mesurer | Le survol et le scroll peuvent entraîner des recalculs et des rendus de grandes vues. | Mesurer les composants concernés avant de mémoriser ou déplacer leurs états. |
 
 La séparation de modules améliore la lecture et la vérification. Elle ne
@@ -321,39 +321,15 @@ validation des changements ultérieurs.
 La remise GitLab est close. Les futures publications du code vont sur GitHub ;
 le site conserve son hébergement Vercel tant qu’aucune migration n’est demandée.
 
-Le compte rendu de cette première passe, datée du 9 octobre 2026, est conservé
-dans `analysis/validation-refactorisation.json` : 11 tests réussis, égalité des
-calculs avec la référence et contrôles navigateur avant/après sur ordinateur et
-mobile. Ces résultats décrivent cette passe, pas les modifications futures.
+La version `a1210ef` a été vérifiée avec 21 tests unitaires, 12 tests navigateur
+et le build TypeScript/Vite. La comparaison à la version précédente couvre les
+calculs, textes, tracés, sélections et styles sur six formats de fenêtre. Les
+rapports datés sont conservés dans `analysis/validation-refactorisation*.json` ;
+ils documentent les versions contrôlées et ne valident pas les changements
+ultérieurs.
 
-La deuxième passe est documentée dans
-`analysis/validation-refactorisation-passe-2.json`, avec le commit `27f1f74`
-comme référence : 11 tests réussis, comparaison des dix étapes dans les deux
-sens et de 14 scénarios d’interaction sur ordinateur et mobile. Les captures
-mobiles sont identiques ; les captures ordinateur ne présentent que de légères
-variations d’anticrénelage. Le rapport inclut les tailles du JavaScript avant et
-après ; cette séparation vise la lisibilité, sans gain de performance revendiqué.
-
-La troisième passe est documentée dans
-`analysis/validation-refactorisation-passe-3.json`, avec `cc7517e` comme
-référence. Elle inclut la caractérisation des calculs et du récit, les parcours
-avant/après, les contrôles d’animation et une comparaison ponctuelle des pixels.
-Les optimisations du placement des distributions et des rendus au survol restent
-à mesurer : cette passe vise la lisibilité et ne revendique pas de gain de
-performance.
-
-La quatrième passe est documentée dans
-`analysis/validation-refactorisation-passe-4.json`, avec `3c3d2ef` comme
-référence. Elle porte sur les dossiers, les imports et les styles ; les données,
-mesures et textes n’ont pas été modifiés. La troisième passe a été publiée sur
-GitHub et Vercel avant le début de cette réorganisation. La quatrième passe est
-ensuite publiée sous `51ce211`, avant la dernière passe.
-
-La dernière passe est documentée dans
-`analysis/validation-refactorisation-passe-5.json`. Les changements restent
-locaux après la publication de la quatrième passe. Aucun changement de données,
-de style ou de règle statistique n’est prévu. La mesure du placement des
-distributions utilise la fonction pure sous Node local, après chauffe, avec
-30 échantillons par configuration ; elle ne mesure ni les FPS ni le coût du
-rendu React/SVG et ne permet pas de conclure sur un téléphone. L’algorithme
-reste inchangé.
+Le placement des distributions reste inchangé. Une mesure locale de sa fonction
+pure donne un coût médian de 4,5–5,6 ms pour 94–101 territoires et de 0,13–0,14 ms
+pour les seize profils, après chauffe et sur 30 échantillons par configuration.
+Ces mesures sous Node ne couvrent ni les FPS ni le rendu React/SVG. Avant toute
+optimisation, profiler le parcours complet sur l’appareil cible.
