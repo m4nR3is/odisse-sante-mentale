@@ -99,6 +99,7 @@ npm ci
 npm run dev
 npm run build
 npm run preview
+npm test
 ```
 
 `dist/` est un site statique déployable sur un hébergement avec HTTPS. Aucun
@@ -144,7 +145,15 @@ conservées comme archives, distinctes de la proposition actuelle.
 
 ## Fichiers utiles
 
-- `app/Experience.tsx` : récit, interactions, graphiques et règles de comparaison.
+- `docs/ARCHITECTURE.md` : parcours de lecture du code, flux et règles à préserver.
+- `app/Experience.tsx` : assemblage des sections et navigation guidée vers l’explorateur.
+- `app/data/` : contrat du JSON, définitions des indicateurs, calculs territoriaux et indexation.
+- `app/sections/` : introduction, récit guidé, méthode et conclusion.
+- `app/explorer/` : dix étapes, filtres, sélections et graphiques d’exploration.
+- `app/charts/` : formatage, tracés SVG, disposition des distributions et animations.
+- `app/navigation/ReadingNavigation.tsx` : synchronisation de la navigation et des ancres.
+- `app/archive/` : anciennes vues éditoriales et contrats analytiques, hors parcours actif.
+- `tests/` : tests des calculs et des invariants, exécutés avec `npm test`.
 - `app/site.css` : mises en page, animations, responsive et navigation clavier.
 - `app/visual-system.css` : hiérarchie typographique et couleurs communes aux rubriques, graphiques, légendes et infobulles.
 - `app/useChartTypography.ts` : tailles des textes, points et zones de survol en pixels écran, indépendantes de l’échelle des SVG.

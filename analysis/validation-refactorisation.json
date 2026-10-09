@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-09",
+  "scope": "Première refactorisation de lisibilité après clôture GitLab",
+  "runtime": "Node.js 20.20.2 ; version cible du projet : 22.x",
+  "checks": {
+    "npm_test": {
+      "passed": 11,
+      "failed": 0
+    },
+    "npm_run_build": "passed",
+    "git_diff_check": "passed",
+    "baseline_comparison": {
+      "reference": "app/Experience.tsx avant cette refactorisation",
+      "dataset_age_sex_combinations": 54,
+      "national_references_and_indices": "identical",
+      "profiles": 16,
+      "distribution_layouts": 9,
+      "results": "identical"
+    },
+    "browser": [
+      {
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "explorerSteps": 10,
+        "reverseNavigation": true,
+        "editorialStatesCompared": 11,
+        "screenshotsCompared": 6,
+        "maximumChangedPixelFraction": 0.001,
+        "identicalTextAndSVG": true,
+        "javascriptErrors": 0
+      },
+      {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "explorerSteps": 10,
+        "reverseNavigation": true,
+        "editorialStatesCompared": 11,
+        "screenshotsCompared": 6,
+        "maximumChangedPixelFraction": 0.001,
+        "identicalTextAndSVG": true,
+        "javascriptErrors": 0
+      },
+      {
+        "normalMotion": true,
+        "guidedNavigation": true,
+        "javascriptErrors": 0
+      },
+      {
+        "loadingFailureAndRetry": true
+      }
+    ]
+  },
+  "limits": [
+    "Les comparaisons de captures tolèrent moins de 0,1 % de pixels différents pour les variations d’anticrénelage de Chrome.",
+    "Les tests navigateur de cette passe ne constituent pas un audit complet de l’accessibilité.",
+    "Aucune amélioration de performance n’est revendiquée.",
+    "Aucune publication GitHub ou Vercel effectuée."
+  ]
+}
