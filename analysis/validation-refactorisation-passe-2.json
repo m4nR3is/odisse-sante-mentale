@@ -1,0 +1,74 @@
+{
+  "date": "2026-10-09",
+  "scope": "Deuxième passe : séparation du pilotage et des rendus de l’explorateur",
+  "baseline_commit": "27f1f74b03089091b0e3fad5bc89ced658ad9507",
+  "runtime": "Node.js 20.20.2 ; version cible du projet : 22.x",
+  "checks": {
+    "npm_test": {
+      "passed": 11,
+      "failed": 0
+    },
+    "npm_run_build": "passed",
+    "git_diff_check": "passed",
+    "browser": [
+      {
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "explorerSteps": 10,
+        "reverseNavigation": true,
+        "editorialStatesCompared": 11,
+        "interactionScenariosCompared": 14,
+        "screenshotsCompared": 6,
+        "maximumChangedPixelFraction": 0.001,
+        "identicalTextAndSVG": true,
+        "javascriptErrors": 0
+      },
+      {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "explorerSteps": 10,
+        "reverseNavigation": true,
+        "editorialStatesCompared": 11,
+        "interactionScenariosCompared": 14,
+        "screenshotsCompared": 6,
+        "maximumChangedPixelFraction": 0.001,
+        "identicalTextAndSVG": true,
+        "javascriptErrors": 0
+      },
+      {
+        "normalMotion": true,
+        "guidedNavigation": true,
+        "javascriptErrors": 0
+      },
+      {
+        "loadingFailureAndRetry": true
+      }
+    ]
+  },
+  "module_lines": {
+    "TerritoryExplorer_before": 1471,
+    "TerritoryExplorer_after": 142,
+    "DeclaredExplorer_before": 1253,
+    "DeclaredExplorer_after": 77
+  },
+  "javascript_size": {
+    "baseline": {
+      "bytes": 349611,
+      "gzip_bytes": 109296
+    },
+    "refactored": {
+      "bytes": 356309,
+      "gzip_bytes": 111523
+    }
+  },
+  "limits": [
+    "Captures mobiles identiques ; écarts d’anticrénelage minimes sur ordinateur. Tolérance du contrôle : moins de 0,1 % de pixels différents.",
+    "Les scénarios ciblés ne constituent pas un audit complet de l’accessibilité.",
+    "Aucune amélioration de performance revendiquée ; les mesures SVG restent spécifiques aux vues.",
+    "Cette deuxième passe est locale ; aucune publication effectuée."
+  ]
+}

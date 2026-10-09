@@ -149,7 +149,7 @@ conservées comme archives, distinctes de la proposition actuelle.
 - `app/Experience.tsx` : assemblage des sections et navigation guidée vers l’explorateur.
 - `app/data/` : contrat du JSON, définitions des indicateurs, calculs territoriaux et indexation.
 - `app/sections/` : introduction, récit guidé, méthode et conclusion.
-- `app/explorer/` : dix étapes, filtres, sélections et graphiques d’exploration.
+- `app/explorer/` : assemblage des dix étapes, hooks de pilotage, commandes et graphiques séparés par mesure ; contrats d’entrée dans `explorerTypes.ts`.
 - `app/charts/` : formatage, tracés SVG, disposition des distributions et animations.
 - `app/navigation/ReadingNavigation.tsx` : synchronisation de la navigation et des ancres.
 - `app/archive/` : anciennes vues éditoriales et contrats analytiques, hors parcours actif.
