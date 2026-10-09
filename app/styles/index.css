@@ -2,7 +2,6 @@
    la grammaire visuelle et les conventions des graphiques sont appliquées en dernier. */
 @import "./tokens.css";
 @import "./base.css";
-@import "./archive.css";
 @import "./navigation.css";
 @import "./intro.css";
 @import "./portraits.css";

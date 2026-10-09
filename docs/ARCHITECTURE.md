@@ -32,7 +32,8 @@ conclusion. `app/animation/progress.ts` exprime une progression bornée.
 
 Les anciennes vues éditoriales et leurs contrats DREES sont conservés dans
 `app/archive/`, sans import dans le parcours actif. Ce dossier n’est pas un
-second point d’entrée de l’application.
+second point d’entrée de l’application. Leur feuille `archivedStyles.css` reste
+avec ces vues et n’est pas importée par le site publié.
 
 ## Lire l’explorateur
 
@@ -152,7 +153,6 @@ le site, sans chargement de styles au moment des interactions.
 | Groupe | Fichiers dans `app/styles/` |
 | --- | --- |
 | Valeurs partagées et fondations | `tokens.css`, `base.css` |
-| Anciennes vues conservées | `archive.css` |
 | Navigation et ouverture | `navigation.css`, `intro.css`, `portraits.css` |
 | Récit et exploration | `story.css`, `explorer.css`, `declared.css`, `maps.css` |
 | Méthode et conclusion | `method.css`, `conclusion.css` |
@@ -175,8 +175,9 @@ contrats de classes ou la priorité de la cascade.
 
 Pour modifier un style, partir de la vue concernée, puis vérifier les valeurs
 partagées et conventions finales si une déclaration paraît sans effet. Les
-styles d’archives sont conservés ; cette passe ne supprime pas des sélecteurs
-sur la seule base de leur absence dans le parcours actif.
+styles des anciennes vues sont conservés dans `app/archive/archivedStyles.css`
+et exclus du chargement courant. Les sélecteurs ont été contrôlés dans les
+parcours ordinateur/mobile ; aucun ne correspond aux vues actives.
 
 ## Flux des données et des interactions
 

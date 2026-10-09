@@ -30,39 +30,6 @@ def num(value: str | None) -> float | None:
     return None if value_number < 0 else value_number
 
 
-def build_drees() -> list[dict]:
-    source = rows(RAW / "drees-patients-hospitalises-gestes-auto-infliges-2012-2025.csv")
-    bands = {
-        "11–14 ans": range(11, 15),
-        "15–17 ans": range(15, 18),
-        "18–24 ans": range(18, 25),
-        "25–44 ans": range(25, 45),
-        "45–64 ans": range(45, 65),
-        "65 ans et plus": range(65, 96),
-    }
-    grouped: dict[tuple[int, str, str], dict[str, float]] = defaultdict(lambda: {"count": 0, "population": 0})
-    for row in source:
-        if row["champ"] != "mco" or row["unite"] != "patient":
-            continue
-        age = int(row["age"])
-        band = next((label for label, ages in bands.items() if age in ages), None)
-        if band is None:
-            continue
-        key = (int(row["annee"]), row["sexe"], band)
-        grouped[key]["count"] += float(row["nombre"])
-        grouped[key]["population"] += float(row["population"])
-    return [
-        {
-            "year": year,
-            "sex": "Femmes" if sex == "F" else "Hommes",
-            "age": age,
-            "patients": round(values["count"]),
-            "rate": round(100000 * values["count"] / values["population"], 1),
-        }
-        for (year, sex, age), values in sorted(grouped.items())
-    ]
-
-
 def build_departments() -> dict:
     source = rows(ODISSE / "gestes-auto-infliges-hospitalisations-departement.csv")
     departments: dict[str, dict] = {}

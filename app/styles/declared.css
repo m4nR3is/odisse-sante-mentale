@@ -854,10 +854,6 @@
     margin-top: 12px;
     padding-top: 0;
   }
-  .declared-history-chart {
-    grid-column: 2;
-    grid-row: 1;
-  }
   .declared-history-distribution {
     grid-column: 1/-1;
     grid-row: 2;

@@ -165,7 +165,7 @@ conservées comme archives, distinctes de la proposition actuelle.
 - `app/explorer/` : dix étapes nommées, destinations et progressions communes dans `explorerSteps.ts` ; hooks de pilotage, commandes et graphiques séparés par mesure ; contrats d’entrée dans `explorerTypes.ts`.
 - `app/charts/` : formatage, géométries pures propres à chaque vue, tracés SVG, disposition des distributions et animations.
 - `app/navigation/ReadingNavigation.tsx` : synchronisation de la navigation et des ancres.
-- `app/archive/` : anciennes vues éditoriales et contrats analytiques, hors parcours actif.
+- `app/archive/` : anciennes vues éditoriales, contrats analytiques et styles associés, hors parcours actif.
 - `tests/` : calculs et invariants (`npm test`) ; parcours et animations dans `tests/browser/` (`npm run test:browser`).
 - `app/styles/index.css` : point d’entrée CSS ; dispositions par vue, tokens, conventions visuelles et accessibilité dans des fichiers séparés.
 - `app/charts/useChartTypography.ts` : tailles des textes, points et zones de survol en pixels écran, indépendantes de l’échelle des SVG.

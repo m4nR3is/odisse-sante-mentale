@@ -475,7 +475,3 @@ export function SocialSection({ data }: { data: ExperienceData }) {
     </section>
   );
 }
-
-function average(values: { rate: number }[]) {
-  return values.reduce((sum, point) => sum + point.rate, 0) / values.length;
-}
