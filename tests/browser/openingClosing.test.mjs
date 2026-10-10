@@ -31,6 +31,48 @@ async function capture(page, selector) {
   );
 }
 
+test("intro · le tracé et le plein partagent la même ligne de base", async () => {
+  const server = await serve("dist");
+  const browser = await launchBrowser();
+  try {
+    const { page, assertNoErrors } = await openExperience(browser, server.url,
+      { width: 390, height: 844 }, "no-preference");
+    await page.addInitScript(() => {
+      window.openingPositions = [];
+      const sample = () => {
+        const stage = document.querySelector('.intro-stage[data-intro-ready="true"]');
+        const surface = stage?.querySelector(".intro-flight-surface");
+        if (surface) window.openingPositions.push(surface.getBoundingClientRect().y);
+        if (performance.now() < 1000) requestAnimationFrame(sample);
+      };
+      requestAnimationFrame(sample);
+    });
+    await page.evaluate(() => dispatchEvent(new Event("touchstart")));
+    for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 1000 }]) {
+      await page.setViewportSize(viewport);
+      await page.reload({ waitUntil: "networkidle" });
+      await page.evaluate(() => dispatchEvent(new Event("touchstart")));
+      await page.waitForTimeout(500);
+      const positions = await page.evaluate(() => window.openingPositions);
+      assert.ok(positions.length > 2, "startup was sampled after the text became visible");
+      assert.ok(Math.max(...positions) - Math.min(...positions) < 1,
+        "the first visible frames must not jump vertically");
+      const alignment = await page.locator(".intro-flight-surface").first().evaluate(surface => {
+        const text = surface.querySelector(".intro-ink text");
+        const marker = surface.querySelector(".intro-word-fill .intro-baseline");
+        const baseline = new DOMPoint(0, Number(text.getAttribute("y")))
+          .matrixTransform(text.getScreenCTM());
+        return { delta: Math.abs(baseline.y - marker.getBoundingClientRect().top),
+          outlineFont: getComputedStyle(text).fontSize,
+          fillFont: getComputedStyle(surface).fontSize };
+      });
+      assert.ok(alignment.delta < 1, `outline/fill baseline differs by ${alignment.delta}px`);
+      assert.equal(alignment.outlineFont, alignment.fillFont);
+    }
+    assertNoErrors();
+  } finally { await browser.close(); await server.close(); }
+});
+
 test("intro · textes et trait suivent le scroll sans callbacks JavaScript", async () => {
   const server = await serve("dist");
   const browser = await launchBrowser();

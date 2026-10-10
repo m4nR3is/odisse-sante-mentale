@@ -30,6 +30,25 @@ export function IntroOpening() {
     if (!root || !viewport) return;
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let frame = 0;
+    let revealFrame = 0;
+    let openingReady = false;
+    const revealOpening = () => {
+      // The scroll timeline needs its first sample, and the lead may rewrap
+      // after mount. Restart this short hold if either changes the geometry.
+      cancelAnimationFrame(revealFrame);
+      let remaining = 3;
+      const settle = () => {
+        if (--remaining > 0) {
+          revealFrame = requestAnimationFrame(settle);
+          return;
+        }
+        revealFrame = 0;
+        if (document.fonts.status !== "loaded") return;
+        openingReady = true;
+        viewport.dataset.introReady = "true";
+      };
+      revealFrame = requestAnimationFrame(settle);
+    };
     const nativeMotion = createIntroScrollMotion(root);
     const starts = INTRO_FLIGHT_STARTS;
     const flightDuration = INTRO_FLIGHT_DURATION;
@@ -113,26 +132,34 @@ export function IntroOpening() {
         });
         const element = flights.current[0];
         const geometry = measurements[0];
-        if (element && geometry && ink.current) {
-          const style = getComputedStyle(element);
-          const signature = `${geometry.targetWidth}/${geometry.targetHeight}/${style.fontSize}/${style.letterSpacing}`;
+        if (element && geometry?.surface && ink.current) {
+          const surface = geometry.surface;
+          const style = getComputedStyle(surface);
+          const large = largeSizes[0];
+          const signature = `${geometry.targetWidth}/${geometry.targetHeight}/${large}/${style.fontFamily}/${style.fontSize}/${style.letterSpacing}`;
           if (signature !== inkSize) {
             inkSize = signature;
             const text = ink.current.querySelector("text")!;
-            // offsetTop reads the unscaled baseline without temporarily removing
-            // the animated transform (which forced another synchronous layout).
-            const baselineY = element.querySelector<HTMLElement>(
-              ".intro-baseline",
+            // Outline and fill share the large surface's coordinate system.
+            // The placeholder's small baseline differs because font metrics do
+            // not scale exactly at small sizes. Measure only on geometry changes;
+            // fallback engines may not have made the surface visible yet.
+            const previousDisplay = surface.style.display;
+            surface.style.display = "block";
+            const baselineY = surface.querySelector<HTMLElement>(
+              ".intro-word-fill .intro-baseline",
             )!.offsetTop;
+            surface.style.display = previousDisplay;
             ink.current.setAttribute(
               "viewBox",
-              `0 0 ${geometry.targetWidth} ${geometry.targetHeight}`,
+              `0 0 ${geometry.targetWidth * large} ${geometry.targetHeight * large}`,
             );
             text.setAttribute("y", String(baselineY));
             text.style.fontFamily = style.fontFamily;
             text.style.fontSize = style.fontSize;
             text.style.fontWeight = style.fontWeight;
             text.style.letterSpacing = style.letterSpacing;
+            text.style.strokeWidth = String(0.16 * large);
             text.style.setProperty(
               "--ink-length",
               String(parseFloat(style.fontSize) * 4),
@@ -140,6 +167,7 @@ export function IntroOpening() {
           }
         }
         geometryDirty = false;
+        if (!openingReady) revealOpening();
       }
       viewport.dataset.introProgress = progress.toFixed(3);
       viewport.dataset.portraitReady = String(progress >= 0.82);
@@ -230,6 +258,8 @@ export function IntroOpening() {
       observer.disconnect();
       document.fonts.removeEventListener("loadingdone", invalidate);
       cancelAnimationFrame(frame);
+      cancelAnimationFrame(revealFrame);
+      delete viewport.dataset.introReady;
       nativeMotion.dispose();
     };
   }, []);
