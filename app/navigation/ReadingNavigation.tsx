@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect, type CSSProperties } from "react";
+import { createScrollMotion } from "../animation/scrollMotion";
 
 const READING_SECTIONS = [
   { id: "constats", label: "Comprendre" },
@@ -11,11 +12,30 @@ export function ReadingNavigation() {
   const [reading, setReading] = useState({ active: -1, progress: 0 });
   useEffect(() => {
     let frame = 0;
+    let geometryDirty = true;
+    const native = createScrollMotion(header.current!, "reading-navigation");
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let previousScroll = window.scrollY;
     const synchronize = () => {
       frame = 0;
       const readingLine =
         (header.current?.getBoundingClientRect().bottom ?? 60) + 17;
+      if (geometryDirty) {
+        if (native.begin(motion.matches)) {
+          READING_SECTIONS.forEach((section, index) => {
+            const element = document.getElementById(section.id);
+            if (!element) return;
+            const bounds = element.getBoundingClientRect();
+            const next = document.getElementById(READING_SECTIONS[index + 1]?.id ?? "");
+            const end = next?.getBoundingClientRect().top ?? bounds.bottom;
+            native.animate(`nav [href="#${section.id}"][aria-current="location"] .nav-reading-progress`,
+              `section-${index}`, "from{transform:scaleX(0)}to{transform:scaleX(1)}",
+              scrollY + bounds.top - readingLine, scrollY + end - readingLine);
+          });
+          native.commit();
+        }
+        geometryDirty = false;
+      }
       const scrolled = window.scrollY !== previousScroll;
       previousScroll = window.scrollY;
       const observations = document.getElementById("constats");
@@ -70,17 +90,23 @@ export function ReadingNavigation() {
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(synchronize);
     };
+    const invalidate = () => { geometryDirty = true; schedule(); };
     window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
-    const observer = new ResizeObserver(schedule);
+    window.addEventListener("resize", invalidate);
+    motion.addEventListener("change", invalidate);
+    document.fonts.addEventListener("loadingdone", invalidate);
+    const observer = new ResizeObserver(invalidate);
     observer.observe(document.body);
     if (header.current) observer.observe(header.current);
     synchronize();
     return () => {
       window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
+      window.removeEventListener("resize", invalidate);
+      motion.removeEventListener("change", invalidate);
+      document.fonts.removeEventListener("loadingdone", invalidate);
       observer.disconnect();
       cancelAnimationFrame(frame);
+      native.dispose();
     };
   }, []);
   return (

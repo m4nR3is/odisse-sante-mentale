@@ -170,10 +170,13 @@ const drawnVariants: Portrait[] = [
 const variants = [...drawnVariants, ...createAdditionalPortraits(baseVariants)];
 export const PORTRAIT_COUNT = variants.length + 1;
 
-export default function PortraitVariants({ id }: { id: string }) {
+export default function PortraitVariants({ id, faces }: {
+  id: string;
+  faces?: readonly number[];
+}) {
   return (
     <>
-      {variants.map((variant, index) => (
+      {variants.map((variant, index) => (!faces || faces.includes(index + 1)) && (
         <g id={`${id}-portrait-${index + 1}`} key={index}>
           <path className="portrait-wash" d={variant.wash} />
           <path

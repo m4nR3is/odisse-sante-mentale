@@ -52,6 +52,7 @@ export function HistoricalDeclaredControls({
           >
             {item}
             <ScrollIndicator
+              range={{ group: "explorer", start: 3 + indicators.indexOf(item) }}
               progress={scrollRangeProgress(
                 position,
                 3 + indicators.indexOf(item),

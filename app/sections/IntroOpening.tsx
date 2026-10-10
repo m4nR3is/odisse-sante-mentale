@@ -1,6 +1,19 @@
 import IntroPortrait from "../portraits/IntroPortrait";
-import { slidingLead, centeredFlight, IntroLeadLines } from "./introTypography";
+import {
+  slidingLead,
+  centeredFlight,
+  measureFlight,
+  prepareFlightSurface,
+  FlightLabel,
+  type FlightGeometry,
+  IntroLeadLines,
+} from "./introTypography";
 import { useRef, useLayoutEffect, useEffect } from "react";
+import {
+  createIntroScrollMotion,
+  INTRO_FLIGHT_STARTS,
+  INTRO_FLIGHT_DURATION,
+} from "./introScrollMotion";
 
 export function IntroOpening() {
   const track = useRef<HTMLElement>(null);
@@ -17,60 +30,130 @@ export function IntroOpening() {
     if (!root || !viewport) return;
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let frame = 0;
-    const starts = [0, 0.14, 0.28, 0.42, 0.56, 0.7];
-    const flightDuration = 0.24;
+    const nativeMotion = createIntroScrollMotion(root);
+    const starts = INTRO_FLIGHT_STARTS;
+    const flightDuration = INTRO_FLIGHT_DURATION;
     let inkSize = "";
-    const synchronize = () => {
+    let measurements: Array<FlightGeometry | null> = [];
+    let largeSizes: number[] = [];
+    let geometryDirty = true;
+    let previousProgress = -1;
+    let previouslyVisible = false;
+    let scrollStart = 0;
+    let scrollDistance = 1;
+    let stageHeight = 1;
+    let renderedProgress = -1;
+    let lastFrameTime = 0;
+    let followUntil = 0;
+    const portrait = viewport.querySelector<HTMLElement>(".intro-portrait");
+    const dividers = viewport.querySelectorAll<HTMLElement>(".intro-topic-divider");
+    const synchronize = (now = performance.now()) => {
       frame = 0;
-      const bounds = root.getBoundingClientRect();
-      const stageBounds = viewport.getBoundingClientRect();
-      const inset = parseFloat(getComputedStyle(root).paddingTop) || 0;
-      const distance = Math.max(
-        1,
-        root.offsetHeight - viewport.offsetHeight - inset,
-      );
-      const progress = motion.matches
-        ? 1
-        : Math.max(0, Math.min(1, -bounds.top / distance));
-      viewport.dataset.introProgress = progress.toFixed(3);
-      viewport.dataset.portraitReady = String(progress >= 0.82);
-      const portrait = viewport.querySelector<HTMLElement>(".intro-portrait");
-      if (portrait) portrait.inert = progress < 0.82;
-      viewport.style.setProperty(
-        "--portrait-progress",
-        String(Math.max(0, Math.min(1, (progress - 0.24) / 0.72))),
-      );
-      flights.current.forEach((element, index) => {
-        if (!element) return;
-        // Measure the untransformed wrapper: animation cannot alter its destination.
-        const target = element.parentElement!.getBoundingClientRect();
-        if (index === 0 && ink.current) {
+      if (geometryDirty) {
+        const bounds = root.getBoundingClientRect();
+        const inset = parseFloat(getComputedStyle(root).paddingTop) || 0;
+        scrollStart = window.scrollY + bounds.top;
+        stageHeight = viewport.offsetHeight;
+        scrollDistance = Math.max(1, root.offsetHeight - stageHeight - inset);
+      }
+      const targetProgress = motion.matches ? 1 :
+        Math.max(0, Math.min(1, (window.scrollY - scrollStart) / scrollDistance));
+      // Older engines receive irregular scroll samples. Fill the intervals using
+      // a short, time-based follow rather than holding until the next event.
+      if (nativeMotion.enabled || motion.matches || geometryDirty ||
+          renderedProgress < 0 || Math.abs(targetProgress - renderedProgress) > 0.35) {
+        renderedProgress = targetProgress;
+      } else {
+        const elapsed = Math.min(64, Math.max(0, now - lastFrameTime));
+        renderedProgress += (targetProgress - renderedProgress) * (1 - Math.exp(-elapsed / 45));
+        if (Math.abs(targetProgress - renderedProgress) < 0.000001)
+          renderedProgress = targetProgress;
+      }
+      lastFrameTime = now;
+      const progress = renderedProgress;
+      if (!nativeMotion.enabled && !motion.matches &&
+          (now < followUntil || progress !== targetProgress))
+        frame = requestAnimationFrame(synchronize);
+      // A settled/offscreen section needs no DOM writes on subsequent scrolls.
+      const viewportVisible = window.scrollY < scrollStart + scrollDistance + stageHeight &&
+        window.scrollY + innerHeight > scrollStart;
+      if (
+        !geometryDirty && progress === previousProgress &&
+        viewportVisible === previouslyVisible
+      ) return;
+      previousProgress = progress;
+      previouslyVisible = viewportVisible;
+      if (geometryDirty) {
+        const stageBounds = viewport.getBoundingClientRect();
+        measurements = flights.current.map((element) =>
+          element ? measureFlight(element, stageBounds) : null,
+        );
+        largeSizes = measurements.map((geometry, index) => {
+          if (!geometry) return 1;
+          return index === 0 || index === 3 || index === 4
+            ? Math.max(
+                1,
+                Math.min(
+                  (stageBounds.width * 0.9) / Math.max(1, geometry.targetWidth),
+                  (stageBounds.height * 0.7) / Math.max(1, geometry.targetHeight),
+                ),
+              )
+            : Math.max(
+                2.5,
+                Math.min(
+                  28,
+                  (stageBounds.width / Math.max(1, geometry.targetWidth)) * 2.2,
+                ),
+              );
+        });
+        nativeMotion.configure(flights.current, measurements, largeSizes,
+          scrollStart, scrollDistance, motion.matches);
+        measurements.forEach((geometry, index) => {
+          if (geometry) prepareFlightSurface(geometry, largeSizes[index]);
+        });
+        const element = flights.current[0];
+        const geometry = measurements[0];
+        if (element && geometry && ink.current) {
           const style = getComputedStyle(element);
-          const signature = `${target.width}/${target.height}/${style.fontSize}/${style.letterSpacing}`;
+          const signature = `${geometry.targetWidth}/${geometry.targetHeight}/${style.fontSize}/${style.letterSpacing}`;
           if (signature !== inkSize) {
             inkSize = signature;
             const text = ink.current.querySelector("text")!;
-            const fontSize = parseFloat(style.fontSize);
-            const previousTransform = element.style.transform;
-            element.style.transform = "none";
-            const baseline =
-              element.querySelector<HTMLElement>(".intro-baseline")!;
-            const baselineY =
-              baseline.getBoundingClientRect().top -
-              element.getBoundingClientRect().top;
-            element.style.transform = previousTransform;
+            // offsetTop reads the unscaled baseline without temporarily removing
+            // the animated transform (which forced another synchronous layout).
+            const baselineY = element.querySelector<HTMLElement>(
+              ".intro-baseline",
+            )!.offsetTop;
             ink.current.setAttribute(
               "viewBox",
-              `0 0 ${target.width} ${target.height}`,
+              `0 0 ${geometry.targetWidth} ${geometry.targetHeight}`,
             );
             text.setAttribute("y", String(baselineY));
             text.style.fontFamily = style.fontFamily;
             text.style.fontSize = style.fontSize;
             text.style.fontWeight = style.fontWeight;
             text.style.letterSpacing = style.letterSpacing;
-            text.style.setProperty("--ink-length", String(fontSize * 4));
+            text.style.setProperty(
+              "--ink-length",
+              String(parseFloat(style.fontSize) * 4),
+            );
           }
         }
+        geometryDirty = false;
+      }
+      viewport.dataset.introProgress = progress.toFixed(3);
+      viewport.dataset.portraitReady = String(progress >= 0.82);
+      if (portrait) {
+        portrait.inert = progress < 0.82;
+        if (!nativeMotion.drawingNative) portrait.style.setProperty(
+          "--portrait-progress",
+          String(Math.max(0, Math.min(1, (progress - 0.24) / 0.72))),
+        );
+      }
+      flights.current.forEach((element, index) => {
+        if (nativeMotion.enabled) return;
+        const geometry = measurements[index];
+        if (!element || !geometry) return;
         const local = Math.max(
           0,
           Math.min(1, (progress - starts[index]) / flightDuration),
@@ -78,48 +161,35 @@ export function IntroOpening() {
         const arrival = local * local * (3 - 2 * local);
         if (index === 5) {
           element.dataset.arrival = arrival.toFixed(3);
-          slidingLead(element, local);
+          slidingLead(element, local, geometry);
           return;
         }
-        const large =
-          index === 0 || index === 3 || index === 4
-            ? Math.max(
-                1,
-                Math.min(
-                  (stageBounds.width * 0.9) / Math.max(1, target.width),
-                  (stageBounds.height * 0.7) / Math.max(1, target.height),
-                ),
-              )
-            : Math.max(
-                2.5,
-                Math.min(
-                  28,
-                  (stageBounds.width / Math.max(1, target.width)) * 2.2,
-                ),
-              );
-        centeredFlight(element, stageBounds, arrival, large);
+        const large = largeSizes[index];
+        centeredFlight(
+          element, geometry, arrival, large, false,
+          viewportVisible && progress >= starts[index],
+        );
         element.style.opacity =
           progress >= starts[index]
             ? String(Math.min(1, local * 10 + (index === 0 ? 1 : 0)))
             : "0";
         element.dataset.arrival = arrival.toFixed(3);
       });
-      viewport
-        .querySelectorAll<HTMLElement>(".intro-topic-divider")
-        .forEach((divider, index) => {
-          divider.style.opacity =
-            progress >= starts[index + 1] + flightDuration ? ".6" : "0";
-        });
-      if (caption.current)
-        caption.current.textContent =
-          progress < starts[1]
-            ? "Ce que l’on ressent."
-            : progress < starts[2]
-              ? "Ce que les soins rendent visible."
-              : progress < starts[3]
-                ? "Ce qui diffère selon les vies."
-                : "Une mesure éclaire. Elle laisse aussi une part hors champ.";
-      if (progressLine.current)
+      dividers.forEach((divider, index) => {
+        divider.style.opacity =
+          progress >= starts[index + 1] + flightDuration ? ".6" : "0";
+      });
+      const captionText =
+        progress < starts[1]
+          ? "Ce que l’on ressent."
+          : progress < starts[2]
+            ? "Ce que les soins rendent visible."
+            : progress < starts[3]
+              ? "Ce qui diffère selon les vies."
+              : "Une mesure éclaire. Elle laisse aussi une part hors champ.";
+      if (caption.current && caption.current.textContent !== captionText)
+        caption.current.textContent = captionText;
+      if (progressLine.current && !nativeMotion.enabled)
         progressLine.current.style.transform = `scaleX(${progress})`;
       if (action.current) {
         const visible = progress >= 0.9;
@@ -131,21 +201,36 @@ export function IntroOpening() {
       }
     };
     const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(synchronize);
+      // Continue polling through gaps in scroll-event delivery, then sleep.
+      followUntil = performance.now() + 180;
+      if (!frame) {
+        lastFrameTime = performance.now();
+        frame = requestAnimationFrame(synchronize);
+      }
+    };
+    const invalidate = () => {
+      geometryDirty = true;
+      schedule();
     };
     window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
-    motion.addEventListener("change", schedule);
-    const observer = new ResizeObserver(schedule);
+    window.addEventListener("resize", invalidate);
+    motion.addEventListener("change", invalidate);
+    const observer = new ResizeObserver(invalidate);
     observer.observe(viewport);
     observer.observe(root);
+    flights.current.forEach((element) => {
+      if (element) observer.observe(element);
+    });
+    document.fonts.addEventListener("loadingdone", invalidate);
     synchronize();
     return () => {
       window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
-      motion.removeEventListener("change", schedule);
+      window.removeEventListener("resize", invalidate);
+      motion.removeEventListener("change", invalidate);
       observer.disconnect();
+      document.fonts.removeEventListener("loadingdone", invalidate);
       cancelAnimationFrame(frame);
+      nativeMotion.dispose();
     };
   }, []);
 
@@ -230,24 +315,26 @@ export function IntroOpening() {
           flights.current[index] = element;
         }}
       >
-        {index === 0 ? (
-          <>
-            <span className="intro-word-fill">
-              {text}
-              <span className="intro-baseline" aria-hidden="true" />
-            </span>
-            <svg
-              className="intro-ink"
-              ref={ink}
-              aria-hidden="true"
-              focusable="false"
-            >
-              <text x="0">SANTÉ MENTALE</text>
-            </svg>
-          </>
-        ) : (
-          text
-        )}
+        {index < 3 ? (
+          <FlightLabel text={text}>
+            {index === 0 ? (
+              <>
+                <span className="intro-word-fill">
+                  {text}
+                  <span className="intro-baseline" aria-hidden="true" />
+                </span>
+                <svg
+                  className="intro-ink"
+                  ref={ink}
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <text x="0">SANTÉ MENTALE</text>
+                </svg>
+              </>
+            ) : text}
+          </FlightLabel>
+        ) : text}
       </span>
     </span>
   );

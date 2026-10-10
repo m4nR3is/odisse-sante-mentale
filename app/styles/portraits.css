@@ -162,10 +162,16 @@
 }
 .portrait-face[data-visible="true"] {
   opacity: 1;
+  animation: portrait-face-arrival 60ms ease-in-out;
+}
+@keyframes portrait-face-arrival {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
   .portrait-face {
     transition: none;
+    animation: none !important;
   }
 }
 .portrait-accessory {
@@ -248,4 +254,15 @@
   .conclusion-portrait {
     display: none;
   }
+}
+/* Typed progress lets scroll timelines interpolate the SVG drawing directly. */
+@property --portrait-progress {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --conclusion-portrait-progress {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
 }

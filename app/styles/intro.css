@@ -142,6 +142,21 @@
   position: relative;
   transform-origin: center;
 }
+.intro-flight-surface {
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  white-space: nowrap;
+  transform-origin: center;
+  pointer-events: none;
+}
+.intro-flight[data-composited="true"] > .intro-flight-surface {
+  display: block;
+}
+.intro-flight[data-composited="true"] > .intro-flight-placeholder {
+  visibility: hidden;
+}
 .hero.meta-hero.intro-stage h1 {
   margin: 4svh 0;
   font-size: clamp(44px, min(10vw, 15svh), 150px);
@@ -258,6 +273,12 @@
     transform: none !important;
     opacity: 1 !important;
     will-change: auto;
+  }
+  .intro-flight > .intro-flight-placeholder {
+    visibility: visible !important;
+  }
+  .intro-flight > .intro-flight-surface {
+    display: none !important;
   }
   .intro-stage .read-data {
     opacity: 1;

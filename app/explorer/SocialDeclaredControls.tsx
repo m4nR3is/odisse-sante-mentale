@@ -50,6 +50,7 @@ export function SocialDeclaredControls({
           >
             {item}
             <ScrollIndicator
+              range={{ group: "explorer", start: indicators.indexOf(item) }}
               progress={scrollRangeProgress(position, indicators.indexOf(item))}
             />
           </button>

@@ -30,6 +30,72 @@ synchronise les ancres avec le scroll. `app/sections/introTypography.tsx`
 partage la composition des lignes et les trajectoires entre l’ouverture et la
 conclusion. `app/animation/progress.ts` exprime une progression bornée.
 
+Les destinations des textes de l’intro et de la conclusion sont mesurées en
+bloc, puis conservées pendant le scroll. Les redimensionnements, changements
+de police et retours à la ligne invalident ces mesures ; les trajectoires et
+leurs phases restent inchangées. Une progression déjà stabilisée ne réécrit
+pas le DOM. Les variables de dessin sont limitées aux illustrations. Les
+portraits montent seulement les définitions utilisées et, pour les quarts,
+les deux visages nécessaires au fondu : les cinquante variantes restent
+disponibles sans cinquante copies SVG invisibles dans chaque cadre.
+
+Les petits libellés qui dézooment utilisent `FlightLabel` : un texte à sa taille
+maximale dans une surface absolue, réduite par `translate3d` et `scale`, pendant
+que sa destination reste en flux normal. La police, l’interligne et l’approche
+sont préparés seulement quand la géométrie change. La composition est suggérée
+par `will-change` dans le repli JavaScript uniquement durant la phase visible du vol ; à l’arrivée, le
+texte normal est affiché et la surface est masquée. La réduction des mouvements
+affiche directement ce texte normal. Cette stratégie cible les redessins lors
+du fort agrandissement des libellés sous WebKit ; les performances réelles sur
+iPhone restent à vérifier sur l’appareil, les tests locaux utilisant Chrome.
+
+`animation/scrollMotion.ts` fournit la compilation commune des trajectoires CSS.
+`sections/introScrollMotion.ts` prépare les vols de l’accueil et de la conclusion
+à partir des destinations mesurées et des phases existantes. Quand
+`animation-timeline: scroll(root block)` et les plages en pixels sont disponibles,
+le navigateur pilote les transformations, les opacités et le trait rouge depuis
+le scroll, indépendamment des événements JavaScript. Les changements discrets
+de visibilité sont séparés des transformations pour conserver leur composition.
+Les progressions de dessin des portraits utilisent des propriétés CSS numériques
+déclarées dans `portraits.css` ; leur tracé SVG nécessite toujours des peintures.
+JavaScript garde les légendes, les choix de visages et les états interactifs.
+Le repli suit la position à chaque frame pendant le mouvement et interpole les
+notifications espacées avec une constante de temps de 45 ms ; les grands sauts
+et la réduction des mouvements restent immédiats. Les mesures du scroll sont
+invalidées avec les dimensions, sans lecture de styles à chaque frame.
+`animation/scrollFrameLoop.ts` fournit ce repli à la conclusion et à Méthode.
+
+`sections/MethodStage.tsx` conserve un seul écran monté à la fois. React choisit
+l’étape et son état de navigation, sans rerendre tous les contenus à chaque
+fraction de scroll. Les titres sont préparés à leur grande taille, puis animés
+par transformations ; aucune modification de police ni mesure typographique ne
+se produit pendant un vol. L’approche du grand titre est compensée pour conserver
+le cadrage précédent. Les arrivées, révélations des règles et sorties utilisent
+les phases existantes. Les trois premiers écrans s’effacent ; « Interpréter »
+reste lisible jusqu’à la conclusion. Un clic joue 1 050 ms d’arrivée avec les
+mêmes géométries, puis restitue le pilotage natif ; roue, toucher et clavier
+interrompent cette lecture. La réduction des mouvements reste immédiate.
+
+`animation/useScrollReveals.ts` prépare les révélations du titre de Méthode et
+du registre des sources. Les traits de lecture du menu et les `ScrollIndicator`
+du récit et d’Explorer suivent aussi des plages natives mesurées depuis leurs
+repères DOM. Les états actifs, ancres et changements de vue restent gérés par
+les hooks existants. Les dessins de graphiques déclenchés au changement de vue,
+les compteurs et les survols ne dépendent pas d’une fraction de scroll : leurs
+animations temporelles sont conservées.
+
+`tests/browser/openingClosing.test.mjs` vérifie aussi que le trait et les textes
+continuent à suivre le scroll quand les callbacks sont bloqués, et que le repli
+produit des frames intermédiaires entre notifications. Il vérifie les trajectoires dans les deux
+sens, le redimensionnement, la réduction des mouvements et l’arrêt des écritures
+une fois les séquences terminées. Avec `TEST_BASELINE_DIR`, il compare les
+positions des textes à un build de référence sur mobile et ordinateur.
+`tests/browser/methodMotion.test.mjs` couvre les quatre étapes, leurs sorties,
+les retours, clics et la réduction des mouvements. Il vérifie les animations
+avec les événements de scroll bloqués et compare les cadrages à une référence.
+`tests/browser/scrollIndicators.test.mjs` bloque ces mêmes callbacks pour vérifier
+que les traits du récit, d’Explorer et du menu suivent encore le déplacement.
+
 Les anciennes vues éditoriales et leurs contrats DREES sont conservés dans
 `app/archive/`, sans import dans le parcours actif. Ce dossier n’est pas un
 second point d’entrée de l’application. Leur feuille `archivedStyles.css` reste

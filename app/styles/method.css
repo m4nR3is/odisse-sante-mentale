@@ -363,7 +363,7 @@
   clip-path: inset(0 calc((1 - var(--method-reveal)) * 100%) 0 0);
 }
 .method-reveal:focus-within {
-  clip-path: none;
+  clip-path: none !important;
 }
 @media (max-width: 980px) {
   .method-stage {

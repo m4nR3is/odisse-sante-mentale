@@ -1,6 +1,16 @@
 import ConclusionPortrait from "../portraits/ConclusionPortrait";
-import { slidingLead, centeredFlight, IntroLeadLines } from "./introTypography";
+import {
+  slidingLead,
+  centeredFlight,
+  measureFlight,
+  prepareFlightSurface,
+  FlightLabel,
+  type FlightGeometry,
+  IntroLeadLines,
+} from "./introTypography";
 import { useRef, useLayoutEffect } from "react";
+import { createFlightScrollMotion } from "./introScrollMotion";
+import { createScrollFrameLoop } from "../animation/scrollFrameLoop";
 
 export function ReadingConclusion() {
   const track = useRef<HTMLElement>(null);
@@ -13,28 +23,56 @@ export function ReadingConclusion() {
     const viewport = stage.current;
     if (!root || !viewport) return;
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let frame = 0;
     const starts = [0, 0.16, 0.3, 0.46, 0.6, 0.72];
-    const synchronize = () => {
-      frame = 0;
-      const bounds = root.getBoundingClientRect();
-      const stageBounds = viewport.getBoundingClientRect();
-      const headerHeight = parseFloat(getComputedStyle(viewport).top) || 60;
-      const distance = Math.max(1, root.offsetHeight - viewport.offsetHeight);
-      const progress = motion.matches
-        ? 1
-        : Math.max(0, Math.min(1, (headerHeight - bounds.top) / distance));
+    const nativeMotion = createFlightScrollMotion(root, "conclusion", {
+      starts, duration: .26, lead: 3, fromBottom: index => index >= 4,
+    });
+    let measurements: Array<FlightGeometry | null> = [];
+    let largeSizes: number[] = [];
+    let geometryDirty = true;
+    let previousProgress = -1;
+    let previouslyVisible = false;
+    const portrait = viewport.querySelector<HTMLElement>(".conclusion-portrait");
+    let scrollStart = 0;
+    let distance = 1;
+    let headerHeight = 60;
+    let stageHeight = 1;
+    const synchronize = (progress: number) => {
+      const viewportVisible = window.scrollY < scrollStart + distance + stageHeight + headerHeight &&
+        window.scrollY + innerHeight > scrollStart + headerHeight;
+      if (
+        !geometryDirty && progress === previousProgress &&
+        viewportVisible === previouslyVisible
+      ) return;
+      previousProgress = progress;
+      previouslyVisible = viewportVisible;
+      if (geometryDirty) {
+        const stageBounds = viewport.getBoundingClientRect();
+        measurements = flights.current.map((element) =>
+          element ? measureFlight(element, stageBounds) : null,
+        );
+        largeSizes = measurements.map(geometry => geometry
+          ? Math.max(1, Math.min(28,
+            stageBounds.width * 0.88 / Math.max(1, geometry.width),
+            stageBounds.height * 0.6 / Math.max(1, geometry.height))) : 1);
+        measurements.forEach((geometry, index) => {
+          if (geometry) prepareFlightSurface(geometry, largeSizes[index]);
+        });
+        nativeMotion.configure(flights.current, measurements, largeSizes,
+          scrollStart, distance, motion.matches);
+        geometryDirty = false;
+      }
       viewport.dataset.conclusionProgress = progress.toFixed(3);
-      viewport.style.setProperty(
-        "--portrait-progress",
-        String(Math.max(0, Math.min(1, (progress - 0.4) / 0.56))),
-      );
-      viewport.style.setProperty(
-        "--conclusion-portrait-progress",
-        String(Math.max(0, Math.min(1, (progress - 0.4) / 0.56))),
-      );
+      const drawing = String(Math.max(0, Math.min(1, (progress - 0.4) / 0.56)));
+      // Keep inherited drawing properties inside the illustration, not the text stage.
+      if (portrait && !nativeMotion.drawingNative) {
+        portrait.style.setProperty("--portrait-progress", drawing);
+        portrait.style.setProperty("--conclusion-portrait-progress", drawing);
+      }
       flights.current.forEach((element, index) => {
-        if (!element) return;
+        if (nativeMotion.enabled) return;
+        const geometry = measurements[index];
+        if (!element || !geometry) return;
         const local = Math.max(
           0,
           Math.min(1, (progress - starts[index]) / 0.26),
@@ -42,18 +80,14 @@ export function ReadingConclusion() {
         const arrival = local * local * (3 - 2 * local);
         element.dataset.arrival = arrival.toFixed(3);
         if (index === 3) {
-          slidingLead(element, local);
+          slidingLead(element, local, geometry);
           return;
         }
-        const large = Math.max(
-          1,
-          Math.min(
-            28,
-            (stageBounds.width * 0.88) / Math.max(1, element.offsetWidth),
-            (stageBounds.height * 0.6) / Math.max(1, element.offsetHeight),
-          ),
+        const large = largeSizes[index];
+        centeredFlight(
+          element, geometry, arrival, large, index >= 4,
+          viewportVisible && progress >= starts[index],
         );
-        centeredFlight(element, stageBounds, arrival, large, index >= 4);
         element.style.opacity =
           progress >= starts[index]
             ? String(Math.min(1, local * 10 + (index === 0 ? 1 : 0)))
@@ -65,25 +99,43 @@ export function ReadingConclusion() {
         links.current.style.visibility = arrival > 0 ? "visible" : "hidden";
         links.current.inert = arrival < 1;
       }
-      if (progressLine.current)
+      if (progressLine.current && !nativeMotion.enabled)
         progressLine.current.style.transform = `scaleX(${progress})`;
     };
-    const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(synchronize);
+    const driver = createScrollFrameLoop(() => {
+      if (geometryDirty) {
+        headerHeight = parseFloat(getComputedStyle(viewport).top) || 60;
+        scrollStart = window.scrollY + root.getBoundingClientRect().top - headerHeight;
+        stageHeight = viewport.offsetHeight;
+        distance = Math.max(1, root.offsetHeight - stageHeight);
+      }
+      return motion.matches ? 1 : Math.max(0, Math.min(1, (window.scrollY - scrollStart) / distance));
+    }, synchronize, () => nativeMotion.enabled || motion.matches);
+    const schedule = driver.schedule;
+    const invalidate = () => {
+      geometryDirty = true;
+      driver.reset();
+      schedule();
     };
-    const observer = new ResizeObserver(schedule);
+    const observer = new ResizeObserver(invalidate);
     observer.observe(root);
     observer.observe(viewport);
+    flights.current.forEach((element) => {
+      if (element) observer.observe(element);
+    });
+    document.fonts.addEventListener("loadingdone", invalidate);
     window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
-    motion.addEventListener("change", schedule);
-    synchronize();
+    window.addEventListener("resize", invalidate);
+    motion.addEventListener("change", invalidate);
+    driver.synchronize();
     return () => {
       observer.disconnect();
-      cancelAnimationFrame(frame);
+      document.fonts.removeEventListener("loadingdone", invalidate);
+      driver.dispose();
+      nativeMotion.dispose();
       window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
-      motion.removeEventListener("change", schedule);
+      window.removeEventListener("resize", invalidate);
+      motion.removeEventListener("change", invalidate);
     };
   }, []);
   const flight = (text: string, index: number) => (
@@ -94,7 +146,7 @@ export function ReadingConclusion() {
           flights.current[index] = element;
         }}
       >
-        {text}
+        {index === 0 ? <FlightLabel text={text}>{text}</FlightLabel> : text}
       </span>
     </span>
   );

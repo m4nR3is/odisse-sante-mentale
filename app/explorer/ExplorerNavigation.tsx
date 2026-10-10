@@ -33,6 +33,7 @@ export function ExplorerNavigation({
         >
           Déclaré <span>Enquête · expérience rapportée</span>
           <ScrollIndicator
+            range={{ group: "explorer", ...ranges.declared }}
             progress={scrollRangeProgress(
               scrollPosition,
               ranges.declared.start,
@@ -47,6 +48,7 @@ export function ExplorerNavigation({
         >
           Urgences <span>Recours aigu · OSCOUR®</span>
           <ScrollIndicator
+            range={{ group: "explorer", ...ranges.emergency }}
             progress={scrollRangeProgress(
               scrollPosition,
               ranges.emergency.start,
@@ -61,6 +63,7 @@ export function ExplorerNavigation({
         >
           Hôpital <span>Patients et séjours · MCO</span>
           <ScrollIndicator
+            range={{ group: "explorer", ...ranges.hospital }}
             progress={scrollRangeProgress(
               scrollPosition,
               ranges.hospital.start,
@@ -75,6 +78,7 @@ export function ExplorerNavigation({
         >
           Décès <span>Suicides enregistrés</span>
           <ScrollIndicator
+            range={{ group: "explorer", ...ranges.deaths }}
             progress={scrollRangeProgress(
               scrollPosition,
               ranges.deaths.start,
@@ -96,6 +100,7 @@ export function ExplorerNavigation({
           >
             Séjours · départements
             <ScrollIndicator
+              range={{ group: "explorer", start: entryStepForMode("territories") }}
               progress={scrollRangeProgress(
                 scrollPosition,
                 entryStepForMode("territories"),
@@ -109,6 +114,7 @@ export function ExplorerNavigation({
           >
             Patients · âge × sexe
             <ScrollIndicator
+              range={{ group: "explorer", start: entryStepForMode("profiles") }}
               progress={scrollRangeProgress(
                 scrollPosition,
                 entryStepForMode("profiles"),

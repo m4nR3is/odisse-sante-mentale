@@ -137,6 +137,7 @@ export function GuidedStory({
                 <span>0{index + 1}</span>
                 <span className="sr-only"> {step.title}</span>
                 <ScrollIndicator
+                  range={{ group: "story", start: index }}
                   progress={scrollRangeProgress(storyPosition, index)}
                 />
               </a>

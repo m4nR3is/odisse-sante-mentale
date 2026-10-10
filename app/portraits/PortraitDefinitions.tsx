@@ -1,11 +1,16 @@
 import FacialFeatures from "./FacialFeatures";
 import PortraitVariants from "./PortraitVariants";
 
-export default function PortraitDefinitions({ id }: { id: string }) {
+// SVG definitions also inherit animated drawing styles. Mount only those
+// referenced by the current composition, while preserving all available variants.
+export default function PortraitDefinitions({ id, faces }: {
+  id: string;
+  faces?: readonly number[];
+}) {
   return (
     <>
-      <PortraitVariants id={id} />
-      <g id={`${id}-portrait`}>
+      <PortraitVariants id={id} faces={faces} />
+      {(!faces || faces.includes(0)) && <g id={`${id}-portrait`}>
         {/* Broad, cut-paper masses sit behind the dry pen contours. */}
         <path
           className="portrait-wash"
@@ -77,7 +82,7 @@ export default function PortraitDefinitions({ id }: { id: string }) {
           pathLength="1"
           d="M282 317L303 312M285 323L309 318M291 329L313 325"
         />
-      </g>
+      </g>}
     </>
   );
 }

@@ -37,6 +37,7 @@ export function DeclaredExplorer({
         >
           Inégalités sociales · 2024
           <ScrollIndicator
+            range={{ group: "explorer", ...socialRange }}
             progress={scrollRangeProgress(
               position,
               socialRange.start,
@@ -51,6 +52,7 @@ export function DeclaredExplorer({
         >
           Évolution déclarée · 2005–2021
           <ScrollIndicator
+            range={{ group: "explorer", ...historyRange }}
             progress={scrollRangeProgress(
               position,
               historyRange.start,

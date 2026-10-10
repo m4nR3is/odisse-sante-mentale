@@ -87,7 +87,12 @@ export default function ConclusionPortrait() {
         focusable="false"
       >
         <defs>
-          <PortraitDefinitions id={id} />
+          <PortraitDefinitions
+            id={id}
+            faces={portraits
+              .slice(0, layout.columns * layout.rows)
+              .map((portrait) => portrait.face)}
+          />
         </defs>
       </svg>
       {portraits

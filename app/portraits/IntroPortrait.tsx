@@ -12,9 +12,13 @@ import {
 // Editorial drawing: independent crops, no individual care pathway or quantitative encoding.
 export default function IntroPortrait() {
   const id = useId().replace(/:/g, "");
-  const [faces, setFaces] = useState(() =>
-    Array.from({ length: 4 }, () => Math.floor(Math.random() * PORTRAIT_COUNT)),
-  );
+  const [faceCycle, setFaceCycle] = useState(() => {
+    const current = Array.from({ length: 4 }, () =>
+      Math.floor(Math.random() * PORTRAIT_COUNT),
+    );
+    return { current, previous: current };
+  });
+  const faces = faceCycle.current;
   const [hovered, setHovered] = useState<number | null>(null);
   useEffect(() => {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -38,8 +42,9 @@ export default function IntroPortrait() {
         )
           return;
         const quarter = hovered ?? Math.floor(Math.random() * 4);
-        setFaces((current) =>
-          current.map((face, index) =>
+        setFaceCycle(({ current }) => ({
+          previous: current,
+          current: current.map((face, index) =>
             index === quarter
               ? (face +
                   (hovered === null
@@ -48,7 +53,7 @@ export default function IntroPortrait() {
                 PORTRAIT_COUNT
               : face,
           ),
-        );
+        }));
       },
       hovered === null ? 500 : 140,
     );
@@ -162,7 +167,10 @@ export default function IntroPortrait() {
     >
       <svg viewBox="0 0 510 590" fill="none" focusable="false">
         <defs>
-          <PortraitDefinitions id={id} />
+          <PortraitDefinitions
+            id={id}
+            faces={[...faces, ...faceCycle.previous]}
+          />
           {windows.map((window, i) => (
             <clipPath id={`${id}-window-${i}`} key={i}>
               <rect
@@ -227,17 +235,18 @@ export default function IntroPortrait() {
                   d={window.frame}
                 />
                 <g clipPath={`url(#${id}-window-${i})`} data-face={faces[i]}>
-                  {Array.from(
-                    { length: PORTRAIT_COUNT },
-                    (_, face) => face,
-                  ).map((face) => (
-                    <use
-                      key={face}
-                      className="portrait-face"
-                      data-visible={faces[i] === face}
-                      href={`#${id}-portrait${face === 0 ? "" : `-${face}`}`}
-                    />
-                  ))}
+                  {/* Each use clones a full SVG tree. Only the two faces of the
+                      crossfade belong in the frame; keep their original order. */}
+                  {Array.from(new Set([faces[i], faceCycle.previous[i]]))
+                    .sort((a, b) => a - b)
+                    .map((face) => (
+                      <use
+                        key={face}
+                        className="portrait-face"
+                        data-visible={faces[i] === face}
+                        href={`#${id}-portrait${face === 0 ? "" : `-${face}`}`}
+                      />
+                    ))}
                 </g>
                 <text
                   className="portrait-label"

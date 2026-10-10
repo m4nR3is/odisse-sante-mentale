@@ -161,7 +161,8 @@ conservées comme archives, distinctes de la proposition actuelle.
 - `docs/ARCHITECTURE.md` : parcours de lecture du code, flux et règles à préserver.
 - `app/Experience.tsx` : assemblage des sections et navigation guidée vers l’explorateur.
 - `app/data/` : contrat du JSON, définitions des indicateurs, calculs territoriaux et indexation.
-- `app/sections/` : introduction, récit guidé, méthode et conclusion ; `story/` sépare les données du récit, le scroll, les animations et les rendus hospitalier/financier.
+- `app/sections/` : introduction, récit guidé, méthode et conclusion ; `introScrollMotion.ts` prépare les vols natifs de l’accueil et de la conclusion ; `MethodStage.tsx` anime les quatre étapes de Méthode ; `story/` sépare les données du récit, le scroll, les animations et les rendus hospitalier/financier.
+- `app/animation/scrollMotion.ts` : moteur commun des animations liées au scroll (textes, révélations et traits de progression) ; `scrollFrameLoop.ts` fournit le repli interpolé pour les navigateurs sans timelines natives.
 - `app/explorer/` : dix étapes nommées, destinations et progressions communes dans `explorerSteps.ts` ; hooks de pilotage, commandes et graphiques séparés par mesure ; contrats d’entrée dans `explorerTypes.ts`.
 - `app/charts/` : formatage, géométries pures propres à chaque vue, tracés SVG, disposition des distributions et animations.
 - `app/navigation/ReadingNavigation.tsx` : synchronisation de la navigation et des ancres.
