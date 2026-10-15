@@ -13,6 +13,8 @@ import {
   createIntroScrollMotion,
   INTRO_FLIGHT_STARTS,
   INTRO_FLIGHT_DURATION,
+  INTRO_PORTRAIT_START,
+  INTRO_PORTRAIT_END,
 } from "./introScrollMotion";
 
 export function IntroOpening() {
@@ -170,12 +172,14 @@ export function IntroOpening() {
         if (!openingReady) revealOpening();
       }
       viewport.dataset.introProgress = progress.toFixed(3);
-      viewport.dataset.portraitReady = String(progress >= 0.82);
+      const portraitReady = progress >= INTRO_PORTRAIT_END - 0.04;
+      viewport.dataset.portraitReady = String(portraitReady);
       if (portrait) {
-        portrait.inert = progress < 0.82;
+        portrait.inert = !portraitReady;
         if (!nativeMotion.drawingNative) portrait.style.setProperty(
           "--portrait-progress",
-          String(Math.max(0, Math.min(1, (progress - 0.24) / 0.72))),
+          String(Math.max(0, Math.min(1,
+            (progress - INTRO_PORTRAIT_START) / (INTRO_PORTRAIT_END - INTRO_PORTRAIT_START)))),
         );
       }
       flights.current.forEach((element, index) => {

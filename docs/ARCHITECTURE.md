@@ -65,6 +65,13 @@ et la réduction des mouvements restent immédiats. Les mesures du scroll sont
 invalidées avec les dimensions, sans lecture de styles à chaque frame.
 `animation/scrollFrameLoop.ts` fournit ce repli à la conclusion et à Méthode.
 
+Le réglage du rythme conserve ces moteurs. Dans l'introduction,
+`INTRO_PORTRAIT_START` et `INTRO_PORTRAIT_END` partagent la plage du dessin
+entre le pilotage natif et son repli ; le portrait ne concurrence plus les
+grands libellés. Dans la conclusion, les deux lignes de synthèse terminent leur
+vol à 88 % de la progression, laissant une plage de lecture stable avant la
+sortie de l'écran persistant. Les cadrages finaux restent identiques.
+
 `sections/MethodStage.tsx` conserve un seul écran monté à la fois. React choisit
 l’étape et son état de navigation, sans rerendre tous les contenus à chaque
 fraction de scroll. Les titres sont préparés à leur grande taille, puis animés
@@ -75,6 +82,16 @@ les phases existantes. Les trois premiers écrans s’effacent ; « Interpréter
 reste lisible jusqu’à la conclusion. Un clic joue 1 050 ms d’arrivée avec les
 mêmes géométries, puis restitue le pilotage natif ; roue, toucher et clavier
 interrompent cette lecture. La réduction des mouvements reste immédiate.
+Les apparitions des contenus durent 14 % de chaque étape et les règles sont
+décalées de 2,5 points de progression : tous les contenus sont entièrement
+visibles dès 44 %, avant les phases de sortie conservées. Les traits et les
+textes partagent ces mêmes repères dans les deux modes de pilotage.
+Les textes des règles apparaissent par blocs avec leur article, par opacité et
+translation verticale. Le tracé horizontal est réservé aux séparateurs : aucun
+masque ne coupe les mots pendant cette arrivée. Sur mobile (650 px et moins),
+l'introduction occupe 300 svh au lieu des 340 svh de la version ordinateur ;
+les plages natives sont remesurées depuis cette hauteur. La préférence de
+réduction des mouvements conserve une introduction d'un seul écran.
 
 `animation/useScrollReveals.ts` prépare les révélations du titre de Méthode et
 du registre des sources. Les traits de lecture du menu et les `ScrollIndicator`

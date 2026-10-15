@@ -23,7 +23,9 @@ export function ReadingConclusion() {
     const viewport = stage.current;
     if (!root || !viewport) return;
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const starts = [0, 0.16, 0.3, 0.46, 0.6, 0.72];
+    // Resolve the closing sentence before the end of the pin, so its two lines
+    // can be read together while the final composition is still stationary.
+    const starts = [0, 0.16, 0.3, 0.46, 0.52, 0.62];
     const nativeMotion = createFlightScrollMotion(root, "conclusion", {
       starts, duration: .26, lead: 3, fromBottom: index => index >= 4,
     });

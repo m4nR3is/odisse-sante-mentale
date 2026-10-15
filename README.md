@@ -23,6 +23,9 @@ préférence de réduction des mouvements.
 
 À droite du titre, un portrait original dessiné en SVG se construit au scroll
 à travers quatre cadres indépendants : Déclaré, Urgences, Hôpital et Décès.
+Le dessin du portrait commence après le passage des grands libellés, pour
+garder leurs trajectoires dégagées. Ses liens deviennent actifs lorsque les
+quatre fenêtres sont visibles.
 Cinquante portraits aux coiffures, contours et traits variés composent une
 combinaison aléatoire à chaque chargement. Leurs yeux et leurs bouches ont des
 formes différentes mais des repères fixes. Au survol, seul le quart concerné

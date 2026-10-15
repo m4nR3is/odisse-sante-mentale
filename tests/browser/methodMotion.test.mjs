@@ -26,6 +26,8 @@ async function capture(page) {
       opacity: Number(getComputedStyle(title).opacity) * targetOpacity,
       content: [...stage.querySelectorAll(".method-reading > p,.method-reading h4,.method-rules article,.method-takeaway")]
         .map(element => ({ text: element.textContent, opacity: Number(getComputedStyle(element).opacity) })),
+      clippedRuleText: [...stage.querySelectorAll(".method-rules article > *:not(.method-rule-line)")]
+        .some(element => getComputedStyle(element).clipPath !== "none"),
     };
   });
 }
@@ -44,11 +46,17 @@ test("méthode · quatre étapes, sorties, retours et clics", { timeout: 120000 
       for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 1000 }]) {
         await page.setViewportSize(viewport);
         for (const scene of [0, 1, 2, 3, 2, 1, 0]) {
-          for (const fraction of [0, .1, .28, .55, .85, .98]) {
+          for (const fraction of [0, .1, .28, .45, .55, .85, .98]) {
             await move(page, scene, fraction);
             const frame = await capture(page);
             frames.push(frame);
             assert.equal(Number(frame.scene), scene);
+            if (server === current && fraction === .28)
+              assert.equal(frame.clippedRuleText, false,
+                "method explanations arrive as whole blocks, without cutting words");
+            if (fraction === .45 && !baseline)
+              assert.ok(frame.content.every(item => item.opacity === 1),
+                "all explanations are readable before the middle of the slide");
             if (fraction === .98) assert.equal(frame.opacity, scene === 3 ? 1 : 0,
               "first three slides clear; Interpréter remains visible");
           }

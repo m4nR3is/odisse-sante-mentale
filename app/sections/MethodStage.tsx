@@ -38,17 +38,21 @@ export function MethodStage({ scenes }: { scenes: MethodScene[] }) {
     let clicking = false;
     let previousPosition = -1;
     let previousReduced = motion.matches;
+    // Quicker entries leave a longer fully readable hold, without extending
+    // the pinned section or changing the existing blank hand-off at the exit.
+    const contentDuration = .14;
+    const ruleStart = (index: number) => .22 + index * .025;
     const content = [
       { element: body.querySelector<HTMLElement>(".chapter")!, start: .17, exit: .77 },
       { element: body.querySelector<HTMLElement>("h4")!, start: .2, exit: .77 },
       { element: body.querySelector<HTMLElement>(".method-reading > p:last-child")!, start: .23, exit: .77 },
       ...Array.from(body.querySelectorAll<HTMLElement>("article"), (element, index) =>
-        ({ element, start: .24 + index * .035, exit: .75 + index * .012 })),
-      { element: viewport.querySelector<HTMLElement>(".method-takeaway")!, start: .34, exit: .76 },
+        ({ element, start: ruleStart(index), exit: .75 + index * .012 })),
+      { element: viewport.querySelector<HTMLElement>(".method-takeaway")!, start: .3, exit: .76 },
     ];
     const departure = (p: number, start: number) => keepLast ? 0 : phase(p, start, .16);
     const contentFrame = (p: number, start: number, exit: number) => {
-      const enter = phase(p, start, .2);
+      const enter = phase(p, start, contentDuration);
       const leave = departure(p, exit);
       return { opacity: enter * (1 - leave), y: (1 - enter) * 24 - leave * 38 };
     };
@@ -110,16 +114,16 @@ export function MethodStage({ scenes }: { scenes: MethodScene[] }) {
             scrollKeyframes(p => {
               const frame = contentFrame(p, enter, exit);
               return `opacity:${frame.opacity};transform:translate3d(0,${frame.y}px,0)`;
-            }, [enter, enter + .2, exit, exit + .16]), start, start + height);
+            }, [enter, enter + contentDuration, exit, exit + .16]), start, start + height);
         });
         body.querySelectorAll<HTMLElement>("article").forEach((article, index) => {
           const selector = `[data-method-content="${index + 3}"]`;
-          const from = start + (.24 + index * .035) * height;
-          const to = from + .18 * height;
+          const from = start + ruleStart(index) * height;
+          const to = from + contentDuration * height;
           native.animate(`${selector} .method-rule-line`, `rule-line-${index}`,
             scrollKeyframes(p => `transform:scaleX(${phase(p)})`), from, to);
-          native.animate(`${selector} > *:not(.method-rule-line)`, `rule-copy-${index}`,
-            scrollKeyframes(p => `clip-path:inset(0 ${(1 - phase(p)) * 100}% 0 0)`), from, to);
+          // The article already fades and rises as a complete reading block.
+          // Only its separator is drawn; never crop words during the entry.
         });
         ranges.forEach(({ start, height }, index) => native.animate(
           `[href="#method-step-${index + 1}"][aria-current="step"] .control-scroll-progress`, `progress-${index}`,
@@ -144,7 +148,7 @@ export function MethodStage({ scenes }: { scenes: MethodScene[] }) {
         element.style.transform = `translate3d(0,${frame.y}px,0)`;
       });
       body.querySelectorAll<HTMLElement>("article").forEach((article, index) => {
-        const reveal = motion.matches ? 1 : phase(p, .24 + index * .035, .18);
+        const reveal = motion.matches ? 1 : phase(p, ruleStart(index), contentDuration);
         article.style.setProperty("--rule-reveal", String(reveal));
       });
     };

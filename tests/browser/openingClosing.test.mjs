@@ -31,6 +31,39 @@ async function capture(page, selector) {
   );
 }
 
+test("rythme · textes dégagés à l'ouverture et conclusion stabilisée avant la sortie", async () => {
+  const server = await serve("dist");
+  const browser = await launchBrowser();
+  try {
+    for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 1000 }]) {
+      const { page, assertNoErrors } = await openExperience(browser, server.url, viewport, "no-preference");
+      await page.evaluate(() => dispatchEvent(new Event("touchstart")));
+      await moveToProgress(page, ".intro-scroll-track", .4);
+      const drawing = await page.locator(".intro-portrait").evaluate(element =>
+        Number(getComputedStyle(element).getPropertyValue("--portrait-progress")));
+      assert.equal(drawing, 0, "the portrait does not compete with oversized topic labels");
+      await moveToProgress(page, ".intro-scroll-track", 1);
+      assert.equal(await page.locator(".intro-portrait").evaluate(element => element.inert), false,
+        "the resolved portrait retains its navigation");
+      await moveToProgress(page, ".reading-conclusion", .9);
+      const before = (await capture(page, ".reading-conclusion"))
+        .filter(item => /Rendre visible|ce qu’un chiffre laisse hors champ/.test(item.text));
+      await moveToProgress(page, ".reading-conclusion", 1);
+      const after = (await capture(page, ".reading-conclusion"))
+        .filter(item => /Rendre visible|ce qu’un chiffre laisse hors champ/.test(item.text));
+      assert.equal(before.length, 2);
+      before.forEach((item, index) => {
+        assert.equal(item.opacity, "1");
+        for (const coordinate of ["x", "y", "width", "height"])
+          assert.ok(Math.abs(item[coordinate] - after[index][coordinate]) < 1,
+            "the full closing sentence holds its final position before the pin ends");
+      });
+      assertNoErrors();
+      await page.close();
+    }
+  } finally { await browser.close(); await server.close(); }
+});
+
 test("intro · le tracé et le plein partagent la même ligne de base", async () => {
   const server = await serve("dist");
   const browser = await launchBrowser();

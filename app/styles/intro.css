@@ -220,6 +220,9 @@
   transform-origin: left;
 }
 @media (max-width: 650px) {
+  .intro-scroll-track {
+    height: 300svh;
+  }
   .hero.meta-hero.intro-stage {
     padding: 4svh 22px 10svh;
   }

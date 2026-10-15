@@ -3,6 +3,9 @@ import { createScrollMotion, scrollKeyframes, phase } from "../animation/scrollM
 
 export const INTRO_FLIGHT_STARTS = [0, 0.14, 0.28, 0.42, 0.56, 0.7];
 export const INTRO_FLIGHT_DURATION = 0.24;
+// Let the oversized headlines settle before the drawing occupies their path.
+export const INTRO_PORTRAIT_START = 0.72;
+export const INTRO_PORTRAIT_END = 0.96;
 
 // CSS owns the moving text and progress bar. Unlike scroll-event callbacks,
 // scroll timelines can follow asynchronous scrolling on the compositor thread.
@@ -94,7 +97,7 @@ export function createFlightScrollMotion(root: HTMLElement, name: string, option
       "from{transform:scaleX(0)}to{transform:scaleX(1)}", 0, 1);
     if ("registerProperty" in CSS) {
       if (name === "intro") animate(".intro-portrait", "portrait-drawing",
-        "from{--portrait-progress:0}to{--portrait-progress:1}", .24, .96);
+        "from{--portrait-progress:0}to{--portrait-progress:1}", INTRO_PORTRAIT_START, INTRO_PORTRAIT_END);
       if (name === "conclusion") animate(".conclusion-portrait", "portrait-drawing",
         "from{--portrait-progress:0;--conclusion-portrait-progress:0}to{--portrait-progress:1;--conclusion-portrait-progress:1}", .4, .96);
     }
