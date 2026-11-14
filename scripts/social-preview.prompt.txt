@@ -1,4 +1,4 @@
-Generated with the built-in image_gen tool, from the first cover and original portrait references.
+Superseded imagegen exploration. The final asset is rendered from the actual site SVG component using scripts/render-social-preview.tsx; see public/og-odisse-2026.svg. It does not use the generated portrait below.
 
 Edit the first reference Open Graph cover for Odissé Dataviz 2026. Second reference shows the actual site's portrait drawing style. Preserve the warm almost-black background, ivory type, restrained coral-red accents, title content and safe composition. Make TWO specific changes:
 1. REMOVE BOTH LONG HORIZONTAL IVORY RULES spanning the image near the top and bottom. They waste space. Also remove the thin horizontal divider below the subtitle; keep only the short coral accent near the eyebrow.
